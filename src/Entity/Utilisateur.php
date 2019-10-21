@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,29 @@ class Utilisateur
      * @ORM\Column(type="string", length=30)
      */
     private $mdpUtilisateur;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $adresseUtilisateur;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="utilisateurDevis")
+     */
+    private $devis;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeUtilisateur", inversedBy="utilisateurs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $typeUtilisateur;
+
+    public function __construct()
+    {
+        $this->typeUtilisateur = new ArrayCollection();
+        $this->devis = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +127,61 @@ class Utilisateur
     public function setMdpUtilisateur(string $mdpUtilisateur): self
     {
         $this->mdpUtilisateur = $mdpUtilisateur;
+
+        return $this;
+    }
+
+    public function getAdresseUtilisateur(): ?Adresse
+    {
+        return $this->adresseUtilisateur;
+    }
+
+    public function setAdresseUtilisateur(Adresse $adresseUtilisateur): self
+    {
+        $this->adresseUtilisateur = $adresseUtilisateur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Devis[]
+     */
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevis(Devis $devis): self
+    {
+        if (!$this->devis->contains($devis)) {
+            $this->devis[] = $devis;
+            $devis->setUtilisateurDevis($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevis(Devis $devis): self
+    {
+        if ($this->devis->contains($devis)) {
+            $this->devis->removeElement($devis);
+            // set the owning side to null (unless already changed)
+            if ($devis->getUtilisateurDevis() === $this) {
+                $devis->setUtilisateurDevis(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTypeUtilisateur(): ?TypeUtilisateur
+    {
+        return $this->typeUtilisateur;
+    }
+
+    public function setTypeUtilisateur(?TypeUtilisateur $typeUtilisateur): self
+    {
+        $this->typeUtilisateur = $typeUtilisateur;
 
         return $this;
     }

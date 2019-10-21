@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +27,16 @@ class Catalogue
      * @ORM\Column(type="text")
      */
     private $descCatalogue;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Maison", mappedBy="catalogueMaison")
+     */
+    private $maisons;
+
+    public function __construct()
+    {
+        $this->maisons = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,6 +63,34 @@ class Catalogue
     public function setDescCatalogue(string $descCatalogue): self
     {
         $this->descCatalogue = $descCatalogue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Maison[]
+     */
+    public function getMaisons(): Collection
+    {
+        return $this->maisons;
+    }
+
+    public function addMaison(Maison $maison): self
+    {
+        if (!$this->maisons->contains($maison)) {
+            $this->maisons[] = $maison;
+            $maison->addCatalogueMaison($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMaison(Maison $maison): self
+    {
+        if ($this->maisons->contains($maison)) {
+            $this->maisons->removeElement($maison);
+            $maison->removeCatalogueMaison($this);
+        }
 
         return $this;
     }

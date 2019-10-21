@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,22 @@ class Fournisseur
      * @ORM\Column(type="string", length=14)
      */
     private $siret;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Composant", mappedBy="fournisseurComposant")
+     */
+    private $composants;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Adresse", mappedBy="fournisseur")
+     */
+    private $adressesFournisseur;
+
+    public function __construct()
+    {
+        $this->composants = new ArrayCollection();
+        $this->adressesFournisseur = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +120,68 @@ class Fournisseur
     public function setSiret(string $siret): self
     {
         $this->siret = $siret;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Composant[]
+     */
+    public function getComposants(): Collection
+    {
+        return $this->composants;
+    }
+
+    public function addComposant(Composant $composant): self
+    {
+        if (!$this->composants->contains($composant)) {
+            $this->composants[] = $composant;
+            $composant->setFournisseurComposant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComposant(Composant $composant): self
+    {
+        if ($this->composants->contains($composant)) {
+            $this->composants->removeElement($composant);
+            // set the owning side to null (unless already changed)
+            if ($composant->getFournisseurComposant() === $this) {
+                $composant->setFournisseurComposant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Adresse[]
+     */
+    public function getAdressesFournisseur(): Collection
+    {
+        return $this->adressesFournisseur;
+    }
+
+    public function addAdressesFournisseur(Adresse $adressesFournisseur): self
+    {
+        if (!$this->adressesFournisseur->contains($adressesFournisseur)) {
+            $this->adressesFournisseur[] = $adressesFournisseur;
+            $adressesFournisseur->setFournisseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdressesFournisseur(Adresse $adressesFournisseur): self
+    {
+        if ($this->adressesFournisseur->contains($adressesFournisseur)) {
+            $this->adressesFournisseur->removeElement($adressesFournisseur);
+            // set the owning side to null (unless already changed)
+            if ($adressesFournisseur->getFournisseur() === $this) {
+                $adressesFournisseur->setFournisseur(null);
+            }
+        }
 
         return $this;
     }

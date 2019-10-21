@@ -36,6 +36,11 @@ class Adresse
      */
     private $regionAdresse;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur", inversedBy="adressesFournisseur")
+     */
+    private $fournisseur;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +90,18 @@ class Adresse
     public function setRegionAdresse(string $regionAdresse): self
     {
         $this->regionAdresse = $regionAdresse;
+
+        return $this;
+    }
+
+    public function getFournisseur(): ?Fournisseur
+    {
+        return $this->fournisseur;
+    }
+
+    public function setFournisseur(?Fournisseur $fournisseur): self
+    {
+        $this->fournisseur = $fournisseur;
 
         return $this;
     }
