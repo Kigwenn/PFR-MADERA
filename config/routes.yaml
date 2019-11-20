@@ -1,3 +1,28 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+utilisateur_liste:
+    path: /PFR-MADERA/utilisateur/liste/{nomType}
+    defaults: { _controller: 'App\Controller\UtilisateurController::listeUtilisateur' }
+
+
+utilisateur_creation:
+    path: /PFR-MADERA/utilisateur/creation/{nom}/{prenom}/{mail}/{tel}/{mdp}/{type}/{rue}/{ville}/{cp}/{region}
+    defaults: { _controller: 'App\Controller\UtilisateurController::creationUtilisateur' }
+
+utilisateur_creationjson:
+    path: /PFR-MADERA/utilisateur/creationjson
+    defaults: { _controller: 'App\Controller\UtilisateurController::creationUtilisateurJson' }
+
+utilisateur_detail:
+    path: /PFR-MADERA/utilisateur/detail/{id}
+    defaults: { _controller: 'App\Controller\UtilisateurController::detailUtilisateur' }
+
+utilisateur_modification:
+    path: /PFR-MADERA/utilisateur/modification/{id}/{nom}/{prenom}/{mail}/{tel}/{mdp}/{rue}/{ville}/{cp}/{region}
+    defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }
+
+utilisateur_suppression:
+    path: /PFR-MADERA/utilisateur/suppression/{id}
+    defaults: { _controller: 'App\Controller\UtilisateurController::suppressionUtilisateur' }
