@@ -186,7 +186,50 @@ class DevisController extends AbstractController
         $reponse->headers->set("Access Control-Allow-Origin", "*"); 
         return $reponse;
     }
-
+        
+    /** 
+    * Permet de supprimer un devis
+    * @Route("/", name="devis_suppression", methods={"DELETE"}),
+    */
+    public function suppressionDevis(Request $requestjson){
+        $parametersAsArray = [];
+        $erreur = null;
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        if ($parametersAsArray['id'] == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }else{
+            $entityManager = $this->getDoctrine()->getManager(); 
+            $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
+            $devis = $repository_devis->find($parametersAsArray['id']);
+            if ($devis == null) {
+                $erreur = "Le devis n'existe pas.";
+            } else {
+                $entityManager->remove($devis);
+                $entityManager->flush();  
+            }
+        }
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response (json_encode(array(
+                'result' => "OK",
+                'id' => $parametersAsArray['id'],
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                'id' => $parametersAsArray['id'],
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;        
+    }
     
 
 
