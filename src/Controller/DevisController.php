@@ -84,4 +84,58 @@ class DevisController extends AbstractController
         $reponse->headers->set("Access Control-Allow-Origin", "*"); 
         return $reponse;
     }
+    /**
+    * Permet d'avoir le detail d'un deviss 
+    * @Route("/", name="devis_affichage", methods={"GET"});
+    */
+    public function affichageDevis(Request $requestjson) 
+    {
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
+        $parametersAsArray = [];
+        $erreur = null;
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }
+
+        //On verifie si l'devis existe bien
+        if ($erreur == null){
+            $devis = $repository_devis->find($parametersAsArray['id']);
+            if ($devis == null){
+                $erreur = "Le devis n'existe pas.";
+            }
+        }
+
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response(json_encode(array(
+                'result' => "OK",
+                'id' => $devis->getId(),
+                'nom_devis' => $devis->getNomDevis(),
+                'date_devis' => $devis->getDateDevis(),
+                'prix_devis' => $devis->getPrixTotal(),
+                'utilisateur_devis_id' => $devis->getUtilisateurDevis()->getId(),
+                'devis_maison_id' => $devis->getDevisMaison()->getId(),
+                ))
+            );
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
+    
+
+
+
+
 }

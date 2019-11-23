@@ -46,3 +46,8 @@ devis_creation:
     path:     /PFR-MADERA/devis/
     defaults: { _controller: 'App\Controller\DevisController::creationDevis' }
     methods:  POST
+
+devis_affichage:
+    path:     /PFR-MADERA/devis/
+    defaults: { _controller: 'App\Controller\DevisController::affichageDevis' }
+    methods:  GET
