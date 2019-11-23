@@ -12,6 +12,11 @@ utilisateur_detail:
     defaults: { _controller: 'App\Controller\UtilisateurController::affichageUtilisateur' }
     methods:  GET
 
+utilisateur_modification:
+    path:     /PFR-MADERA/utilisateur/
+    defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }
+    methods:  PUT
+
 #utilisateur_debis:
 #    path:     /PFR-MADERA/utilisateur/devis/
 #    defaults: { _controller: 'App\Controller\UtilisateurController::listeDevis' }

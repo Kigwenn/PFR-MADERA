@@ -42,12 +42,8 @@ class UtilisateurController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $utilisateurValide = true;
-        foreach ($parametersAsArray as $valeurParametre) {
-            if ($valeurParametre == null) {
-                $erreur = "Un parametre est vide.";
-                break; 
-            }
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
         } 
         // On verifie si il n'y a pas déjà un utilisateur existant
         $listeUtilisateurs = $repository_utilisateur->findAll();
@@ -122,10 +118,10 @@ class UtilisateurController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $utilisateurValide = true;
-        if ($parametersAsArray['id'] == null) {
-            $erreur = "Le parametre est vide ou égale à 0."; 
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
         }
+
         //On verifie si l'utilisateur existe bien
         if ($erreur == null){
             $utilisateur = $repository_utilisateur->find($parametersAsArray['id']);
@@ -163,4 +159,80 @@ class UtilisateurController extends AbstractController
         $reponse->headers->set("Access Control-Allow-Origin", "*"); 
         return $reponse;
     }
+
+    /** 
+    * Permet de modifier un utilisateur et son adresse
+    * @Route("/", methods={"PUT"}) 
+    */
+    public function modificationUtilisateur(Request $requestjson){
+        $entityManager = $this->getDoctrine()->getManager();  
+        $repository_utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class);
+        $parametersAsArray = [];
+        $erreur = null;
+
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+
+        //Verification parametres
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }
+
+        // On verifie si il n'y a pas déjà un utilisateur existant avec ces parametres
+        $listeUtilisateurs = $repository_utilisateur->findAll();
+        if ($erreur == null) {
+            foreach ($listeUtilisateurs as $utilisateur) 
+            {
+                $typeUtilisateur = $utilisateur->getTypeUtilisateur();
+                if (($utilisateur->getId() != $parametersAsArray['id']) &&
+                ($utilisateur->getNomUtilisateur() == $parametersAsArray['nom_utilisateur']) &&
+                ($utilisateur->getPrenomUtilisateur() == $parametersAsArray['prenom_utilisateur']) && 
+                ($utilisateur->getMailUtilisateur() == $parametersAsArray['mail_utilisateur'])){
+                    $erreur = "Utilisateur deja existant.";
+                    break;       
+                }
+            }
+        }
+
+        if  ($erreur == null) {
+            //Modification de l'utilisateur 
+            $utilisateur = $repository_utilisateur->find($parametersAsArray['id']); 
+            $utilisateur->setNomUtilisateur($parametersAsArray['nom_utilisateur']);
+            $utilisateur->setPrenomUtilisateur($parametersAsArray['prenom_utilisateur']);
+            $utilisateur->setMailUtilisateur($parametersAsArray['mail_utilisateur']);
+            $utilisateur->setTelUtilisateur($parametersAsArray['tel_utilisateur']);
+            $utilisateur->setMdpUtilisateur($parametersAsArray['mdp_utilisateur']);
+            $entityManager->persist($utilisateur); 
+            
+            //Modification de l'adresse
+            $repository_adresse = $this->getDoctrine()->getRepository(Adresse::class); 
+            $adresse = $repository_adresse->find($utilisateur->getAdresseUtilisateur());
+            $adresse->setRueAdresse($parametersAsArray['rue_adresse']);
+            $adresse->setVilleAdresse($parametersAsArray['ville_adresse']);
+            $adresse->setCpAdresse($parametersAsArray['cp_adresse']);
+            $adresse->setRegionAdresse($parametersAsArray['region_adresse']);
+            $entityManager->persist($adresse);
+            $entityManager->flush();
+        }
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response (json_encode(array(
+                'result' => "OK",
+                'id' => $utilisateur->getId(), 
+                'nom_utilisateur' => $utilisateur->getNomUtilisateur(), 
+                'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        return $reponse;
+    }  
 }
