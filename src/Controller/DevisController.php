@@ -133,6 +133,60 @@ class DevisController extends AbstractController
         return $reponse;
     }
 
+    /** 
+    * Permet de modifier un devis
+    * @Route("/", methods={"PUT"}) 
+    */
+    public function modificationDevis(Request $requestjson){
+        $entityManager = $this->getDoctrine()->getManager();  
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
+        $parametersAsArray = [];
+        $erreur = null;
+
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+
+        //Verification parametres
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }
+        if  ($erreur == null) {
+            //Recuperation maison
+            $repository_maison = $this->getDoctrine()->getRepository(Maison::class);
+            $maison = $repository_maison->find($parametersAsArray['devis_maison_id']);
+            //Recuperation utilisateur
+            $repository_utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class);
+            $utilisateur = $repository_utilisateur->find($parametersAsArray['utilisateur_devis_id']);
+            //Modification du devis 
+            $devis = $repository_devis->find($parametersAsArray['id']); 
+            $devis->setNomDevis($parametersAsArray['nom_devis']);
+            $devis->setDateDevis(new \DateTime('@'.strtotime('now')));
+            $devis->setUtilisateurDevis($utilisateur);
+            $devis->setDevisMaison($maison);
+            $entityManager->persist($devis); 
+            $entityManager->flush();
+        }
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response (json_encode(array(
+                'result' => "OK",
+                'id' => $devis->getId(), 
+                'nom_devis' => $devis->getNomDevis(),
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
     
 
 

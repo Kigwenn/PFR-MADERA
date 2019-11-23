@@ -51,3 +51,9 @@ devis_affichage:
     path:     /PFR-MADERA/devis/
     defaults: { _controller: 'App\Controller\DevisController::affichageDevis' }
     methods:  GET
+
+    
+devis_modification:
+    path:     /PFR-MADERA/devis/
+    defaults: { _controller: 'App\Controller\DevisController::modificationDevis' }
+    methods:  PUT
