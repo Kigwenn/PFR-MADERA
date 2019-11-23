@@ -95,7 +95,7 @@ class GammeController extends AbstractController
         if  ($erreur == null) { 
             $reponse = new Response (json_encode(array(
                 'result' => "OK",
-                'gamme_module_id' => $parametersAsArray['gamme_module_id'],
+                'id' => $parametersAsArray['id'],
                 "listeModules" => $listeReponse,
                 )
             ));
