@@ -31,3 +31,8 @@ utilisateur_devis:
     path:     /PFR-MADERA/utilisateur/devis/
     defaults: { _controller: 'App\Controller\UtilisateurController::devisUtilisateur' }
     methods:  GET
+
+gamme_liste:
+    path:     /PFR-MADERA/gamme/liste/
+    defaults: { _controller: 'App\Controller\GammeController::listeGamme' }
+    methods:  GET
