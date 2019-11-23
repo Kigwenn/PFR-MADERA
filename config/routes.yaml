@@ -41,3 +41,8 @@ gamme_modules:
     path:     /PFR-MADERA/gamme/modules/
     defaults: { _controller: 'App\Controller\GammeController::listeModules' }
     methods:  GET
+
+devis_creation:
+    path:     /PFR-MADERA/devis/
+    defaults: { _controller: 'App\Controller\DevisController::creationDevis' }
+    methods:  POST
