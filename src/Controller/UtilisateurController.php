@@ -141,7 +141,6 @@ class UtilisateurController extends AbstractController
                 'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),
                 'mail_utilisateur' => $utilisateur->getMailUtilisateur(),
                 'tel_utilisateur' => $utilisateur->getTelUtilisateur(),
-                'mdp_utilisateur' => $utilisateur->getMdpUtilisateur(),
                 'type_utilisateur_id' => $utilisateur->getTypeUtilisateur()->getId(),
                 'rue_adresse' => $adresse->getRueAdresse(),
                 'ville_adresse' => $adresse->getVilleAdresse(),
@@ -279,5 +278,64 @@ class UtilisateurController extends AbstractController
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;        
+    }
+
+    /**
+    * Permet d'avoir la liste de tous les utilisateurs 
+    * @Route("/liste/", name="utilisateur_liste", methods={"GET"});
+    */
+    public function listeUtilisateur(Request $requestjson) 
+    {
+        $parametersAsArray = [];
+        $erreur = null;
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }else{
+            $entityManager = $this->getDoctrine()->getManager(); 
+            $repository_typeUtilisateur = $this->getDoctrine()->getRepository(TypeUtilisateur::class); 
+            $typeUtilisateur = $repository_typeUtilisateur->find($parametersAsArray['type_utilisateur_id']);
+            if ($typeUtilisateur == null) {
+                $erreur = "Le type utilisateur n'existe pas.";
+            }else{
+                $repository_utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class);
+                $listeUtilisateurs = $repository_utilisateur->findAll();
+                $listeReponse = array();
+                foreach ($listeUtilisateurs as $utilisateur) 
+                {
+                    // on enregistre les utilisateur correspondant au type mis en paramètre
+                    if ($parametersAsArray['type_utilisateur_id'] == $utilisateur->getTypeUtilisateur()->getId()){
+                        $listeReponse[] = array(
+                            'id' => $utilisateur->getId(),
+                            'nom_utilisateur' => $utilisateur->getNomUtilisateur(),
+                            'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),
+                            'mail_utilisateur' => $utilisateur->getMailUtilisateur(),
+                            'tel_utilisateur' => $utilisateur->getTelUtilisateur(),
+                        );
+                    }
+                }
+            }
+        }
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response (json_encode(array(
+                'result' => "OK",
+                'type_utilisateur_id' => $parametersAsArray['type_utilisateur_id'],
+                "listeUtilisateurs"=>$listeReponse,
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;
     }
 }
