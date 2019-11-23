@@ -235,4 +235,49 @@ class UtilisateurController extends AbstractController
         $reponse->headers->set("Access Control-Allow-Origin", "*"); 
         return $reponse;
     }  
+
+
+    /** 
+    * Permet de supprimer un utilisateur et son adresse grâce à l'id de l'utilisateur
+    * @Route("/", name="utilisateur_suppression", methods={"DELETE"}),
+    */
+    public function suppressionUtilisateur(Request $requestjson){
+        $parametersAsArray = [];
+        $erreur = null;
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        if ($parametersAsArray['id'] == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }else{
+            $entityManager = $this->getDoctrine()->getManager(); 
+            $repository_utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class); 
+            $utilisateur = $repository_utilisateur->find($parametersAsArray['id']);
+            if ($utilisateur == null) {
+                $erreur = "L'utilisateur n'existe pas.";
+            } else {
+                $entityManager->remove($utilisateur);
+                $entityManager->flush();  
+            }
+        }
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response (json_encode(array(
+                'result' => "OK",
+                'id' => $parametersAsArray['id'],
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                'id' => $parametersAsArray['id'],
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;        
+    }
 }

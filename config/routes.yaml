@@ -16,6 +16,11 @@ utilisateur_modification:
     path:     /PFR-MADERA/utilisateur/
     defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }
     methods:  PUT
+    
+utilisateur_suppression:
+    path:     /PFR-MADERA/utilisateur/
+    defaults: { _controller: 'App\Controller\UtilisateurController::suppressionUtilisateur' }
+    methods:  DELETE
 
 #utilisateur_debis:
 #    path:     /PFR-MADERA/utilisateur/devis/
