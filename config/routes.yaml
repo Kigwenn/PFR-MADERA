@@ -7,6 +7,10 @@ utilisateur_creation:
     defaults: { _controller: 'App\Controller\UtilisateurController::creationUtilisateur' }
     methods:  POST
 
+utilisateur_detail:
+    path:     /PFR-MADERA/utilisateur/
+    defaults: { _controller: 'App\Controller\UtilisateurController::affichageUtilisateur' }
+    methods:  GET
 
 #utilisateur_debis:
 #    path:     /PFR-MADERA/utilisateur/devis/

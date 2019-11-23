@@ -59,7 +59,7 @@ class UtilisateurController extends AbstractController
                 ($utilisateur->getNomUtilisateur() == $parametersAsArray['nom_utilisateur']) &&
                 ($utilisateur->getPrenomUtilisateur() == $parametersAsArray['prenom_utilisateur']) && 
                 ($utilisateur->getMailUtilisateur() == $parametersAsArray['mail_utilisateur'])){
-                    $erreur = "Utilisateur deja existant.";
+                    $erreur = "Utilisateur déjà existant.";
                     break;       
                 }
             }
@@ -97,6 +97,62 @@ class UtilisateurController extends AbstractController
                 'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),
                 )
             ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
+    /**
+    * Permet d'avoir le detail d'un utilisateurs 
+    * @Route("/", name="utilisateur_affichage", methods={"GET"});
+    */
+    public function affichageUtilisateur(Request $requestjson) 
+    {
+        $repository_utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class); 
+        $parametersAsArray = [];
+        $erreur = null;
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        $utilisateurValide = true;
+        if ($parametersAsArray['id'] == null) {
+            $erreur = "Le parametre est vide ou égale à 0."; 
+        }
+        //On verifie si l'utilisateur existe bien
+        if ($erreur == null){
+            $utilisateur = $repository_utilisateur->find($parametersAsArray['id']);
+            if ($utilisateur == null){
+                $erreur = "L'utilisateur n'existe pas.";
+            }
+        }
+
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $repository_adresse = $this->getDoctrine()->getRepository(Adresse::class);  
+            $adresse = $repository_adresse->find($utilisateur->getAdresseUtilisateur());
+            $reponse = new Response(json_encode(array(
+                'result' => "OK",
+                'id' => $utilisateur->getId(),
+                'nom_utilisateur' => $utilisateur->getNomUtilisateur(),
+                'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),
+                'mail_utilisateur' => $utilisateur->getMailUtilisateur(),
+                'tel_utilisateur' => $utilisateur->getTelUtilisateur(),
+                'mdp_utilisateur' => $utilisateur->getMdpUtilisateur(),
+                'type_utilisateur_id' => $utilisateur->getTypeUtilisateur()->getId(),
+                'rue_adresse' => $adresse->getRueAdresse(),
+                'ville_adresse' => $adresse->getVilleAdresse(),
+                'cp_adresse' => $adresse->getCpAdresse(),
+                'region_adresse' => $adresse->getRegionAdresse(),
+                ))
+            );
         } else {
             $reponse = new Response (json_encode(array(
                 'result' => $erreur,
