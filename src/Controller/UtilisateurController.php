@@ -325,9 +325,66 @@ class UtilisateurController extends AbstractController
             $reponse = new Response (json_encode(array(
                 'result' => "OK",
                 'type_utilisateur_id' => $parametersAsArray['type_utilisateur_id'],
-                "listeUtilisateurs"=>$listeReponse,
+                "listeUtilisateurs" => $listeReponse,
                 )
             ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
+
+    /**
+    * Permet d'avoir les devis d'un utilisateur grâce à son id 
+    * @Route("/devis/", name="utilisateur_devis", methods={"GET"}) 
+    */
+    public function devisUtilisateur(Request $requestjson)
+    {
+        $parametersAsArray = [];
+        $erreur = null;
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }else{
+            $repository_utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class); 
+            $utilisateur = $repository_utilisateur->find($parametersAsArray['id']);
+            if ($utilisateur == null){
+                $erreur = "L'utilisateur n'existe pas.";
+            }else{
+                //Recuperation des devis 
+                $listeDevis = $utilisateur->getDevis(); 
+                $listeReponse = [];
+                foreach ($listeDevis as $devis) 
+                { 
+                    $listeReponse [] = array(
+                        "id_devis" => $devis->getId(), 
+                        "nom_devis" => $devis->getNomDevis(),
+                        "date_devis" => $devis->getDateDevis(),
+                        "prix_total" => $devis->getPrixTotal(),
+                    );
+                }
+            }
+        } 
+        //Envoi de la réponse 
+        if  ($erreur == null) {
+            $reponse = new Response(json_encode(array(
+                'result' => "OK",
+                'id_utilisateur' => $utilisateur->getId(),
+                'nom_utilisateur' => $utilisateur->getNomUtilisateur(),
+                'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),
+                'listeDevis' => $listeReponse, 
+                ))
+            );
         } else {
             $reponse = new Response (json_encode(array(
                 'result' => $erreur,

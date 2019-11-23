@@ -27,7 +27,7 @@ utilisateur_liste:
     defaults: { _controller: 'App\Controller\UtilisateurController::listeUtilisateur' }
     methods:  GET
 
-#utilisateur_debis:
-#    path:     /PFR-MADERA/utilisateur/devis/
-#    defaults: { _controller: 'App\Controller\UtilisateurController::listeDevis' }
-#    methods:  GET
+utilisateur_devis:
+    path:     /PFR-MADERA/utilisateur/devis/
+    defaults: { _controller: 'App\Controller\UtilisateurController::devisUtilisateur' }
+    methods:  GET
