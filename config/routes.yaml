@@ -36,3 +36,8 @@ gamme_liste:
     path:     /PFR-MADERA/gamme/liste/
     defaults: { _controller: 'App\Controller\GammeController::listeGamme' }
     methods:  GET
+
+gamme_modules:
+    path:     /PFR-MADERA/gamme/modules/
+    defaults: { _controller: 'App\Controller\GammeController::listeModules' }
+    methods:  GET
