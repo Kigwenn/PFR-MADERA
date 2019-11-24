@@ -22,6 +22,11 @@ utilisateur_devis:
     defaults: { _controller: 'App\Controller\UtilisateurController::devisUtilisateur' }
     methods:  GET
 
+utilisateur_recherche:
+    path:     /PFR-MADERA/utilisateur/recherche/
+    defaults: { _controller: 'App\Controller\UtilisateurController::rechercheUtilisateurs' }
+    methods:  GET
+
 utilisateur_modification:
     path:     /PFR-MADERA/utilisateur/
     defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }

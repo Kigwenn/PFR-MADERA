@@ -339,6 +339,66 @@ class UtilisateurController extends AbstractController
         return $reponse;
     }
 
+    /**
+    * Permet d'avoir la liste de tous les utilisateurs contenant le mot en parametre dans leur nom/prenom/mail 
+    * @Route("/recherche/", name="utilisateur_recherche", methods={"GET"});
+    */
+    public function rechercheUtilisateurs(Request $requestjson) 
+    {
+        $parametersAsArray = [];
+        $erreur = null;
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }else {
+            $entityManager = $this->getDoctrine()->getManager(); 
+            $repository_utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class);
+            $listeUtilisateurs = $repository_utilisateur->findAll();
+            $listeReponse = array();
+            foreach ($listeUtilisateurs as $utilisateur) 
+            {
+                // on enregistre les utilisateur correspondant au paramètre
+                if ((strpos($utilisateur->getNomUtilisateur(), $parametersAsArray['recherche']) !== false) ||
+                (strpos($utilisateur->getPrenomUtilisateur(), $parametersAsArray['recherche']) !== false) ||
+                (strpos($utilisateur->getMailUtilisateur(), $parametersAsArray['recherche']) !== false) ){
+                    $listeReponse[] = array(
+                        'id' => $utilisateur->getId(),
+                        'nom_utilisateur' => $utilisateur->getNomUtilisateur(),
+                        'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),
+                        'mail_utilisateur' => $utilisateur->getMailUtilisateur(),
+                        'tel_utilisateur' => $utilisateur->getTelUtilisateur(),
+                    );
+                }
+            }
+            if ($listeReponse == null){
+                $erreur = "Aucuns résultats."; 
+            }  
+        }
+
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response (json_encode(array(
+                'result' => "OK",
+                'recherche' => $parametersAsArray['recherche'],
+                "listeUtilisateurs" => $listeReponse,
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                'recherche' => $parametersAsArray['recherche'],
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
 
     /**
     * Permet d'avoir les devis d'un utilisateur grâce à son id 
