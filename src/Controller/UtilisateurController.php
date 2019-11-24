@@ -248,7 +248,7 @@ class UtilisateurController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        if ($parametersAsArray['id'] == null){
+        if ($parametersAsArray == null){
             $erreur = "Il n'y a pas de paramètre.";
         }else{
             $entityManager = $this->getDoctrine()->getManager(); 
@@ -271,7 +271,6 @@ class UtilisateurController extends AbstractController
         } else {
             $reponse = new Response (json_encode(array(
                 'result' => $erreur,
-                'id' => $parametersAsArray['id'],
                 )
             ));
         }
