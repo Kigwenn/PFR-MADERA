@@ -61,3 +61,8 @@ devis_suppression:
     path:     /PFR-MADERA/devis/
     defaults: { _controller: 'App\Controller\DevisController::suppressionDevis' }
     methods:  DELETE
+
+devis_liste:
+    path:     /PFR-MADERA/devis/liste/
+    defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
+    methods:  GET

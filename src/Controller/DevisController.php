@@ -230,9 +230,50 @@ class DevisController extends AbstractController
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;        
     }
-    
 
-
-
-
+    /**
+    * Permet d'avoir la liste de tous les devis 
+    * @Route("/liste/", name="devis_liste", methods={"GET"});
+    */
+    public function listeDevis(Request $requestjson) 
+    {
+        $erreur = null;
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
+        //Recuperation de la liste de devis
+        $listeDevis = $repository_devis->findAll();
+        //Verification de la base
+        if ($listeDevis == null) {
+            $erreur = "Aucun devis trouvée.";
+        }
+        $listeReponse = array();
+        foreach ($listeDevis as $devis) 
+        {
+            $utilisateur = $devis->getUtilisateurDevis();
+            $listeReponse[] = array(
+                'id' => $devis->getId(),
+                'nom_devis' => $devis->getNomDevis(),
+                'date_devis' => $devis->getDateDevis(),
+                'prix_total' => $devis->getPrixTotal(),
+                'id_utilisateur' => $utilisateur->getId(),
+                'nom_utilisateur' => $utilisateur->getNomUtilisateur(),
+                'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),   
+            );  
+        }
+        //Envoi de la réponse 
+        if  ($erreur == null) { 
+            $reponse = new Response (json_encode(array(
+                'result' => "OK",
+                "listeDevis" => $listeReponse,
+                )
+            ));
+        }else{
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
 }
