@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
             "mailUtilisateur": "a@a.com",
             "mdpUtilisateur": "admin"
         }';
-        $data = json_decode($request->getContent(), true);
+        $data = json_decode($json->getContent(), true);
         
         //$user = $this->getUser();
 
