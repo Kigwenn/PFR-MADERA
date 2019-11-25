@@ -6,13 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends AbstractController
 {
     /**
-     * @Route("/login", name="app_login")
+     * @Route("/loginj", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function loginj(AuthenticationUtils $authenticationUtils): Response
     {
         //Retourne une erreur s'il le login n'est pas bon
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -28,14 +29,25 @@ class SecurityController extends AbstractController
         //return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-        /**
-     * @Route("/loginjson", name="app_login")
+    /**
+     * @Route("/login", name="app_login")
      */
-    public function loginjson(AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request): Response
     {
-        $user = $this->getUser();
+        $json = '{
+            "mailUtilisateur": "a@a.com",
+            "mdpUtilisateur": "admin"
+        }';
+        $data = json_decode($request->getContent(), true);
+        
+        //$user = $this->getUser();
 
-        return $this->json([$user->getCredentials()]);
+        $response = new Response();
+        //$response->setContent(json_encode(['last_username' => "utilisateur", 'error' => "ya po d'erreurs"]));
+        //$response->headers->set('Content-Type', 'application/json');
+        //return $response;
+        //return $this->json([$user->getCredentials()]);
+        return $response->setContent($data);
     }
 
     /**

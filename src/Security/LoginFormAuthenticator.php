@@ -44,7 +44,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         $credentials = [
             'mailUtilisateur' => $request->request->get('mailUtilisateur'),
-            'password' => $request->request->get('password'),
+            'mdpUtilisateur' => $request->request->get('mdpUtilisateur'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
