@@ -243,7 +243,7 @@ class DevisController extends AbstractController
         $listeDevis = $repository_devis->findAll();
         //Verification de la base
         if ($listeDevis == null) {
-            $erreur = "Aucun devis trouvée.";
+            $erreur = "Aucun devis trouvé.";
         }
         $listeReponse = array();
         foreach ($listeDevis as $devis) 
