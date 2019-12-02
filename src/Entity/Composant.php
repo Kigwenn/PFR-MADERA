@@ -34,20 +34,10 @@ class Composant
     private $typeComposant;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Module", mappedBy="composantModule")
-     */
-    private $modules;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur", inversedBy="composants")
      * @ORM\JoinColumn(nullable=false)
      */
     private $fournisseurComposant;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Commande", inversedBy="composants")
-     */
-    private $composantsCommande;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Stock", inversedBy="composants")
@@ -58,6 +48,21 @@ class Composant
      * @ORM\ManyToMany(targetEntity="App\Entity\Caracteristique", inversedBy="composants")
      */
     private $caracteristiquesComposant;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FamilleComposant", inversedBy="composant")
+     */
+    private $familleComposant;
+
+    /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private $uniteUsage;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
+     */
+    private $modules;
 
     public function __construct()
     {
@@ -108,34 +113,6 @@ class Composant
         return $this;
     }
 
-    /**
-     * @return Collection|Module[]
-     */
-    public function getModules(): Collection
-    {
-        return $this->modules;
-    }
-
-    public function addModule(Module $module): self
-    {
-        if (!$this->modules->contains($module)) {
-            $this->modules[] = $module;
-            $module->addComposantModule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModule(Module $module): self
-    {
-        if ($this->modules->contains($module)) {
-            $this->modules->removeElement($module);
-            $module->removeComposantModule($this);
-        }
-
-        return $this;
-    }
-
     public function getFournisseurComposant(): ?Fournisseur
     {
         return $this->fournisseurComposant;
@@ -144,32 +121,6 @@ class Composant
     public function setFournisseurComposant(?Fournisseur $fournisseurComposant): self
     {
         $this->fournisseurComposant = $fournisseurComposant;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Commande[]
-     */
-    public function getComposantsCommande(): Collection
-    {
-        return $this->composantsCommande;
-    }
-
-    public function addComposantsCommande(Commande $composantsCommande): self
-    {
-        if (!$this->composantsCommande->contains($composantsCommande)) {
-            $this->composantsCommande[] = $composantsCommande;
-        }
-
-        return $this;
-    }
-
-    public function removeComposantsCommande(Commande $composantsCommande): self
-    {
-        if ($this->composantsCommande->contains($composantsCommande)) {
-            $this->composantsCommande->removeElement($composantsCommande);
-        }
 
         return $this;
     }
@@ -222,6 +173,42 @@ class Composant
         if ($this->caracteristiquesComposant->contains($caracteristiquesComposant)) {
             $this->caracteristiquesComposant->removeElement($caracteristiquesComposant);
         }
+
+        return $this;
+    }
+
+    public function getFamilleComposant(): ?FamilleComposant
+    {
+        return $this->familleComposant;
+    }
+
+    public function setFamilleComposant(?FamilleComposant $familleComposant): self
+    {
+        $this->familleComposant = $familleComposant;
+
+        return $this;
+    }
+
+    public function getUniteUsage(): ?string
+    {
+        return $this->uniteUsage;
+    }
+
+    public function setUniteUsage(string $uniteUsage): self
+    {
+        $this->uniteUsage = $uniteUsage;
+
+        return $this;
+    }
+
+    public function getModules(): ?ComposantModule
+    {
+        return $this->modules;
+    }
+
+    public function setModules(?ComposantModule $modules): self
+    {
+        $this->modules = $modules;
 
         return $this;
     }

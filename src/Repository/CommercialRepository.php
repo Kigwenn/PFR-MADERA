@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Commande;
+use App\Entity\Commercial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Commande|null find($id, $lockMode = null, $lockVersion = null)
- * @method Commande|null findOneBy(array $criteria, array $orderBy = null)
- * @method Commande[]    findAll()
- * @method Commande[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Commercial|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Commercial|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Commercial[]    findAll()
+ * @method Commercial[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommandeRepository extends ServiceEntityRepository
+class CommercialRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Commande::class);
+        parent::__construct($registry, Commercial::class);
     }
 
     // /**
-    //  * @return Commande[] Returns an array of Commande objects
+    //  * @return Commercial[] Returns an array of Commercial objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CommandeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Commande
+    public function findOneBySomeField($value): ?Commercial
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

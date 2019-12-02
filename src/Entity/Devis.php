@@ -34,29 +34,58 @@ class Devis
     private $prixTotal;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Utilisateur", inversedBy="devis")
-     */
-    private $utilisateurDevis;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\EtatDevis", inversedBy="devis")
-     */
-    private $etatDevis;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Etape", inversedBy="devis")
-     */
-    private $etapeDevis;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Maison", inversedBy="devis")
      * @ORM\JoinColumn(nullable=false)
      */
     private $devisMaison;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Etape")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $etapeDevis;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\EtatDevis")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $etatDevis;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $stockageDevis;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $dossierTechnique;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idAdresse;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Gamme")
+     */
+    private $idGamme;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Commercial", inversedBy="listeDevis")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idCommercial;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="devis")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idClient;
+
     public function __construct()
     {
-        $this->utilisateurDevis = new ArrayCollection();
         $this->etatDevis = new ArrayCollection();
         $this->etapeDevis = new ArrayCollection();
     }
@@ -102,70 +131,6 @@ class Devis
         return $this;
     }
 
-    public function getUtilisateurDevis(): ?Utilisateur
-    {
-        return $this->utilisateurDevis;
-    }
-
-    public function setUtilisateurDevis(?Utilisateur $utilisateurDevis): self
-    {
-        $this->utilisateurDevis = $utilisateurDevis;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|EtatDevis[]
-     */
-    public function getEtatDevis(): Collection
-    {
-        return $this->etatDevis;
-    }
-
-    public function addEtatDevis(EtatDevis $etatDevis): self
-    {
-        if (!$this->etatDevis->contains($etatDevis)) {
-            $this->etatDevis[] = $etatDevis;
-        }
-
-        return $this;
-    }
-
-    public function removeEtatDevis(EtatDevis $etatDevis): self
-    {
-        if ($this->etatDevis->contains($etatDevis)) {
-            $this->etatDevis->removeElement($etatDevis);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Etape[]
-     */
-    public function getEtapeDevis(): Collection
-    {
-        return $this->etapeDevis;
-    }
-
-    public function addEtapeDevi(Etape $etapeDevi): self
-    {
-        if (!$this->etapeDevis->contains($etapeDevi)) {
-            $this->etapeDevis[] = $etapeDevi;
-        }
-
-        return $this;
-    }
-
-    public function removeEtapeDevi(Etape $etapeDevi): self
-    {
-        if ($this->etapeDevis->contains($etapeDevi)) {
-            $this->etapeDevis->removeElement($etapeDevi);
-        }
-
-        return $this;
-    }
-
     public function getDevisMaison(): ?Maison
     {
         return $this->devisMaison;
@@ -174,6 +139,102 @@ class Devis
     public function setDevisMaison(?Maison $devisMaison): self
     {
         $this->devisMaison = $devisMaison;
+
+        return $this;
+    }
+
+    public function getEtapeDevis(): ?Etape
+    {
+        return $this->etapeDevis;
+    }
+
+    public function setEtapeDevis(?Etape $etapeDevis): self
+    {
+        $this->etapeDevis = $etapeDevis;
+
+        return $this;
+    }
+
+    public function getEtatDevis(): ?EtatDevis
+    {
+        return $this->etatDevis;
+    }
+
+    public function setEtatDevis(?EtatDevis $etatDevis): self
+    {
+        $this->etatDevis = $etatDevis;
+
+        return $this;
+    }
+
+    public function getStockageDevis()
+    {
+        return $this->stockageDevis;
+    }
+
+    public function setStockageDevis($stockageDevis): self
+    {
+        $this->stockageDevis = $stockageDevis;
+
+        return $this;
+    }
+
+    public function getDossierTechnique()
+    {
+        return $this->dossierTechnique;
+    }
+
+    public function setDossierTechnique($dossierTechnique): self
+    {
+        $this->dossierTechnique = $dossierTechnique;
+
+        return $this;
+    }
+
+    public function getIdAdresse(): ?Adresse
+    {
+        return $this->idAdresse;
+    }
+
+    public function setIdAdresse(Adresse $idAdresse): self
+    {
+        $this->idAdresse = $idAdresse;
+
+        return $this;
+    }
+
+    public function getIdGamme(): ?Gamme
+    {
+        return $this->idGamme;
+    }
+
+    public function setIdGamme(?Gamme $idGamme): self
+    {
+        $this->idGamme = $idGamme;
+
+        return $this;
+    }
+
+    public function getIdCommercial(): ?Commercial
+    {
+        return $this->idCommercial;
+    }
+
+    public function setIdCommercial(?Commercial $idCommercial): self
+    {
+        $this->idCommercial = $idCommercial;
+
+        return $this;
+    }
+
+    public function getIdClient(): ?Client
+    {
+        return $this->idClient;
+    }
+
+    public function setIdClient(?Client $idClient): self
+    {
+        $this->idClient = $idClient;
 
         return $this;
     }

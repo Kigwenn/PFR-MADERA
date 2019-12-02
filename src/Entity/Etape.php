@@ -28,11 +28,6 @@ class Etape
      */
     private $valeurBaseEtape;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Devis", mappedBy="etapeDevis")
-     */
-    private $devis;
-
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -63,34 +58,6 @@ class Etape
     public function setValeurBaseEtape(int $valeurBaseEtape): self
     {
         $this->valeurBaseEtape = $valeurBaseEtape;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Devis[]
-     */
-    public function getDevis(): Collection
-    {
-        return $this->devis;
-    }
-
-    public function addDevi(Devis $devi): self
-    {
-        if (!$this->devis->contains($devi)) {
-            $this->devis[] = $devi;
-            $devi->addEtapeDevi($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDevi(Devis $devi): self
-    {
-        if ($this->devis->contains($devi)) {
-            $this->devis->removeElement($devi);
-            $devi->removeEtapeDevi($this);
-        }
 
         return $this;
     }

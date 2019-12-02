@@ -54,14 +54,19 @@ class Maison
     private $catalogueMaison;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="maisons")
-     */
-    private $moduleMaison;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\DocMaison", mappedBy="maison")
      */
     private $docMaison;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $coupePrincipe;
+
+    /**
+     * @ORM\Column(type="blob", nullable=true)
+     */
+    private $catalogue;
 
     public function __construct()
     {
@@ -194,32 +199,6 @@ class Maison
     }
 
     /**
-     * @return Collection|Module[]
-     */
-    public function getModuleMaison(): Collection
-    {
-        return $this->moduleMaison;
-    }
-
-    public function addModuleMaison(Module $moduleMaison): self
-    {
-        if (!$this->moduleMaison->contains($moduleMaison)) {
-            $this->moduleMaison[] = $moduleMaison;
-        }
-
-        return $this;
-    }
-
-    public function removeModuleMaison(Module $moduleMaison): self
-    {
-        if ($this->moduleMaison->contains($moduleMaison)) {
-            $this->moduleMaison->removeElement($moduleMaison);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|DocMaison[]
      */
     public function getDocMaison(): Collection
@@ -246,6 +225,30 @@ class Maison
                 $docMaison->setMaison(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCoupePrincipe()
+    {
+        return $this->coupePrincipe;
+    }
+
+    public function setCoupePrincipe($coupePrincipe): self
+    {
+        $this->coupePrincipe = $coupePrincipe;
+
+        return $this;
+    }
+
+    public function getCatalogue()
+    {
+        return $this->catalogue;
+    }
+
+    public function setCatalogue($catalogue): self
+    {
+        $this->catalogue = $catalogue;
 
         return $this;
     }

@@ -41,6 +41,21 @@ class Adresse
      */
     private $fournisseur;
 
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $pays;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $complementAdresse;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $infoComplementaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +117,42 @@ class Adresse
     public function setFournisseur(?Fournisseur $fournisseur): self
     {
         $this->fournisseur = $fournisseur;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(string $pays): self
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getComplementAdresse(): ?string
+    {
+        return $this->complementAdresse;
+    }
+
+    public function setComplementAdresse(?string $complementAdresse): self
+    {
+        $this->complementAdresse = $complementAdresse;
+
+        return $this;
+    }
+
+    public function getInfoComplementaire(): ?string
+    {
+        return $this->infoComplementaire;
+    }
+
+    public function setInfoComplementaire(?string $infoComplementaire): self
+    {
+        $this->infoComplementaire = $infoComplementaire;
 
         return $this;
     }

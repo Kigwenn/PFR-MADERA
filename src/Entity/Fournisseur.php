@@ -53,6 +53,11 @@ class Fournisseur
      */
     private $adressesFournisseur;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ContactFournisseur", mappedBy="idFournisseur", cascade={"persist", "remove"})
+     */
+    private $contactFournisseur;
+
     public function __construct()
     {
         $this->composants = new ArrayCollection();
@@ -181,6 +186,23 @@ class Fournisseur
             if ($adressesFournisseur->getFournisseur() === $this) {
                 $adressesFournisseur->setFournisseur(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getContactFournisseur(): ?ContactFournisseur
+    {
+        return $this->contactFournisseur;
+    }
+
+    public function setContactFournisseur(ContactFournisseur $contactFournisseur): self
+    {
+        $this->contactFournisseur = $contactFournisseur;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $contactFournisseur->getIdFournisseur()) {
+            $contactFournisseur->setIdFournisseur($this);
         }
 
         return $this;

@@ -29,20 +29,26 @@ class Module
     private $prixModule;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Maison", mappedBy="moduleMaison")
-     */
-    private $maisons;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Composant", inversedBy="modules")
-     */
-    private $composantModule;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Gamme", inversedBy="modules")
      * @ORM\JoinColumn(nullable=false)
      */
     private $gammeModule;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $idDevis;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\CCTP")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idCCTP;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
+     */
+    private $composants;
 
     public function __construct()
     {
@@ -79,60 +85,6 @@ class Module
         return $this;
     }
 
-    /**
-     * @return Collection|Maison[]
-     */
-    public function getMaisons(): Collection
-    {
-        return $this->maisons;
-    }
-
-    public function addMaison(Maison $maison): self
-    {
-        if (!$this->maisons->contains($maison)) {
-            $this->maisons[] = $maison;
-            $maison->addModuleMaison($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMaison(Maison $maison): self
-    {
-        if ($this->maisons->contains($maison)) {
-            $this->maisons->removeElement($maison);
-            $maison->removeModuleMaison($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Composant[]
-     */
-    public function getComposantModule(): Collection
-    {
-        return $this->composantModule;
-    }
-
-    public function addComposantModule(Composant $composantModule): self
-    {
-        if (!$this->composantModule->contains($composantModule)) {
-            $this->composantModule[] = $composantModule;
-        }
-
-        return $this;
-    }
-
-    public function removeComposantModule(Composant $composantModule): self
-    {
-        if ($this->composantModule->contains($composantModule)) {
-            $this->composantModule->removeElement($composantModule);
-        }
-
-        return $this;
-    }
-
     public function getGammeModule(): ?Gamme
     {
         return $this->gammeModule;
@@ -141,6 +93,42 @@ class Module
     public function setGammeModule(?Gamme $gammeModule): self
     {
         $this->gammeModule = $gammeModule;
+
+        return $this;
+    }
+
+    public function getIdDevis(): ?int
+    {
+        return $this->idDevis;
+    }
+
+    public function setIdDevis(?int $idDevis): self
+    {
+        $this->idDevis = $idDevis;
+
+        return $this;
+    }
+
+    public function getIdCCTP(): ?CCTP
+    {
+        return $this->idCCTP;
+    }
+
+    public function setIdCCTP(?CCTP $idCCTP): self
+    {
+        $this->idCCTP = $idCCTP;
+
+        return $this;
+    }
+
+    public function getComposants(): ?ComposantModule
+    {
+        return $this->composants;
+    }
+
+    public function setComposants(?ComposantModule $composants): self
+    {
+        $this->composants = $composants;
 
         return $this;
     }
