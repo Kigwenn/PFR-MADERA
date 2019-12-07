@@ -16,12 +16,12 @@ class Gamme
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $gamm_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nomGamme;
+    private $gamm_nom;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Module", mappedBy="gammeModule")
@@ -33,19 +33,19 @@ class Gamme
         $this->modules = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getGammId(): ?int
     {
-        return $this->id;
+        return $this->gamm_id;
     }
 
-    public function getNomGamme(): ?string
+    public function getGammNom(): ?string
     {
-        return $this->nomGamme;
+        return $this->gamm_nom;
     }
 
-    public function setNomGamme(string $nomGamme): self
+    public function setGammNom(string $gamm_nom): self
     {
-        $this->nomGamme = $nomGamme;
+        $this->gamm_nom = $gamm_nom;
 
         return $this;
     }
@@ -80,4 +80,5 @@ class Gamme
 
         return $this;
     }
+
 }

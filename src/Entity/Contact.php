@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ContactFournisseurRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ContactRepository")
  */
-class ContactFournisseur
+class Contact
 {
     /**
      * @ORM\Id()
@@ -20,22 +20,23 @@ class ContactFournisseur
      * @ORM\OneToOne(targetEntity="App\Entity\Fournisseur", inversedBy="contactFournisseur", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idFournisseur;
+    private $four_id;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIdFournisseur(): ?Fournisseur
+    public function getFourId(): ?Fournisseur
     {
-        return $this->idFournisseur;
+        return $this->four_id;
     }
 
-    public function setIdFournisseur(Fournisseur $idFournisseur): self
+    public function setFourId(Fournisseur $four_id): self
     {
-        $this->idFournisseur = $idFournisseur;
+        $this->four_id = $four_id;
 
         return $this;
     }
+
 }

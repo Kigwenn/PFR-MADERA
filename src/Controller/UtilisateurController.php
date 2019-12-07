@@ -67,7 +67,7 @@ class UtilisateurController extends AbstractController
             $typeUtilisateur = $repository_typeUtilisateur->find($parametersAsArray['type_utilisateur_id']);
             //Creation de l'adresse
             $adresse = new Adresse();
-            $adresse->setRueAdresse($parametersAsArray['rue_adresse']);
+            $adresse->setAdreRue($parametersAsArray['rue_adresse']);
             $adresse->setVilleAdresse($parametersAsArray['ville_adresse']);
             $adresse->setCpAdresse($parametersAsArray['cp_adresse']);
             $adresse->setRegionAdresse($parametersAsArray['region_adresse']);
@@ -142,7 +142,7 @@ class UtilisateurController extends AbstractController
                 'mail_utilisateur' => $utilisateur->getMailUtilisateur(),
                 'tel_utilisateur' => $utilisateur->getTelUtilisateur(),
                 'type_utilisateur_id' => $utilisateur->getTypeUtilisateur()->getId(),
-                'rue_adresse' => $adresse->getRueAdresse(),
+                'rue_adresse' => $adresse->getAdreRue(),
                 'ville_adresse' => $adresse->getVilleAdresse(),
                 'cp_adresse' => $adresse->getCpAdresse(),
                 'region_adresse' => $adresse->getRegionAdresse(),
@@ -208,7 +208,7 @@ class UtilisateurController extends AbstractController
             //Modification de l'adresse
             $repository_adresse = $this->getDoctrine()->getRepository(Adresse::class); 
             $adresse = $repository_adresse->find($utilisateur->getAdresseUtilisateur());
-            $adresse->setRueAdresse($parametersAsArray['rue_adresse']);
+            $adresse->setAdreRue($parametersAsArray['rue_adresse']);
             $adresse->setVilleAdresse($parametersAsArray['ville_adresse']);
             $adresse->setCpAdresse($parametersAsArray['cp_adresse']);
             $adresse->setRegionAdresse($parametersAsArray['region_adresse']);

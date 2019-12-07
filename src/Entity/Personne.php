@@ -14,95 +14,96 @@ abstract class Personne
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $pers_id;
 
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private $sexePersonne;
+    private $pers_sexe;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nomPersonne;
+    private $pers_nom;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $prenomPersonne;
+    private $pers_prenom;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $mailPersonne;
+    private $pers_mail;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $telPersonne;
+    private $pers_tel;
 
-    public function getId(): ?int
+    public function getPersId(): ?int
     {
-        return $this->id;
+        return $this->pers_id;
     }
 
-    public function getSexePersonne(): ?string
+    public function getPersSexe(): ?string
     {
-        return $this->sexePersonne;
+        return $this->pers_sexe;
     }
 
-    public function setSexePersonne(string $sexePersonne): self
+    public function setPersSexe(string $pers_sexe): self
     {
-        $this->sexePersonne = $sexePersonne;
+        $this->pers_sexe = $pers_sexe;
 
         return $this;
     }
 
-    public function getNomPersonne(): ?string
+    public function getPersNom(): ?string
     {
-        return $this->nomPersonne;
+        return $this->pers_nom;
     }
 
-    public function setNomPersonne(string $nomPersonne): self
+    public function setPersNom(string $pers_nom): self
     {
-        $this->nomPersonne = $nomPersonne;
+        $this->pers_nom = $pers_nom;
 
         return $this;
     }
 
-    public function getPrenomPersonne(): ?string
+    public function getPersPrenom(): ?string
     {
-        return $this->prenomPersonne;
+        return $this->pers_prenom;
     }
 
-    public function setPrenomPersonne(string $prenomPersonne): self
+    public function setPersPrenom(string $pers_prenom): self
     {
-        $this->prenomPersonne = $prenomPersonne;
+        $this->pers_prenom = $pers_prenom;
 
         return $this;
     }
 
-    public function getMailPersonne(): ?string
+    public function getPersMail(): ?string
     {
-        return $this->mailPersonne;
+        return $this->pers_mail;
     }
 
-    public function setMailPersonne(string $mailPersonne): self
+    public function setPersMail(string $pers_mail): self
     {
-        $this->mailPersonne = $mailPersonne;
+        $this->pers_mail = $pers_mail;
 
         return $this;
     }
 
-    public function getTelPersonne(): ?string
+    public function getPersTel(): ?string
     {
-        return $this->telPersonne;
+        return $this->pers_tel;
     }
 
-    public function setTelPersonne(string $telPersonne): self
+    public function setPersTel(string $pers_tel): self
     {
-        $this->telPersonne = $telPersonne;
+        $this->pers_tel = $pers_tel;
 
         return $this;
     }
+
 }

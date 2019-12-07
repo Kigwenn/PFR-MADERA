@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ContactFournisseur;
+use App\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method ContactFournisseur|null find($id, $lockMode = null, $lockVersion = null)
- * @method ContactFournisseur|null findOneBy(array $criteria, array $orderBy = null)
- * @method ContactFournisseur[]    findAll()
- * @method ContactFournisseur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Contact|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Contact|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Contact[]    findAll()
+ * @method Contact[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ContactFournisseurRepository extends ServiceEntityRepository
+class ContactRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ContactFournisseur::class);
+        parent::__construct($registry, Contact::class);
     }
 
     // /**
-    //  * @return ContactFournisseur[] Returns an array of ContactFournisseur objects
+    //  * @return Contact[] Returns an array of Contact objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ContactFournisseurRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ContactFournisseur
+    public function findOneBySomeField($value): ?Contact
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

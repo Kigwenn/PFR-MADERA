@@ -19,22 +19,23 @@ class ComposantModule
     /**
      * @ORM\Column(type="integer")
      */
-    private $quantite;
+    private $como_quantite;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getQuantite(): ?int
+    public function getComoQuantite(): ?int
     {
-        return $this->quantite;
+        return $this->como_quantite;
     }
 
-    public function setQuantite(int $quantite): self
+    public function setComoQuantite(int $como_quantite): self
     {
-        $this->quantite = $quantite;
+        $this->como_quantite = $como_quantite;
 
         return $this;
     }
+
 }

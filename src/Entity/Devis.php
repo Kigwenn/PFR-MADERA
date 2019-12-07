@@ -16,226 +16,221 @@ class Devis
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $devi_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nomDevis;
+    private $devi_nom;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dateDevis;
+    private $devi_date;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $prixTotal;
+    private $devi_prix;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Maison", inversedBy="devis")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $devisMaison;
+    private $mais_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Etape")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $etapeDevis;
+    private $etap_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\EtatDevis")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Etat")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $etatDevis;
+    private $etat_id;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
      */
-    private $stockageDevis;
+    private $devi_dossier_estimatif;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
      */
-    private $dossierTechnique;
+    private $devi_dossier_technique;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, name="adre_id", referencedColumnName="adre_id")
      */
-    private $idAdresse;
+    private $adre_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Gamme")
      */
-    private $idGamme;
+    private $gamm_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commercial", inversedBy="listeDevis")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idCommercial;
+    private $comm_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="devis")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idClient;
+    private $clie_id;
 
-    public function __construct()
+    public function getDeviId(): ?int
     {
-        $this->etatDevis = new ArrayCollection();
-        $this->etapeDevis = new ArrayCollection();
+        return $this->devi_id;
     }
 
-    public function getId(): ?int
+    public function getDeviNom(): ?string
     {
-        return $this->id;
+        return $this->devi_nom;
     }
 
-    public function getNomDevis(): ?string
+    public function setDeviNom(string $devi_nom): self
     {
-        return $this->nomDevis;
-    }
-
-    public function setNomDevis(string $nomDevis): self
-    {
-        $this->nomDevis = $nomDevis;
+        $this->devi_nom = $devi_nom;
 
         return $this;
     }
 
-    public function getDateDevis(): ?\DateTimeInterface
+    public function getDeviDate(): ?\DateTimeInterface
     {
-        return $this->dateDevis;
+        return $this->devi_date;
     }
 
-    public function setDateDevis(\DateTimeInterface $dateDevis): self
+    public function setDeviDate(\DateTimeInterface $devi_date): self
     {
-        $this->dateDevis = $dateDevis;
+        $this->devi_date = $devi_date;
 
         return $this;
     }
 
-    public function getPrixTotal(): ?float
+    public function getDeviPrix(): ?float
     {
-        return $this->prixTotal;
+        return $this->devi_prix;
     }
 
-    public function setPrixTotal(float $prixTotal): self
+    public function setDeviPrix(float $devi_prix): self
     {
-        $this->prixTotal = $prixTotal;
+        $this->devi_prix = $devi_prix;
 
         return $this;
     }
 
-    public function getDevisMaison(): ?Maison
+    public function getDeviDossierEstimatif()
     {
-        return $this->devisMaison;
+        return $this->devi_dossier_estimatif;
     }
 
-    public function setDevisMaison(?Maison $devisMaison): self
+    public function setDeviDossierEstimatif($devi_dossier_estimatif): self
     {
-        $this->devisMaison = $devisMaison;
+        $this->devi_dossier_estimatif = $devi_dossier_estimatif;
 
         return $this;
     }
 
-    public function getEtapeDevis(): ?Etape
+    public function getDeviDossierTechnique()
     {
-        return $this->etapeDevis;
+        return $this->devi_dossier_technique;
     }
 
-    public function setEtapeDevis(?Etape $etapeDevis): self
+    public function setDeviDossierTechnique($devi_dossier_technique): self
     {
-        $this->etapeDevis = $etapeDevis;
+        $this->devi_dossier_technique = $devi_dossier_technique;
 
         return $this;
     }
 
-    public function getEtatDevis(): ?EtatDevis
+    public function getMaisId(): ?Maison
     {
-        return $this->etatDevis;
+        return $this->mais_id;
     }
 
-    public function setEtatDevis(?EtatDevis $etatDevis): self
+    public function setMaisId(?Maison $mais_id): self
     {
-        $this->etatDevis = $etatDevis;
+        $this->mais_id = $mais_id;
 
         return $this;
     }
 
-    public function getStockageDevis()
+    public function getEtapId(): ?Etape
     {
-        return $this->stockageDevis;
+        return $this->etap_id;
     }
 
-    public function setStockageDevis($stockageDevis): self
+    public function setEtapId(?Etape $etap_id): self
     {
-        $this->stockageDevis = $stockageDevis;
+        $this->etap_id = $etap_id;
 
         return $this;
     }
 
-    public function getDossierTechnique()
+    public function getEtatId(): ?Etat
     {
-        return $this->dossierTechnique;
+        return $this->etat_id;
     }
 
-    public function setDossierTechnique($dossierTechnique): self
+    public function setEtatId(?Etat $etat_id): self
     {
-        $this->dossierTechnique = $dossierTechnique;
+        $this->etat_id = $etat_id;
 
         return $this;
     }
 
-    public function getIdAdresse(): ?Adresse
+    public function getAdreId(): ?Adresse
     {
-        return $this->idAdresse;
+        return $this->adre_id;
     }
 
-    public function setIdAdresse(Adresse $idAdresse): self
+    public function setAdreId(Adresse $adre_id): self
     {
-        $this->idAdresse = $idAdresse;
+        $this->adre_id = $adre_id;
 
         return $this;
     }
 
-    public function getIdGamme(): ?Gamme
+    public function getGammId(): ?Gamme
     {
-        return $this->idGamme;
+        return $this->gamm_id;
     }
 
-    public function setIdGamme(?Gamme $idGamme): self
+    public function setGammId(?Gamme $gamm_id): self
     {
-        $this->idGamme = $idGamme;
+        $this->gamm_id = $gamm_id;
 
         return $this;
     }
 
-    public function getIdCommercial(): ?Commercial
+    public function getCommId(): ?Commercial
     {
-        return $this->idCommercial;
+        return $this->comm_id;
     }
 
-    public function setIdCommercial(?Commercial $idCommercial): self
+    public function setCommId(?Commercial $comm_id): self
     {
-        $this->idCommercial = $idCommercial;
+        $this->comm_id = $comm_id;
 
         return $this;
     }
 
-    public function getIdClient(): ?Client
+    public function getClieId(): ?Client
     {
-        return $this->idClient;
+        return $this->clie_id;
     }
 
-    public function setIdClient(?Client $idClient): self
+    public function setClieId(?Client $clie_id): self
     {
-        $this->idClient = $idClient;
+        $this->clie_id = $clie_id;
 
         return $this;
     }
+
 }

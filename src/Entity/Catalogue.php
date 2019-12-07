@@ -16,53 +16,53 @@ class Catalogue
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $cata_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nomCatalogue;
+    private $cata_nom;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $descCatalogue;
+    private $cata_description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Maison", mappedBy="catalogueMaison")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Maison", mappedBy="mais_id")
      */
-    private $maisons;
+    private $mais_id;
 
     public function __construct()
     {
-        $this->maisons = new ArrayCollection();
+        $this->mais_id = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getCataId(): ?int
     {
-        return $this->id;
+        return $this->cata_id;
     }
 
-    public function getNomCatalogue(): ?string
+    public function getCataNom(): ?string
     {
-        return $this->nomCatalogue;
+        return $this->cata_nom;
     }
 
-    public function setNomCatalogue(string $nomCatalogue): self
+    public function setCataNom(string $cata_nom): self
     {
-        $this->nomCatalogue = $nomCatalogue;
+        $this->cata_nom = $cata_nom;
 
         return $this;
     }
 
-    public function getDescCatalogue(): ?string
+    public function getCataDescription(): ?string
     {
-        return $this->descCatalogue;
+        return $this->cata_description;
     }
 
-    public function setDescCatalogue(string $descCatalogue): self
+    public function setCataDescription(string $cata_description): self
     {
-        $this->descCatalogue = $descCatalogue;
+        $this->cata_description = $cata_description;
 
         return $this;
     }
@@ -70,28 +70,30 @@ class Catalogue
     /**
      * @return Collection|Maison[]
      */
-    public function getMaisons(): Collection
+    public function getMaisId(): Collection
     {
-        return $this->maisons;
+        return $this->mais_id;
     }
 
-    public function addMaison(Maison $maison): self
+    public function addMaisId(Maison $maisId): self
     {
-        if (!$this->maisons->contains($maison)) {
-            $this->maisons[] = $maison;
-            $maison->addCatalogueMaison($this);
+        if (!$this->mais_id->contains($maisId)) {
+            $this->mais_id[] = $maisId;
+            $maisId->addMaisId($this);
         }
 
         return $this;
     }
 
-    public function removeMaison(Maison $maison): self
+    public function removeMaisId(Maison $maisId): self
     {
-        if ($this->maisons->contains($maison)) {
-            $this->maisons->removeElement($maison);
-            $maison->removeCatalogueMaison($this);
+        if ($this->mais_id->contains($maisId)) {
+            $this->mais_id->removeElement($maisId);
+            $maisId->removeMaisId($this);
         }
 
         return $this;
     }
+
+   
 }

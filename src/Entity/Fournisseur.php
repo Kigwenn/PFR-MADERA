@@ -16,115 +16,99 @@ class Fournisseur
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $four_id;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $nomFournisseur;
+    private $four_nom;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $mailFournisseur;
+    private $four_mail;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $telFournisseur;
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
-    private $nomContactFournisseur;
+    private $four_tel;
 
     /**
      * @ORM\Column(type="string", length=14)
      */
-    private $siret;
+    private $four_siret;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Composant", mappedBy="fournisseurComposant")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Composant", inversedBy="fournisseurs")
+     * @ORM\JoinColumn(name="comp_id", referencedColumnName="comp_id")
      */
     private $composants;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Adresse", mappedBy="fournisseur")
      */
-    private $adressesFournisseur;
+    private $adre_id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ContactFournisseur", mappedBy="idFournisseur", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Contact", mappedBy="four_id", cascade={"persist", "remove"})
      */
-    private $contactFournisseur;
+    private $contact;
 
     public function __construct()
     {
         $this->composants = new ArrayCollection();
-        $this->adressesFournisseur = new ArrayCollection();
+        $this->adre_id = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getFourId(): ?int
     {
-        return $this->id;
+        return $this->four_id;
     }
 
-    public function getNomFournisseur(): ?string
+    public function getFourNom(): ?string
     {
-        return $this->nomFournisseur;
+        return $this->four_nom;
     }
 
-    public function setNomFournisseur(string $nomFournisseur): self
+    public function setFourNom(string $four_nom): self
     {
-        $this->nomFournisseur = $nomFournisseur;
+        $this->four_nom = $four_nom;
 
         return $this;
     }
 
-    public function getMailFournisseur(): ?string
+    public function getFourMail(): ?string
     {
-        return $this->mailFournisseur;
+        return $this->four_mail;
     }
 
-    public function setMailFournisseur(string $mailFournisseur): self
+    public function setFourMail(string $four_mail): self
     {
-        $this->mailFournisseur = $mailFournisseur;
+        $this->four_mail = $four_mail;
 
         return $this;
     }
 
-    public function getTelFournisseur(): ?string
+    public function getFourTel(): ?string
     {
-        return $this->telFournisseur;
+        return $this->four_tel;
     }
 
-    public function setTelFournisseur(string $telFournisseur): self
+    public function setFourTel(string $four_tel): self
     {
-        $this->telFournisseur = $telFournisseur;
+        $this->four_tel = $four_tel;
 
         return $this;
     }
 
-    public function getNomContactFournisseur(): ?string
+    public function getFourSiret(): ?string
     {
-        return $this->nomContactFournisseur;
+        return $this->four_siret;
     }
 
-    public function setNomContactFournisseur(?string $nomContactFournisseur): self
+    public function setFourSiret(string $four_siret): self
     {
-        $this->nomContactFournisseur = $nomContactFournisseur;
-
-        return $this;
-    }
-
-    public function getSiret(): ?string
-    {
-        return $this->siret;
-    }
-
-    public function setSiret(string $siret): self
-    {
-        $this->siret = $siret;
+        $this->four_siret = $four_siret;
 
         return $this;
     }
@@ -163,28 +147,28 @@ class Fournisseur
     /**
      * @return Collection|Adresse[]
      */
-    public function getAdressesFournisseur(): Collection
+    public function getAdreId(): Collection
     {
-        return $this->adressesFournisseur;
+        return $this->adre_id;
     }
 
-    public function addAdressesFournisseur(Adresse $adressesFournisseur): self
+    public function addAdreId(Adresse $adreId): self
     {
-        if (!$this->adressesFournisseur->contains($adressesFournisseur)) {
-            $this->adressesFournisseur[] = $adressesFournisseur;
-            $adressesFournisseur->setFournisseur($this);
+        if (!$this->adre_id->contains($adreId)) {
+            $this->adre_id[] = $adreId;
+            $adreId->setFournisseur($this);
         }
 
         return $this;
     }
 
-    public function removeAdressesFournisseur(Adresse $adressesFournisseur): self
+    public function removeAdreId(Adresse $adreId): self
     {
-        if ($this->adressesFournisseur->contains($adressesFournisseur)) {
-            $this->adressesFournisseur->removeElement($adressesFournisseur);
+        if ($this->adre_id->contains($adreId)) {
+            $this->adre_id->removeElement($adreId);
             // set the owning side to null (unless already changed)
-            if ($adressesFournisseur->getFournisseur() === $this) {
-                $adressesFournisseur->setFournisseur(null);
+            if ($adreId->getFournisseur() === $this) {
+                $adreId->setFournisseur(null);
             }
         }
 
@@ -196,15 +180,36 @@ class Fournisseur
         return $this->contactFournisseur;
     }
 
-    public function setContactFournisseur(ContactFournisseur $contactFournisseur): self
+    public function setContactFournisseur(?ContactFournisseur $contactFournisseur): self
     {
         $this->contactFournisseur = $contactFournisseur;
 
-        // set the owning side of the relation if necessary
-        if ($this !== $contactFournisseur->getIdFournisseur()) {
-            $contactFournisseur->setIdFournisseur($this);
+        // set (or unset) the owning side of the relation if necessary
+        $newIdFournisseur = $contactFournisseur === null ? null : $this;
+        if ($newIdFournisseur !== $contactFournisseur->getIdFournisseur()) {
+            $contactFournisseur->setIdFournisseur($newIdFournisseur);
         }
 
         return $this;
     }
+
+    public function getContact(): ?Contact
+    {
+        return $this->contact;
+    }
+
+    public function setContact(?Contact $contact): self
+    {
+        $this->contact = $contact;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newFour_id = $contact === null ? null : $this;
+        if ($newFour_id !== $contact->getFourId()) {
+            $contact->setFourId($newFour_id);
+        }
+
+        return $this;
+    }
+
+    
 }

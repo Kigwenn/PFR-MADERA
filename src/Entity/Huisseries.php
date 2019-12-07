@@ -14,44 +14,63 @@ class Huisseries
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $huis_id;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $nom;
+    private $huis_nom;
 
     /**
      * @ORM\Column(type="string", length=500)
      */
-    private $description;
+    private $huis_description;
 
-    public function getId(): ?int
+    /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private $huis_prix_unitaire;
+
+    public function getHuisId(): ?int
     {
-        return $this->id;
+        return $this->huis_id;
     }
 
-    public function getNom(): ?string
+    public function getHuisNom(): ?string
     {
-        return $this->nom;
+        return $this->huis_nom;
     }
 
-    public function setNom(string $nom): self
+    public function setHuisNom(string $huis_nom): self
     {
-        $this->nom = $nom;
+        $this->huis_nom = $huis_nom;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getHuisDescription(): ?string
     {
-        return $this->description;
+        return $this->huis_description;
     }
 
-    public function setDescription(string $description): self
+    public function setHuisDescription(string $huis_description): self
     {
-        $this->description = $description;
+        $this->huis_description = $huis_description;
 
         return $this;
     }
+
+    public function getHuisPrixUnitaire(): ?string
+    {
+        return $this->huis_prix_unitaire;
+    }
+
+    public function setHuisPrixUnitaire(string $huis_prix_unitaire): self
+    {
+        $this->huis_prix_unitaire = $huis_prix_unitaire;
+
+        return $this;
+    }
+
+    
 }

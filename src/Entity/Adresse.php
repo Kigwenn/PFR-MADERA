@@ -14,146 +14,119 @@ class Adresse
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $adre_id;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $rueAdresse;
+    private $adre_rue;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $villeAdresse;
+    private $adre_ville;
 
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private $cpAdresse;
+    private $adre_cp;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $regionAdresse;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur", inversedBy="adressesFournisseur")
+    private $adre_region;
+	
+	 /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pays", inversedBy="id_pays")
      */
-    private $fournisseur;
-
-    /**
-     * @ORM\Column(type="string", length=200)
-     */
-    private $pays;
+    //private $pays;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $complementAdresse;
+    private $adre_complement;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $infoComplementaire;
+    private $adre_info;
 
-    public function getId(): ?int
+    public function getAdreId(): ?int
     {
-        return $this->id;
+        return $this->adre_id;
     }
 
-    public function getRueAdresse(): ?string
+    public function getAdreRue(): ?string
     {
-        return $this->rueAdresse;
+        return $this->adre_rue;
     }
 
-    public function setRueAdresse(string $rueAdresse): self
+    public function setAdreRue(string $adre_rue): self
     {
-        $this->rueAdresse = $rueAdresse;
+        $this->adre_rue = $adre_rue;
 
         return $this;
     }
 
-    public function getVilleAdresse(): ?string
+    public function getAdreVille(): ?string
     {
-        return $this->villeAdresse;
+        return $this->adre_ville;
     }
 
-    public function setVilleAdresse(string $villeAdresse): self
+    public function setAdreVille(string $adre_ville): self
     {
-        $this->villeAdresse = $villeAdresse;
+        $this->adre_ville = $adre_ville;
 
         return $this;
     }
 
-    public function getCpAdresse(): ?string
+    public function getAdreCp(): ?string
     {
-        return $this->cpAdresse;
+        return $this->adre_cp;
     }
 
-    public function setCpAdresse(string $cpAdresse): self
+    public function setAdreCp(string $adre_cp): self
     {
-        $this->cpAdresse = $cpAdresse;
+        $this->adre_cp = $adre_cp;
 
         return $this;
     }
 
-    public function getRegionAdresse(): ?string
+    public function getAdreRegion(): ?string
     {
-        return $this->regionAdresse;
+        return $this->adre_region;
     }
 
-    public function setRegionAdresse(string $regionAdresse): self
+    public function setAdreRegion(string $adre_region): self
     {
-        $this->regionAdresse = $regionAdresse;
+        $this->adre_region = $adre_region;
 
         return $this;
     }
 
-    public function getFournisseur(): ?Fournisseur
+    public function getAdreComplement(): ?string
     {
-        return $this->fournisseur;
+        return $this->adre_complement;
     }
 
-    public function setFournisseur(?Fournisseur $fournisseur): self
+    public function setAdreComplement(?string $adre_complement): self
     {
-        $this->fournisseur = $fournisseur;
+        $this->adre_complement = $adre_complement;
 
         return $this;
     }
 
-    public function getPays(): ?string
+    public function getAdreInfo(): ?string
     {
-        return $this->pays;
+        return $this->adre_info;
     }
 
-    public function setPays(string $pays): self
+    public function setAdreInfo(?string $adre_info): self
     {
-        $this->pays = $pays;
+        $this->adre_info = $adre_info;
 
         return $this;
     }
 
-    public function getComplementAdresse(): ?string
-    {
-        return $this->complementAdresse;
-    }
 
-    public function setComplementAdresse(?string $complementAdresse): self
-    {
-        $this->complementAdresse = $complementAdresse;
-
-        return $this;
-    }
-
-    public function getInfoComplementaire(): ?string
-    {
-        return $this->infoComplementaire;
-    }
-
-    public function setInfoComplementaire(?string $infoComplementaire): self
-    {
-        $this->infoComplementaire = $infoComplementaire;
-
-        return $this;
-    }
 }

@@ -14,27 +14,29 @@ class Parametre
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $param_id;
 
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2)
      */
-    private $pourcentage;
+    private $param_pourcentage;
 
-    public function getId(): ?int
+    public function getParamId(): ?int
     {
-        return $this->id;
+        return $this->param_id;
     }
 
-    public function getPourcentage(): ?string
+    public function getParamPourcentage(): ?string
     {
-        return $this->pourcentage;
+        return $this->param_pourcentage;
     }
 
-    public function setPourcentage(?string $pourcentage): self
+    public function setParamPourcentage(string $param_pourcentage): self
     {
-        $this->pourcentage = $pourcentage;
+        $this->param_pourcentage = $param_pourcentage;
 
         return $this;
     }
+
+    
 }

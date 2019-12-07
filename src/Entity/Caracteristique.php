@@ -16,133 +16,100 @@ class Caracteristique
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $carac_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nomCaracteristique;
+    private $carac_nom;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $largeurCaracteristique;
+    private $carac_largeur;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $hauteurCaracteristique;
+    private $carac_hauteur;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $epaisseurCaracteristique;
+    private $carac_epaisseur;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $poidsCaracteristique;
+    private $carac_poids;
+
+    public function getCaracId(): ?int
+    {
+        return $this->carac_id;
+    }
+
+    public function getCaracNom(): ?string
+    {
+        return $this->carac_nom;
+    }
+
+    public function setCaracNom(string $carac_nom): self
+    {
+        $this->carac_nom = $carac_nom;
+
+        return $this;
+    }
+
+    public function getCaracLargeur(): ?float
+    {
+        return $this->carac_largeur;
+    }
+
+    public function setCaracLargeur(float $carac_largeur): self
+    {
+        $this->carac_largeur = $carac_largeur;
+
+        return $this;
+    }
+
+    public function getCaracHauteur(): ?float
+    {
+        return $this->carac_hauteur;
+    }
+
+    public function setCaracHauteur(float $carac_hauteur): self
+    {
+        $this->carac_hauteur = $carac_hauteur;
+
+        return $this;
+    }
+
+    public function getCaracEpaisseur(): ?float
+    {
+        return $this->carac_epaisseur;
+    }
+
+    public function setCaracEpaisseur(float $carac_epaisseur): self
+    {
+        $this->carac_epaisseur = $carac_epaisseur;
+
+        return $this;
+    }
+
+    public function getCaracPoids(): ?float
+    {
+        return $this->carac_poids;
+    }
+
+    public function setCaracPoids(float $carac_poids): self
+    {
+        $this->carac_poids = $carac_poids;
+
+        return $this;
+    }
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Composant", mappedBy="caracteristiquesComposant")
      */
-    private $composants;
-
-    public function __construct()
-    {
-        $this->composants = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getNomCaracteristique(): ?string
-    {
-        return $this->nomCaracteristique;
-    }
-
-    public function setNomCaracteristique(string $nomCaracteristique): self
-    {
-        $this->nomCaracteristique = $nomCaracteristique;
-
-        return $this;
-    }
-
-    public function getLargeurCaracteristique(): ?float
-    {
-        return $this->largeurCaracteristique;
-    }
-
-    public function setLargeurCaracteristique(float $largeurCaracteristique): self
-    {
-        $this->largeurCaracteristique = $largeurCaracteristique;
-
-        return $this;
-    }
-
-    public function getHauteurCaracteristique(): ?float
-    {
-        return $this->hauteurCaracteristique;
-    }
-
-    public function setHauteurCaracteristique(float $hauteurCaracteristique): self
-    {
-        $this->hauteurCaracteristique = $hauteurCaracteristique;
-
-        return $this;
-    }
-
-    public function getEpaisseurCaracteristique(): ?float
-    {
-        return $this->epaisseurCaracteristique;
-    }
-
-    public function setEpaisseurCaracteristique(float $epaisseurCaracteristique): self
-    {
-        $this->epaisseurCaracteristique = $epaisseurCaracteristique;
-
-        return $this;
-    }
-
-    public function getPoidsCaracteristique(): ?float
-    {
-        return $this->poidsCaracteristique;
-    }
-
-    public function setPoidsCaracteristique(float $poidsCaracteristique): self
-    {
-        $this->poidsCaracteristique = $poidsCaracteristique;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Composant[]
-     */
-    public function getComposants(): Collection
-    {
-        return $this->composants;
-    }
-
-    public function addComposant(Composant $composant): self
-    {
-        if (!$this->composants->contains($composant)) {
-            $this->composants[] = $composant;
-            $composant->addCaracteristiquesComposant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComposant(Composant $composant): self
-    {
-        if ($this->composants->contains($composant)) {
-            $this->composants->removeElement($composant);
-            $composant->removeCaracteristiquesComposant($this);
-        }
-
-        return $this;
-    }
+    //private $composants;
 }

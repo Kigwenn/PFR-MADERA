@@ -16,49 +16,45 @@ class Etape
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $etap_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nomEtapeDevis;
+    private $etap_nom;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $valeurBaseEtape;
+    private $etap_valeur;
 
-    public function __construct()
+    public function getEtapId(): ?int
     {
-        $this->devis = new ArrayCollection();
+        return $this->etap_id;
     }
 
-    public function getId(): ?int
+    public function getEtapNom(): ?string
     {
-        return $this->id;
+        return $this->etap_nom;
     }
 
-    public function getNomEtapeDevis(): ?string
+    public function setEtapNom(string $etap_nom): self
     {
-        return $this->nomEtapeDevis;
-    }
-
-    public function setNomEtapeDevis(string $nomEtapeDevis): self
-    {
-        $this->nomEtapeDevis = $nomEtapeDevis;
+        $this->etap_nom = $etap_nom;
 
         return $this;
     }
 
-    public function getValeurBaseEtape(): ?int
+    public function getEtapValeur(): ?int
     {
-        return $this->valeurBaseEtape;
+        return $this->etap_valeur;
     }
 
-    public function setValeurBaseEtape(int $valeurBaseEtape): self
+    public function setEtapValeur(int $etap_valeur): self
     {
-        $this->valeurBaseEtape = $valeurBaseEtape;
+        $this->etap_valeur = $etap_valeur;
 
         return $this;
     }
+
 }

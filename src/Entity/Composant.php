@@ -16,28 +16,27 @@ class Composant
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $comp_id;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $nomComposant;
+    private $comp_nom;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $prixComposant;
+    private $comp_prix;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $typeComposant;
+    private $comp_type;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur", inversedBy="composants")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Fournisseur", inversedBy="composants")
      */
-    private $fournisseurComposant;
+    private $fournisseurs;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Stock", inversedBy="composants")
@@ -52,12 +51,12 @@ class Composant
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FamilleComposant", inversedBy="composant")
      */
-    private $familleComposant;
+    private $fami_id;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
-    private $uniteUsage;
+    private $comp_unite_usage;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
@@ -66,49 +65,60 @@ class Composant
 
     public function __construct()
     {
-        $this->modules = new ArrayCollection();
-        $this->composantsCommande = new ArrayCollection();
         $this->composantsStock = new ArrayCollection();
         $this->caracteristiquesComposant = new ArrayCollection();
+        $this->fournisseurs = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getCompId(): ?int
     {
-        return $this->id;
+        return $this->comp_id;
     }
 
-    public function getNomComposant(): ?string
+    public function getCompNom(): ?string
     {
-        return $this->nomComposant;
+        return $this->comp_nom;
     }
 
-    public function setNomComposant(string $nomComposant): self
+    public function setCompNom(string $comp_nom): self
     {
-        $this->nomComposant = $nomComposant;
+        $this->comp_nom = $comp_nom;
 
         return $this;
     }
 
-    public function getPrixComposant(): ?float
+    public function getCompPrix(): ?float
     {
-        return $this->prixComposant;
+        return $this->comp_prix;
     }
 
-    public function setPrixComposant(float $prixComposant): self
+    public function setCompPrix(float $comp_prix): self
     {
-        $this->prixComposant = $prixComposant;
+        $this->comp_prix = $comp_prix;
 
         return $this;
     }
 
-    public function getTypeComposant(): ?string
+    public function getCompType(): ?string
     {
-        return $this->typeComposant;
+        return $this->comp_type;
     }
 
-    public function setTypeComposant(string $typeComposant): self
+    public function setCompType(string $comp_type): self
     {
-        $this->typeComposant = $typeComposant;
+        $this->comp_type = $comp_type;
+
+        return $this;
+    }
+
+    public function getCompUniteUsage(): ?string
+    {
+        return $this->comp_unite_usage;
+    }
+
+    public function setCompUniteUsage(string $comp_unite_usage): self
+    {
+        $this->comp_unite_usage = $comp_unite_usage;
 
         return $this;
     }
@@ -177,26 +187,14 @@ class Composant
         return $this;
     }
 
-    public function getFamilleComposant(): ?FamilleComposant
+    public function getFamiId(): ?FamilleComposant
     {
-        return $this->familleComposant;
+        return $this->fami_id;
     }
 
-    public function setFamilleComposant(?FamilleComposant $familleComposant): self
+    public function setFamiId(?FamilleComposant $fami_id): self
     {
-        $this->familleComposant = $familleComposant;
-
-        return $this;
-    }
-
-    public function getUniteUsage(): ?string
-    {
-        return $this->uniteUsage;
-    }
-
-    public function setUniteUsage(string $uniteUsage): self
-    {
-        $this->uniteUsage = $uniteUsage;
+        $this->fami_id = $fami_id;
 
         return $this;
     }
@@ -212,4 +210,32 @@ class Composant
 
         return $this;
     }
+
+    /**
+     * @return Collection|Fournisseur[]
+     */
+    public function getFournisseurs(): Collection
+    {
+        return $this->fournisseurs;
+    }
+
+    public function addFournisseur(Fournisseur $fournisseur): self
+    {
+        if (!$this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs[] = $fournisseur;
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseur(Fournisseur $fournisseur): self
+    {
+        if ($this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs->removeElement($fournisseur);
+        }
+
+        return $this;
+    }
+
+    
 }

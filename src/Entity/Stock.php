@@ -16,36 +16,36 @@ class Stock
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $stoc_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $quantite;
+    private $stoc_quantite;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Composant", mappedBy="composantsStock")
      */
-    private $composants;
+    private $comp_id;
 
     public function __construct()
     {
-        $this->composants = new ArrayCollection();
+        $this->comp_id = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getStocId(): ?int
     {
-        return $this->id;
+        return $this->stoc_id;
     }
 
-    public function getQuantite(): ?int
+    public function getStocQuantite(): ?int
     {
-        return $this->quantite;
+        return $this->stoc_quantite;
     }
 
-    public function setQuantite(int $quantite): self
+    public function setStocQuantite(int $stoc_quantite): self
     {
-        $this->quantite = $quantite;
+        $this->stoc_quantite = $stoc_quantite;
 
         return $this;
     }
@@ -53,28 +53,30 @@ class Stock
     /**
      * @return Collection|Composant[]
      */
-    public function getComposants(): Collection
+    public function getCompId(): Collection
     {
-        return $this->composants;
+        return $this->comp_id;
     }
 
-    public function addComposant(Composant $composant): self
+    public function addCompId(Composant $compId): self
     {
-        if (!$this->composants->contains($composant)) {
-            $this->composants[] = $composant;
-            $composant->addComposantsStock($this);
+        if (!$this->comp_id->contains($compId)) {
+            $this->comp_id[] = $compId;
+            $compId->addComposantsStock($this);
         }
 
         return $this;
     }
 
-    public function removeComposant(Composant $composant): self
+    public function removeCompId(Composant $compId): self
     {
-        if ($this->composants->contains($composant)) {
-            $this->composants->removeElement($composant);
-            $composant->removeComposantsStock($this);
+        if ($this->comp_id->contains($compId)) {
+            $this->comp_id->removeElement($compId);
+            $compId->removeComposantsStock($this);
         }
 
         return $this;
     }
+
+    
 }

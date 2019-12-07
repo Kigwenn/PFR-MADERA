@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\EtatDevis;
+use App\Entity\Etat;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method EtatDevis|null find($id, $lockMode = null, $lockVersion = null)
- * @method EtatDevis|null findOneBy(array $criteria, array $orderBy = null)
- * @method EtatDevis[]    findAll()
- * @method EtatDevis[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Etat|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Etat|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Etat[]    findAll()
+ * @method Etat[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EtatDevisRepository extends ServiceEntityRepository
+class EtatRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, EtatDevis::class);
+        parent::__construct($registry, Etat::class);
     }
 
     // /**
-    //  * @return EtatDevis[] Returns an array of EtatDevis objects
+    //  * @return Etat[] Returns an array of Etat objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class EtatDevisRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?EtatDevis
+    public function findOneBySomeField($value): ?Etat
     {
         return $this->createQueryBuilder('e')
             ->andWhere('e.exampleField = :val')

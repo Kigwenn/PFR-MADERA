@@ -16,37 +16,37 @@ class Client
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $clie_id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, name="adre_id", referencedColumnName="adre_id")
      */
-    private $idAdresse;
+    private $adre_id;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="idClient")
+     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="devi_id")
      */
-    private $devis;
+    private $devi_id;
 
     public function __construct()
     {
-        $this->devis = new ArrayCollection();
+        $this->devi_id = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getClieId(): ?int
     {
-        return $this->id;
+        return $this->clie_id;
     }
 
-    public function getIdAdresse(): ?Adresse
+    public function getAdreId(): ?Adresse
     {
-        return $this->idAdresse;
+        return $this->adre_id;
     }
 
-    public function setIdAdresse(Adresse $idAdresse): self
+    public function setAdreId(Adresse $adre_id): self
     {
-        $this->idAdresse = $idAdresse;
+        $this->adre_id = $adre_id;
 
         return $this;
     }
@@ -54,31 +54,32 @@ class Client
     /**
      * @return Collection|Devis[]
      */
-    public function getDevis(): Collection
+    public function getDeviId(): Collection
     {
-        return $this->devis;
+        return $this->devi_id;
     }
 
-    public function addDevi(Devis $devi): self
+    public function addDeviId(Devis $deviId): self
     {
-        if (!$this->devis->contains($devi)) {
-            $this->devis[] = $devi;
-            $devi->setIdClient($this);
+        if (!$this->devi_id->contains($deviId)) {
+            $this->devi_id[] = $deviId;
+            $deviId->setDeviId($this);
         }
 
         return $this;
     }
 
-    public function removeDevi(Devis $devi): self
+    public function removeDeviId(Devis $deviId): self
     {
-        if ($this->devis->contains($devi)) {
-            $this->devis->removeElement($devi);
+        if ($this->devi_id->contains($deviId)) {
+            $this->devi_id->removeElement($deviId);
             // set the owning side to null (unless already changed)
-            if ($devi->getIdClient() === $this) {
-                $devi->setIdClient(null);
+            if ($deviId->getDeviId() === $this) {
+                $deviId->setDeviId(null);
             }
         }
 
         return $this;
     }
+
 }

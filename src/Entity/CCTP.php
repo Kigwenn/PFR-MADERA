@@ -14,44 +14,46 @@ class CCTP
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $cctp_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nomCCTP;
+    private $cctp_nom;
 
     /**
      * @ORM\Column(type="blob")
      */
-    private $imageCCTP;
+    private $cctp_image;
 
-    public function getId(): ?int
+    public function getCctpId(): ?int
     {
-        return $this->id;
+        return $this->cctp_id;
     }
 
-    public function getNomCCTP(): ?string
+    public function getCctpNom(): ?string
     {
-        return $this->nomCCTP;
+        return $this->cctp_nom;
     }
 
-    public function setNomCCTP(string $nomCCTP): self
+    public function setCctpNom(string $cctp_nom): self
     {
-        $this->nomCCTP = $nomCCTP;
+        $this->cctp_nom = $cctp_nom;
 
         return $this;
     }
 
-    public function getImageCCTP()
+    public function getCctpImage()
     {
-        return $this->imageCCTP;
+        return $this->cctp_image;
     }
 
-    public function setImageCCTP($imageCCTP): self
+    public function setCctpImage($cctp_image): self
     {
-        $this->imageCCTP = $imageCCTP;
+        $this->cctp_image = $cctp_image;
 
         return $this;
     }
+
+    
 }

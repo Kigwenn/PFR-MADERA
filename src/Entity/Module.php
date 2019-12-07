@@ -16,107 +16,101 @@ class Module
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $modu_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nomModule;
+    private $modu_nom;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $prixModule;
+    private $modu_prix_unitaire;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Gamme", inversedBy="modules")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $gammeModule;
+    private $gamm_id;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $idDevis;
+    private $devi_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CCTP")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idCCTP;
+    private $cctp_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
      */
     private $composants;
 
-    public function __construct()
+    public function getModuId(): ?int
     {
-        $this->maisons = new ArrayCollection();
-        $this->composantModule = new ArrayCollection();
+        return $this->modu_id;
     }
 
-    public function getId(): ?int
+    public function getModuNom(): ?string
     {
-        return $this->id;
+        return $this->modu_nom;
     }
 
-    public function getNomModule(): ?string
+    public function setModuNom(string $modu_nom): self
     {
-        return $this->nomModule;
-    }
-
-    public function setNomModule(string $nomModule): self
-    {
-        $this->nomModule = $nomModule;
+        $this->modu_nom = $modu_nom;
 
         return $this;
     }
 
-    public function getPrixModule(): ?float
+    public function getModuPrixUnitaire(): ?float
     {
-        return $this->prixModule;
+        return $this->modu_prix_unitaire;
     }
 
-    public function setPrixModule(float $prixModule): self
+    public function setModuPrixUnitaire(float $modu_prix_unitaire): self
     {
-        $this->prixModule = $prixModule;
+        $this->modu_prix_unitaire = $modu_prix_unitaire;
 
         return $this;
     }
 
-    public function getGammeModule(): ?Gamme
+    public function getDeviId(): ?int
     {
-        return $this->gammeModule;
+        return $this->devi_id;
     }
 
-    public function setGammeModule(?Gamme $gammeModule): self
+    public function setDeviId(?int $devi_id): self
     {
-        $this->gammeModule = $gammeModule;
+        $this->devi_id = $devi_id;
 
         return $this;
     }
 
-    public function getIdDevis(): ?int
+    public function getGammId(): ?Gamme
     {
-        return $this->idDevis;
+        return $this->gamm_id;
     }
 
-    public function setIdDevis(?int $idDevis): self
+    public function setGammId(?Gamme $gamm_id): self
     {
-        $this->idDevis = $idDevis;
+        $this->gamm_id = $gamm_id;
 
         return $this;
     }
 
-    public function getIdCCTP(): ?CCTP
+    public function getCctpId(): ?CCTP
     {
-        return $this->idCCTP;
+        return $this->cctp_id;
     }
 
-    public function setIdCCTP(?CCTP $idCCTP): self
+    public function setCctpId(?CCTP $cctp_id): self
     {
-        $this->idCCTP = $idCCTP;
+        $this->cctp_id = $cctp_id;
 
         return $this;
     }
@@ -132,4 +126,5 @@ class Module
 
         return $this;
     }
+
 }

@@ -16,32 +16,32 @@ class Maison
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $mais_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nomMaison;
+    private $mais_nom;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $prixMaison;
+    private $mais_prix;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $nbPieces;
+    private $mais_piece;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $nbChambres;
+    private $mais_chambre;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $descMaison;
+    private $mais_description;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="devisMaison")
@@ -49,94 +49,105 @@ class Maison
     private $devis;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Catalogue", inversedBy="maisons")
+     * @ORM\Column(type="blob", nullable=true)
      */
-    private $catalogueMaison;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\DocMaison", mappedBy="maison")
-     */
-    private $docMaison;
+    private $mais_catalogue;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
      */
-    private $coupePrincipe;
-
-    /**
-     * @ORM\Column(type="blob", nullable=true)
-     */
-    private $catalogue;
+    private $mais_cdp;
 
     public function __construct()
     {
         $this->devis = new ArrayCollection();
-        $this->catalogueMaison = new ArrayCollection();
-        $this->moduleMaison = new ArrayCollection();
-        $this->docMaison = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getMaisId(): ?int
     {
-        return $this->id;
+        return $this->mais_id;
     }
 
-    public function getNomMaison(): ?string
+    public function getMaisNom(): ?string
     {
-        return $this->nomMaison;
+        return $this->mais_nom;
     }
 
-    public function setNomMaison(string $nomMaison): self
+    public function setMaisNom(string $mais_nom): self
     {
-        $this->nomMaison = $nomMaison;
+        $this->mais_nom = $mais_nom;
 
         return $this;
     }
 
-    public function getPrixMaison(): ?float
+    public function getMaisPrix(): ?float
     {
-        return $this->prixMaison;
+        return $this->mais_prix;
     }
 
-    public function setPrixMaison(float $prixMaison): self
+    public function setMaisPrix(float $mais_prix): self
     {
-        $this->prixMaison = $prixMaison;
+        $this->mais_prix = $mais_prix;
 
         return $this;
     }
 
-    public function getNbPieces(): ?int
+    public function getMaisPiece(): ?int
     {
-        return $this->nbPieces;
+        return $this->mais_piece;
     }
 
-    public function setNbPieces(int $nbPieces): self
+    public function setMaisPiece(int $mais_piece): self
     {
-        $this->nbPieces = $nbPieces;
+        $this->mais_piece = $mais_piece;
 
         return $this;
     }
 
-    public function getNbChambres(): ?int
+    public function getMaisChambre(): ?int
     {
-        return $this->nbChambres;
+        return $this->mais_chambre;
     }
 
-    public function setNbChambres(int $nbChambres): self
+    public function setMaisChambre(int $mais_chambre): self
     {
-        $this->nbChambres = $nbChambres;
+        $this->mais_chambre = $mais_chambre;
 
         return $this;
     }
 
-    public function getDescMaison(): ?string
+    public function getMaisDescription(): ?string
     {
-        return $this->descMaison;
+        return $this->mais_description;
     }
 
-    public function setDescMaison(string $descMaison): self
+    public function setMaisDescription(string $mais_description): self
     {
-        $this->descMaison = $descMaison;
+        $this->mais_description = $mais_description;
+
+        return $this;
+    }
+
+    public function getMaisCatalogue()
+    {
+        return $this->mais_catalogue;
+    }
+
+    public function setMaisCatalogue($mais_catalogue): self
+    {
+        $this->mais_catalogue = $mais_catalogue;
+
+        return $this;
+    }
+
+    public function getMaisCdp()
+    {
+        return $this->mais_cdp;
+    }
+
+    public function setMaisCdp($mais_cdp): self
+    {
+        $this->mais_cdp = $mais_cdp;
 
         return $this;
     }
@@ -172,84 +183,5 @@ class Maison
         return $this;
     }
 
-    /**
-     * @return Collection|Catalogue[]
-     */
-    public function getCatalogueMaison(): Collection
-    {
-        return $this->catalogueMaison;
-    }
-
-    public function addCatalogueMaison(Catalogue $catalogueMaison): self
-    {
-        if (!$this->catalogueMaison->contains($catalogueMaison)) {
-            $this->catalogueMaison[] = $catalogueMaison;
-        }
-
-        return $this;
-    }
-
-    public function removeCatalogueMaison(Catalogue $catalogueMaison): self
-    {
-        if ($this->catalogueMaison->contains($catalogueMaison)) {
-            $this->catalogueMaison->removeElement($catalogueMaison);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|DocMaison[]
-     */
-    public function getDocMaison(): Collection
-    {
-        return $this->docMaison;
-    }
-
-    public function addDocMaison(DocMaison $docMaison): self
-    {
-        if (!$this->docMaison->contains($docMaison)) {
-            $this->docMaison[] = $docMaison;
-            $docMaison->setMaison($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDocMaison(DocMaison $docMaison): self
-    {
-        if ($this->docMaison->contains($docMaison)) {
-            $this->docMaison->removeElement($docMaison);
-            // set the owning side to null (unless already changed)
-            if ($docMaison->getMaison() === $this) {
-                $docMaison->setMaison(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getCoupePrincipe()
-    {
-        return $this->coupePrincipe;
-    }
-
-    public function setCoupePrincipe($coupePrincipe): self
-    {
-        $this->coupePrincipe = $coupePrincipe;
-
-        return $this;
-    }
-
-    public function getCatalogue()
-    {
-        return $this->catalogue;
-    }
-
-    public function setCatalogue($catalogue): self
-    {
-        $this->catalogue = $catalogue;
-
-        return $this;
-    }
+    
 }

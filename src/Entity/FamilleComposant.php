@@ -16,17 +16,17 @@ class FamilleComposant
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $faco_id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $nom;
+    private $faco_nom;
 
     /**
      * @ORM\Column(type="string", length=500)
      */
-    private $description;
+    private $faco_description;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Composant", mappedBy="familleComposant")
@@ -38,31 +38,31 @@ class FamilleComposant
         $this->composant = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getFacoId(): ?int
     {
-        return $this->id;
+        return $this->faco_id;
     }
 
-    public function getNom(): ?string
+    public function getFacoNom(): ?string
     {
-        return $this->nom;
+        return $this->faco_nom;
     }
 
-    public function setNom(string $nom): self
+    public function setFacoNom(string $faco_nom): self
     {
-        $this->nom = $nom;
+        $this->faco_nom = $faco_nom;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getFacoDescription(): ?string
     {
-        return $this->description;
+        return $this->faco_description;
     }
 
-    public function setDescription(string $description): self
+    public function setFacoDescription(string $faco_description): self
     {
-        $this->description = $description;
+        $this->faco_description = $faco_description;
 
         return $this;
     }
@@ -97,4 +97,5 @@ class FamilleComposant
 
         return $this;
     }
+
 }

@@ -16,46 +16,70 @@ class Commercial
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private $comm_id;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $motDePasse;
+    private $comm_mdp;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="idCommercial")
+     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="comm_id")
      */
     private $listeDevis;
 
     /**
      * @ORM\Column(type="string", length=64)
      */
-    private $token;
+    private $comm_token;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $tokenDate;
+    private $comm_token_date;
 
     public function __construct()
     {
         $this->listeDevis = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getCommId(): ?int
     {
-        return $this->id;
+        return $this->comm_id;
     }
 
-    public function getMotDePasse(): ?string
+    public function getCommMdp(): ?string
     {
-        return $this->motDePasse;
+        return $this->comm_mdp;
     }
 
-    public function setMotDePasse(string $motDePasse): self
+    public function setCommMdp(string $comm_mdp): self
     {
-        $this->motDePasse = $motDePasse;
+        $this->comm_mdp = $comm_mdp;
+
+        return $this;
+    }
+
+    public function getCommToken(): ?string
+    {
+        return $this->comm_token;
+    }
+
+    public function setCommToken(string $comm_token): self
+    {
+        $this->comm_token = $comm_token;
+
+        return $this;
+    }
+
+    public function getCommTokenDate(): ?\DateTimeInterface
+    {
+        return $this->comm_token_date;
+    }
+
+    public function setCommTokenDate(\DateTimeInterface $comm_token_date): self
+    {
+        $this->comm_token_date = $comm_token_date;
 
         return $this;
     }
@@ -72,7 +96,7 @@ class Commercial
     {
         if (!$this->listeDevis->contains($listeDevi)) {
             $this->listeDevis[] = $listeDevi;
-            $listeDevi->setIdCommercial($this);
+            $listeDevi->setCommId($this);
         }
 
         return $this;
@@ -83,35 +107,13 @@ class Commercial
         if ($this->listeDevis->contains($listeDevi)) {
             $this->listeDevis->removeElement($listeDevi);
             // set the owning side to null (unless already changed)
-            if ($listeDevi->getIdCommercial() === $this) {
-                $listeDevi->setIdCommercial(null);
+            if ($listeDevi->getCommId() === $this) {
+                $listeDevi->setCommId(null);
             }
         }
 
         return $this;
     }
 
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    public function getTokenDate(): ?\DateTimeInterface
-    {
-        return $this->tokenDate;
-    }
-
-    public function setTokenDate(\DateTimeInterface $tokenDate): self
-    {
-        $this->tokenDate = $tokenDate;
-
-        return $this;
-    }
+    
 }
