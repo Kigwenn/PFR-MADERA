@@ -31,6 +31,11 @@ class Huisseries
      */
     private $huis_prix_unitaire;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $huis_prix;
+
     public function getHuisId(): ?int
     {
         return $this->huis_id;
@@ -68,6 +73,18 @@ class Huisseries
     public function setHuisPrixUnitaire(string $huis_prix_unitaire): self
     {
         $this->huis_prix_unitaire = $huis_prix_unitaire;
+
+        return $this;
+    }
+
+    public function getHuisPrix(): ?float
+    {
+        return $this->huis_prix;
+    }
+
+    public function setHuisPrix(float $huis_prix): self
+    {
+        $this->huis_prix = $huis_prix;
 
         return $this;
     }

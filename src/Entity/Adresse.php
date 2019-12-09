@@ -35,11 +35,6 @@ class Adresse
      * @ORM\Column(type="string", length=200)
      */
     private $adre_region;
-	
-	 /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Pays", inversedBy="id_pays")
-     */
-    //private $pays;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -50,6 +45,12 @@ class Adresse
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $adre_info;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Pays")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $pays_id;
 
     public function getAdreId(): ?int
     {
@@ -124,6 +125,18 @@ class Adresse
     public function setAdreInfo(?string $adre_info): self
     {
         $this->adre_info = $adre_info;
+
+        return $this;
+    }
+
+    public function getPaysId(): ?Pays
+    {
+        return $this->pays_id;
+    }
+
+    public function setPaysId(?Pays $pays_id): self
+    {
+        $this->pays_id = $pays_id;
 
         return $this;
     }

@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,100 +14,95 @@ class Caracteristique
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $carac_id;
-
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $carac_nom;
+    private $id;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $carac_largeur;
+    private $cara_section;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $carac_hauteur;
+    private $cara_hauteur;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $carac_epaisseur;
+    private $cara_longueur;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $cara_type_angle;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $carac_poids;
+    private $cara_degre_angle;
 
-    public function getCaracId(): ?int
+    public function getId(): ?int
     {
-        return $this->carac_id;
+        return $this->id;
     }
 
-    public function getCaracNom(): ?string
+    public function getCaraSection(): ?float
     {
-        return $this->carac_nom;
+        return $this->cara_section;
     }
 
-    public function setCaracNom(string $carac_nom): self
+    public function setCaraSection(float $cara_section): self
     {
-        $this->carac_nom = $carac_nom;
+        $this->cara_section = $cara_section;
 
         return $this;
     }
 
-    public function getCaracLargeur(): ?float
+    public function getCaraHauteur(): ?float
     {
-        return $this->carac_largeur;
+        return $this->cara_hauteur;
     }
 
-    public function setCaracLargeur(float $carac_largeur): self
+    public function setCaraHauteur(float $cara_hauteur): self
     {
-        $this->carac_largeur = $carac_largeur;
+        $this->cara_hauteur = $cara_hauteur;
 
         return $this;
     }
 
-    public function getCaracHauteur(): ?float
+    public function getCaraLongueur(): ?float
     {
-        return $this->carac_hauteur;
+        return $this->cara_longueur;
     }
 
-    public function setCaracHauteur(float $carac_hauteur): self
+    public function setCaraLongueur(float $cara_longueur): self
     {
-        $this->carac_hauteur = $carac_hauteur;
+        $this->cara_longueur = $cara_longueur;
 
         return $this;
     }
 
-    public function getCaracEpaisseur(): ?float
+    public function getCaraTypeAngle(): ?string
     {
-        return $this->carac_epaisseur;
+        return $this->cara_type_angle;
     }
 
-    public function setCaracEpaisseur(float $carac_epaisseur): self
+    public function setCaraTypeAngle(string $cara_type_angle): self
     {
-        $this->carac_epaisseur = $carac_epaisseur;
+        $this->cara_type_angle = $cara_type_angle;
 
         return $this;
     }
 
-    public function getCaracPoids(): ?float
+    public function getCaraDegreAngle(): ?float
     {
-        return $this->carac_poids;
+        return $this->cara_degre_angle;
     }
 
-    public function setCaracPoids(float $carac_poids): self
+    public function setCaraDegreAngle(float $cara_degre_angle): self
     {
-        $this->carac_poids = $carac_poids;
+        $this->cara_degre_angle = $cara_degre_angle;
 
         return $this;
     }
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Composant", mappedBy="caracteristiquesComposant")
-     */
-    //private $composants;
 }

@@ -50,6 +50,40 @@ class Module
      */
     private $composants;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $remp_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $finex_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FinitionInterieur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $finin_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $couv_id;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="modu_id")
+     */
+    private $composantModules;
+
+    public function __construct()
+    {
+        $this->composantModules = new ArrayCollection();
+    }
+
     public function getModuId(): ?int
     {
         return $this->modu_id;
@@ -123,6 +157,82 @@ class Module
     public function setComposants(?ComposantModule $composants): self
     {
         $this->composants = $composants;
+
+        return $this;
+    }
+
+    public function getRempId(): ?Remplissage
+    {
+        return $this->remp_id;
+    }
+
+    public function setRempId(?Remplissage $remp_id): self
+    {
+        $this->remp_id = $remp_id;
+
+        return $this;
+    }
+
+    public function getFinexId(): ?FinitionExterieur
+    {
+        return $this->finex_id;
+    }
+
+    public function setFinexId(?FinitionExterieur $finex_id): self
+    {
+        $this->finex_id = $finex_id;
+
+        return $this;
+    }
+
+    public function getFininId(): ?FinitionInterieur
+    {
+        return $this->finin_id;
+    }
+
+    public function setFininId(?FinitionInterieur $finin_id): self
+    {
+        $this->finin_id = $finin_id;
+
+        return $this;
+    }
+
+    public function getCouvId(): ?Couverture
+    {
+        return $this->couv_id;
+    }
+
+    public function setCouvId(?Couverture $couv_id): self
+    {
+        $this->couv_id = $couv_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ComposantModule[]
+     */
+    public function getComposantModules(): Collection
+    {
+        return $this->composantModules;
+    }
+
+    public function addComposantModule(ComposantModule $composantModule): self
+    {
+        if (!$this->composantModules->contains($composantModule)) {
+            $this->composantModules[] = $composantModule;
+            $composantModule->addModuId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComposantModule(ComposantModule $composantModule): self
+    {
+        if ($this->composantModules->contains($composantModule)) {
+            $this->composantModules->removeElement($composantModule);
+            $composantModule->removeModuId($this);
+        }
 
         return $this;
     }

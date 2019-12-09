@@ -63,11 +63,17 @@ class Composant
      */
     private $modules;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="comp_id")
+     */
+    private $composantModules;
+
     public function __construct()
     {
         $this->composantsStock = new ArrayCollection();
         $this->caracteristiquesComposant = new ArrayCollection();
         $this->fournisseurs = new ArrayCollection();
+        $this->composantModules = new ArrayCollection();
     }
 
     public function getCompId(): ?int
@@ -232,6 +238,34 @@ class Composant
     {
         if ($this->fournisseurs->contains($fournisseur)) {
             $this->fournisseurs->removeElement($fournisseur);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ComposantModule[]
+     */
+    public function getComposantModules(): Collection
+    {
+        return $this->composantModules;
+    }
+
+    public function addComposantModule(ComposantModule $composantModule): self
+    {
+        if (!$this->composantModules->contains($composantModule)) {
+            $this->composantModules[] = $composantModule;
+            $composantModule->addCompId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComposantModule(ComposantModule $composantModule): self
+    {
+        if ($this->composantModules->contains($composantModule)) {
+            $this->composantModules->removeElement($composantModule);
+            $composantModule->removeCompId($this);
         }
 
         return $this;

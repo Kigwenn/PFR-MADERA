@@ -28,6 +28,30 @@ class Gamme
      */
     private $modules;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $remp_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $finex_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $couv_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Huisseries")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $huis_id;
+
     public function __construct()
     {
         $this->modules = new ArrayCollection();
@@ -77,6 +101,54 @@ class Gamme
                 $module->setGammeModule(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRempId(): ?Remplissage
+    {
+        return $this->remp_id;
+    }
+
+    public function setRempId(?Remplissage $remp_id): self
+    {
+        $this->remp_id = $remp_id;
+
+        return $this;
+    }
+
+    public function getFinexId(): ?FinitionExterieur
+    {
+        return $this->finex_id;
+    }
+
+    public function setFinexId(?FinitionExterieur $finex_id): self
+    {
+        $this->finex_id = $finex_id;
+
+        return $this;
+    }
+
+    public function getCouvId(): ?Couverture
+    {
+        return $this->couv_id;
+    }
+
+    public function setCouvId(?Couverture $couv_id): self
+    {
+        $this->couv_id = $couv_id;
+
+        return $this;
+    }
+
+    public function getHuisId(): ?Huisseries
+    {
+        return $this->huis_id;
+    }
+
+    public function setHuisId(?Huisseries $huis_id): self
+    {
+        $this->huis_id = $huis_id;
 
         return $this;
     }
