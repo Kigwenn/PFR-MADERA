@@ -44,6 +44,16 @@ class Utilisateur
     private $mdpUtilisateur;
 
     /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $tokenUtilisateur;
+
+    /**
+     * @ORM\Column(type="datetime", length=30)
+     */
+    private $datetokenUtilisateur;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -182,6 +192,30 @@ class Utilisateur
     public function setTypeUtilisateur(?TypeUtilisateur $typeUtilisateur): self
     {
         $this->typeUtilisateur = $typeUtilisateur;
+
+        return $this;
+    }
+
+    public function getTokenUtilisateur(): ?string
+    {
+        return $this->tokenUtilisateur;
+    }
+
+    public function setTokenUtilisateur(string $tokenUtilisateur): self
+    {
+        $this->tokenUtilisateur = $tokenUtilisateur;
+
+        return $this;
+    }
+
+    public function getDateTokenUtilisateur(): ?datetime
+    {
+        return $this->datetokenUtilisateur;
+    }
+
+    public function setDateTokenUtilisateur(datetime $datetokenUtilisateur): self
+    {
+        $this->datetokenUtilisateur = $datetokenUtilisateur;
 
         return $this;
     }

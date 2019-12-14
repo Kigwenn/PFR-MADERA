@@ -76,3 +76,13 @@ devis_liste:
     path:     /PFR-MADERA/devis/liste/
     defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
     methods:  GET
+
+security_login:
+    path:     /PFR-MADERA/security/login/
+    defaults: { _controller: 'App\Controller\SecurityController::login' }
+    methods:  POST
+    
+security_logout:
+    path:     /PFR-MADERA/security/logout/
+    defaults: { _controller: 'App\Controller\SecurityController::logout' }
+    methods:  POST
