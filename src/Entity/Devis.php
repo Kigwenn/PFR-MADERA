@@ -63,7 +63,7 @@ class Devis
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false, name="adre_id", referencedColumnName="adre_id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $adre_id;
 

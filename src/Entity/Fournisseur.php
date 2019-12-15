@@ -175,24 +175,6 @@ class Fournisseur
         return $this;
     }
 
-    public function getContactFournisseur(): ?ContactFournisseur
-    {
-        return $this->contactFournisseur;
-    }
-
-    public function setContactFournisseur(?ContactFournisseur $contactFournisseur): self
-    {
-        $this->contactFournisseur = $contactFournisseur;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newIdFournisseur = $contactFournisseur === null ? null : $this;
-        if ($newIdFournisseur !== $contactFournisseur->getIdFournisseur()) {
-            $contactFournisseur->setIdFournisseur($newIdFournisseur);
-        }
-
-        return $this;
-    }
-
     public function getContact(): ?Contact
     {
         return $this->contact;
