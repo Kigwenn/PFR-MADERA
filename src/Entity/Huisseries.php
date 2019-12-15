@@ -14,7 +14,7 @@ class Huisseries
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $huis_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -36,9 +36,9 @@ class Huisseries
      */
     private $huis_prix;
 
-    public function getHuisId(): ?int
+    public function getId(): ?int
     {
-        return $this->huis_id;
+        return $this->id;
     }
 
     public function getHuisNom(): ?string

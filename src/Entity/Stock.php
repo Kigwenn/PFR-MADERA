@@ -16,7 +16,7 @@ class Stock
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $stoc_id;
+    private $id;
 
     /**
      * @ORM\Column(type="integer")
@@ -33,9 +33,9 @@ class Stock
         $this->comp_id = new ArrayCollection();
     }
 
-    public function getStocId(): ?int
+    public function getId(): ?int
     {
-        return $this->stoc_id;
+        return $this->id;
     }
 
     public function getStocQuantite(): ?int

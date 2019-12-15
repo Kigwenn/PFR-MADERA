@@ -16,7 +16,7 @@ class Module
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $modu_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -84,9 +84,9 @@ class Module
         $this->composantModules = new ArrayCollection();
     }
 
-    public function getModuId(): ?int
+    public function getId(): ?int
     {
-        return $this->modu_id;
+        return $this->id;
     }
 
     public function getModuNom(): ?string

@@ -16,7 +16,7 @@ class Fournisseur
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $four_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -60,9 +60,9 @@ class Fournisseur
         $this->adre_id = new ArrayCollection();
     }
 
-    public function getFourId(): ?int
+    public function getId(): ?int
     {
-        return $this->four_id;
+        return $this->id;
     }
 
     public function getFourNom(): ?string

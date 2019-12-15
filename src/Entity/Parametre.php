@@ -14,16 +14,16 @@ class Parametre
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $param_id;
+    private $id;
 
     /**
      * @ORM\Column(type="decimal", precision=4, scale=2)
      */
     private $param_pourcentage;
 
-    public function getParamId(): ?int
+    public function getId(): ?int
     {
-        return $this->param_id;
+        return $this->id;
     }
 
     public function getParamPourcentage(): ?string

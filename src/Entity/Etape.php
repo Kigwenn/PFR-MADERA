@@ -16,7 +16,7 @@ class Etape
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $etap_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -28,9 +28,9 @@ class Etape
      */
     private $etap_valeur;
 
-    public function getEtapId(): ?int
+    public function getId(): ?int
     {
-        return $this->etap_id;
+        return $this->id;
     }
 
     public function getEtapNom(): ?string

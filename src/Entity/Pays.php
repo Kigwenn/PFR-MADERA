@@ -14,16 +14,16 @@ class Pays
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $pays_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $pays_nom;
 
-    public function getPaysId(): ?int
+    public function getId(): ?int
     {
-        return $this->pays_id;
+        return $this->id;
     }
 
     public function getPaysNom(): ?string

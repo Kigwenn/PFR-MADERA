@@ -14,7 +14,7 @@ class FinitionExterieur
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $finex_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -26,9 +26,9 @@ class FinitionExterieur
      */
     private $finex_description;
 
-    public function getFinexId(): ?int
+    public function getId(): ?int
     {
-        return $this->finex_id;
+        return $this->id;
     }
 
     public function getFinexNom(): ?string

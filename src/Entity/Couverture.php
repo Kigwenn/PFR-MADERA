@@ -14,7 +14,7 @@ class Couverture
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $couv_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -26,9 +26,9 @@ class Couverture
      */
     private $couv_description;
 
-    public function getCouvId(): ?int
+    public function getId(): ?int
     {
-        return $this->couv_id;
+        return $this->id;
     }
 
     public function getCouvNom(): ?string

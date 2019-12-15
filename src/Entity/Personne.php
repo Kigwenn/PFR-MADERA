@@ -14,7 +14,7 @@ abstract class Personne
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $pers_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=5)
@@ -41,9 +41,9 @@ abstract class Personne
      */
     private $pers_tel;
 
-    public function getPersId(): ?int
+    public function getId(): ?int
     {
-        return $this->pers_id;
+        return $this->id;
     }
 
     public function getPersSexe(): ?string

@@ -14,7 +14,7 @@ class FinitionInterieur
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $inin_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -26,9 +26,9 @@ class FinitionInterieur
      */
     private $finin_description;
 
-    public function getFininId(): ?int
+    public function getId(): ?int
     {
-        return $this->inin_id;
+        return $this->id;
     }
 
     public function getFininNom(): ?string

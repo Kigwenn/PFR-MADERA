@@ -16,7 +16,7 @@ class Gamme
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $gamm_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -57,9 +57,9 @@ class Gamme
         $this->modules = new ArrayCollection();
     }
 
-    public function getGammId(): ?int
+    public function getId(): ?int
     {
-        return $this->gamm_id;
+        return $this->id;
     }
 
     public function getGammNom(): ?string

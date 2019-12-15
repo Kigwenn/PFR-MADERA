@@ -16,16 +16,16 @@ class Etat
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $etat_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
     private $etat_nom;
 
-    public function getEtatId(): ?int
+    public function getId(): ?int
     {
-        return $this->etat_id;
+        return $this->id;
     }
 
     public function getEtatNom(): ?string

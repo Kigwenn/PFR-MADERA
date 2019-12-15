@@ -16,7 +16,7 @@ class Maison
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $mais_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -63,9 +63,9 @@ class Maison
         $this->devis = new ArrayCollection();
     }
 
-    public function getMaisId(): ?int
+    public function getId(): ?int
     {
-        return $this->mais_id;
+        return $this->id;
     }
 
     public function getMaisNom(): ?string

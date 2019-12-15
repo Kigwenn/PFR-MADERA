@@ -16,7 +16,7 @@ class Commercial
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $comm_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -43,9 +43,9 @@ class Commercial
         $this->listeDevis = new ArrayCollection();
     }
 
-    public function getCommId(): ?int
+    public function getId(): ?int
     {
-        return $this->comm_id;
+        return $this->id;
     }
 
     public function getCommMdp(): ?string

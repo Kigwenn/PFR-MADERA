@@ -16,7 +16,7 @@ class Composant
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $comp_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -76,9 +76,9 @@ class Composant
         $this->composantModules = new ArrayCollection();
     }
 
-    public function getCompId(): ?int
+    public function getId(): ?int
     {
-        return $this->comp_id;
+        return $this->id;
     }
 
     public function getCompNom(): ?string

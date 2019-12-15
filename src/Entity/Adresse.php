@@ -14,7 +14,7 @@ class Adresse
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $adre_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -52,9 +52,9 @@ class Adresse
      */
     private $pays_id;
 
-    public function getAdreId(): ?int
+    public function getId(): ?int
     {
-        return $this->adre_id;
+        return $this->id;
     }
 
     public function getAdreRue(): ?string

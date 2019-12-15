@@ -16,7 +16,7 @@ class Catalogue
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $cata_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -38,9 +38,9 @@ class Catalogue
         $this->mais_id = new ArrayCollection();
     }
 
-    public function getCataId(): ?int
+    public function getId(): ?int
     {
-        return $this->cata_id;
+        return $this->id;
     }
 
     public function getCataNom(): ?string

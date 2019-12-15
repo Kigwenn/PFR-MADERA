@@ -16,7 +16,7 @@ class Client
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $clie_id;
+    private $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
@@ -34,9 +34,9 @@ class Client
         $this->devi_id = new ArrayCollection();
     }
 
-    public function getClieId(): ?int
+    public function getId(): ?int
     {
-        return $this->clie_id;
+        return $this->id;
     }
 
     public function getAdreId(): ?Adresse

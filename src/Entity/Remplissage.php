@@ -14,7 +14,7 @@ class Remplissage
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $remp_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=200)
@@ -26,9 +26,9 @@ class Remplissage
      */
     private $remp_description;
 
-    public function getRempId(): ?int
+    public function getId(): ?int
     {
-        return $this->remp_id;
+        return $this->id;
     }
 
     public function getRempNom(): ?string

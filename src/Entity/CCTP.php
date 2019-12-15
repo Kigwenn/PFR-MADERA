@@ -14,7 +14,7 @@ class CCTP
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $cctp_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -26,9 +26,9 @@ class CCTP
      */
     private $cctp_image;
 
-    public function getCctpId(): ?int
+    public function getId(): ?int
     {
-        return $this->cctp_id;
+        return $this->id;
     }
 
     public function getCctpNom(): ?string

@@ -16,7 +16,7 @@ class FamilleComposant
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $faco_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -38,9 +38,9 @@ class FamilleComposant
         $this->composant = new ArrayCollection();
     }
 
-    public function getFacoId(): ?int
+    public function getId(): ?int
     {
-        return $this->faco_id;
+        return $this->id;
     }
 
     public function getFacoNom(): ?string

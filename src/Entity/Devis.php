@@ -16,7 +16,7 @@ class Devis
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $devi_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -84,9 +84,9 @@ class Devis
      */
     private $clie_id;
 
-    public function getDeviId(): ?int
+    public function getId(): ?int
     {
-        return $this->devi_id;
+        return $this->id;
     }
 
     public function getDeviNom(): ?string
