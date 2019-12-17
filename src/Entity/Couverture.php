@@ -26,6 +26,11 @@ class Couverture
      */
     private $couv_description;
 
+    /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private $couv_prix_unitaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class Couverture
     public function setCouvDescription(string $couv_description): self
     {
         $this->couv_description = $couv_description;
+
+        return $this;
+    }
+
+    public function getCouvPrixUnitaire(): ?string
+    {
+        return $this->couv_prix_unitaire;
+    }
+
+    public function setCouvPrixUnitaire(string $couv_prix_unitaire): self
+    {
+        $this->couv_prix_unitaire = $couv_prix_unitaire;
 
         return $this;
     }

@@ -26,17 +26,17 @@ class ComposantModule
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="composantModules")
      */
-    private $modu_id;
+    private $modu;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Composant", inversedBy="composantModules")
      */
-    private $comp_id;
+    private $comp;
 
     public function __construct()
     {
-        $this->modu_id = new ArrayCollection();
-        $this->comp_id = new ArrayCollection();
+        $this->modu = new ArrayCollection();
+        $this->comp = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,24 +59,24 @@ class ComposantModule
     /**
      * @return Collection|Module[]
      */
-    public function getModuId(): Collection
+    public function getModu(): Collection
     {
-        return $this->modu_id;
+        return $this->modu;
     }
 
-    public function addModuId(Module $moduId): self
+    public function addModu(Module $modu): self
     {
-        if (!$this->modu_id->contains($moduId)) {
-            $this->modu_id[] = $moduId;
+        if (!$this->modu->contains($modu)) {
+            $this->modu[] = $modu;
         }
 
         return $this;
     }
 
-    public function removeModuId(Module $moduId): self
+    public function removeModu(Module $modu): self
     {
-        if ($this->modu_id->contains($moduId)) {
-            $this->modu_id->removeElement($moduId);
+        if ($this->modu->contains($modu)) {
+            $this->modu->removeElement($modu);
         }
 
         return $this;
@@ -85,27 +85,28 @@ class ComposantModule
     /**
      * @return Collection|Composant[]
      */
-    public function getCompId(): Collection
+    public function getComp(): Collection
     {
-        return $this->comp_id;
+        return $this->comp;
     }
 
-    public function addCompId(Composant $compId): self
+    public function addComp(Composant $comp): self
     {
-        if (!$this->comp_id->contains($compId)) {
-            $this->comp_id[] = $compId;
+        if (!$this->comp->contains($comp)) {
+            $this->comp[] = $comp;
         }
 
         return $this;
     }
 
-    public function removeCompId(Composant $compId): self
+    public function removeComp(Composant $comp): self
     {
-        if ($this->comp_id->contains($compId)) {
-            $this->comp_id->removeElement($compId);
+        if ($this->comp->contains($comp)) {
+            $this->comp->removeElement($comp);
         }
 
         return $this;
     }
 
+    
 }

@@ -19,39 +19,58 @@ class FinitionInterieur
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $finin_nom;
+    private $fiin_nom;
 
     /**
      * @ORM\Column(type="string", length=500)
      */
-    private $finin_description;
+    private $fiin_description;
+
+    /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private $fiin_prix_unitaire;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFininNom(): ?string
+    public function getFiinNom(): ?string
     {
-        return $this->finin_nom;
+        return $this->fiin_nom;
     }
 
-    public function setFininNom(string $finin_nom): self
+    public function setFiinNom(string $fiin_nom): self
     {
-        $this->finin_nom = $finin_nom;
+        $this->fiin_nom = $fiin_nom;
 
         return $this;
     }
 
-    public function getFininDescription(): ?string
+    public function getFiinDescription(): ?string
     {
-        return $this->finin_description;
+        return $this->fiin_description;
     }
 
-    public function setFininDescription(string $finin_description): self
+    public function setFiinDescription(string $fiin_description): self
     {
-        $this->finin_description = $finin_description;
+        $this->fiin_description = $fiin_description;
 
         return $this;
     }
+
+    public function getFiinPrixUnitaire(): ?string
+    {
+        return $this->fiin_prix_unitaire;
+    }
+
+    public function setFiinPrixUnitaire(string $fiin_prix_unitaire): self
+    {
+        $this->fiin_prix_unitaire = $fiin_prix_unitaire;
+
+        return $this;
+    }
+
+    
 }

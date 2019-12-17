@@ -20,21 +20,21 @@ class Contact extends Personne
      * @ORM\OneToOne(targetEntity="App\Entity\Fournisseur", inversedBy="contactFournisseur", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $four_id;
+    private $four;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFourId(): ?Fournisseur
+    public function getFour(): ?Fournisseur
     {
-        return $this->four_id;
+        return $this->four;
     }
 
-    public function setFourId(Fournisseur $four_id): self
+    public function setFour(Fournisseur $four): self
     {
-        $this->four_id = $four_id;
+        $this->four = $four;
 
         return $this;
     }

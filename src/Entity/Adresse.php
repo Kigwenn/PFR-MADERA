@@ -50,7 +50,7 @@ class Adresse
      * @ORM\ManyToOne(targetEntity="App\Entity\Pays")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $pays_id;
+    private $pays;
 
     public function getId(): ?int
     {
@@ -137,6 +137,18 @@ class Adresse
     public function setPaysId(?Pays $pays_id): self
     {
         $this->pays_id = $pays_id;
+
+        return $this;
+    }
+
+    public function getPays(): ?Pays
+    {
+        return $this->pays;
+    }
+
+    public function setPays(?Pays $pays): self
+    {
+        $this->pays = $pays;
 
         return $this;
     }

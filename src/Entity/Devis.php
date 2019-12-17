@@ -37,19 +37,19 @@ class Devis
      * @ORM\ManyToOne(targetEntity="App\Entity\Maison", inversedBy="devis")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $mais_id;
+    private $mais;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Etape")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $etap_id;
+    private $etap;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Etat")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $etat_id;
+    private $etat;
 
     /**
      * @ORM\Column(type="blob", nullable=true)
@@ -65,24 +65,24 @@ class Devis
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $adre_id;
+    private $adre;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Gamme")
      */
-    private $gamm_id;
+    private $gamm;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commercial", inversedBy="listeDevis")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $comm_id;
+    private $comm;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="devis")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $clie_id;
+    private $clie;
 
     public function getId(): ?int
     {
@@ -149,88 +149,90 @@ class Devis
         return $this;
     }
 
-    public function getMaisId(): ?Maison
+    public function getMais(): ?Maison
     {
-        return $this->mais_id;
+        return $this->mais;
     }
 
-    public function setMaisId(?Maison $mais_id): self
+    public function setMais(?Maison $mais): self
     {
-        $this->mais_id = $mais_id;
+        $this->mais = $mais;
 
         return $this;
     }
 
-    public function getEtapId(): ?Etape
+    public function getEtap(): ?Etape
     {
-        return $this->etap_id;
+        return $this->etap;
     }
 
-    public function setEtapId(?Etape $etap_id): self
+    public function setEtap(?Etape $etap): self
     {
-        $this->etap_id = $etap_id;
+        $this->etap = $etap;
 
         return $this;
     }
 
-    public function getEtatId(): ?Etat
+    public function getEtat(): ?Etat
     {
-        return $this->etat_id;
+        return $this->etat;
     }
 
-    public function setEtatId(?Etat $etat_id): self
+    public function setEtat(?Etat $etat): self
     {
-        $this->etat_id = $etat_id;
+        $this->etat = $etat;
 
         return $this;
     }
 
-    public function getAdreId(): ?Adresse
+    public function getAdre(): ?Adresse
     {
-        return $this->adre_id;
+        return $this->adre;
     }
 
-    public function setAdreId(Adresse $adre_id): self
+    public function setAdre(Adresse $adre): self
     {
-        $this->adre_id = $adre_id;
+        $this->adre = $adre;
 
         return $this;
     }
 
-    public function getGammId(): ?Gamme
+    public function getGamm(): ?Gamme
     {
-        return $this->gamm_id;
+        return $this->gamm;
     }
 
-    public function setGammId(?Gamme $gamm_id): self
+    public function setGamm(?Gamme $gamm): self
     {
-        $this->gamm_id = $gamm_id;
+        $this->gamm = $gamm;
 
         return $this;
     }
 
-    public function getCommId(): ?Commercial
+    public function getComm(): ?Commercial
     {
-        return $this->comm_id;
+        return $this->comm;
     }
 
-    public function setCommId(?Commercial $comm_id): self
+    public function setComm(?Commercial $comm): self
     {
-        $this->comm_id = $comm_id;
+        $this->comm = $comm;
 
         return $this;
     }
 
-    public function getClieId(): ?Client
+    public function getClie(): ?Client
     {
-        return $this->clie_id;
+        return $this->clie;
     }
 
-    public function setClieId(?Client $clie_id): self
+    public function setClie(?Client $clie): self
     {
-        $this->clie_id = $clie_id;
+        $this->clie = $clie;
 
         return $this;
     }
+
+    
 
 }

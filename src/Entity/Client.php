@@ -22,16 +22,16 @@ class Client extends Personne
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $adre_id;
+    private $adre;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="devi_id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="devi")
      */
-    private $devi_id;
+    private $devi;
 
     public function __construct()
     {
-        $this->devi_id = new ArrayCollection();
+        $this->devi = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -39,14 +39,14 @@ class Client extends Personne
         return $this->id;
     }
 
-    public function getAdreId(): ?Adresse
+    public function getAdre(): ?Adresse
     {
-        return $this->adre_id;
+        return $this->adre;
     }
 
-    public function setAdreId(Adresse $adre_id): self
+    public function setAdre(Adresse $adre): self
     {
-        $this->adre_id = $adre_id;
+        $this->adre = $adre;
 
         return $this;
     }
@@ -54,32 +54,34 @@ class Client extends Personne
     /**
      * @return Collection|Devis[]
      */
-    public function getDeviId(): Collection
+    public function getDevi(): Collection
     {
-        return $this->devi_id;
+        return $this->devi;
     }
 
-    public function addDeviId(Devis $deviId): self
+    public function addDevi(Devis $devi): self
     {
-        if (!$this->devi_id->contains($deviId)) {
-            $this->devi_id[] = $deviId;
-            $deviId->setDeviId($this);
+        if (!$this->devi->contains($devi)) {
+            $this->devi[] = $devi;
+            $devi->setDevi($this);
         }
 
         return $this;
     }
 
-    public function removeDeviId(Devis $deviId): self
+    public function removeDevi(Devis $devi): self
     {
-        if ($this->devi_id->contains($deviId)) {
-            $this->devi_id->removeElement($deviId);
+        if ($this->devi->contains($devi)) {
+            $this->devi->removeElement($devi);
             // set the owning side to null (unless already changed)
-            if ($deviId->getDeviId() === $this) {
-                $deviId->setDeviId(null);
+            if ($devi->getDevi() === $this) {
+                $devi->setDevi(null);
             }
         }
 
         return $this;
     }
+
+    
 
 }

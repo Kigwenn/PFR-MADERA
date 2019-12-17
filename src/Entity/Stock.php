@@ -26,11 +26,11 @@ class Stock
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Composant", mappedBy="composantsStock")
      */
-    private $comp_id;
+    private $comp;
 
     public function __construct()
     {
-        $this->comp_id = new ArrayCollection();
+        $this->comp = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,26 +53,26 @@ class Stock
     /**
      * @return Collection|Composant[]
      */
-    public function getCompId(): Collection
+    public function getComp(): Collection
     {
-        return $this->comp_id;
+        return $this->comp;
     }
 
-    public function addCompId(Composant $compId): self
+    public function addComp(Composant $comp): self
     {
-        if (!$this->comp_id->contains($compId)) {
-            $this->comp_id[] = $compId;
-            $compId->addComposantsStock($this);
+        if (!$this->comp->contains($comp)) {
+            $this->comp[] = $comp;
+            $comp->addComposantsStock($this);
         }
 
         return $this;
     }
 
-    public function removeCompId(Composant $compId): self
+    public function removeComp(Composant $comp): self
     {
-        if ($this->comp_id->contains($compId)) {
-            $this->comp_id->removeElement($compId);
-            $compId->removeComposantsStock($this);
+        if ($this->comp->contains($comp)) {
+            $this->comp->removeElement($comp);
+            $comp->removeComposantsStock($this);
         }
 
         return $this;

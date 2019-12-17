@@ -32,18 +32,18 @@ class Module
      * @ORM\ManyToOne(targetEntity="App\Entity\Gamme", inversedBy="modules")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $gamm_id;
+    private $gamm;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $devi_id;
+    private $devi;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CCTP")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $cctp_id;
+    private $cctp;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
@@ -54,28 +54,28 @@ class Module
      * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $remp_id;
+    private $remp;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $finex_id;
+    private $finex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionInterieur")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $finin_id;
+    private $finin;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $couv_id;
+    private $couv;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="modu_id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="modu")
      */
     private $composantModules;
 
@@ -113,38 +113,38 @@ class Module
         return $this;
     }
 
-    public function getDeviId(): ?int
+    public function getDevi(): ?int
     {
-        return $this->devi_id;
+        return $this->devi;
     }
 
-    public function setDeviId(?int $devi_id): self
+    public function setDevi(?int $devi): self
     {
-        $this->devi_id = $devi_id;
+        $this->devi = $devi;
 
         return $this;
     }
 
-    public function getGammId(): ?Gamme
+    public function getGamm(): ?Gamme
     {
-        return $this->gamm_id;
+        return $this->gamm;
     }
 
-    public function setGammId(?Gamme $gamm_id): self
+    public function setGamm(?Gamme $gamm): self
     {
-        $this->gamm_id = $gamm_id;
+        $this->gamm = $gamm;
 
         return $this;
     }
 
-    public function getCctpId(): ?CCTP
+    public function getCctp(): ?CCTP
     {
-        return $this->cctp_id;
+        return $this->cctp;
     }
 
-    public function setCctpId(?CCTP $cctp_id): self
+    public function setCctp(?CCTP $cctp): self
     {
-        $this->cctp_id = $cctp_id;
+        $this->cctp = $cctp;
 
         return $this;
     }
@@ -161,50 +161,50 @@ class Module
         return $this;
     }
 
-    public function getRempId(): ?Remplissage
+    public function getRemp(): ?Remplissage
     {
-        return $this->remp_id;
+        return $this->remp;
     }
 
-    public function setRempId(?Remplissage $remp_id): self
+    public function setRemp(?Remplissage $remp): self
     {
-        $this->remp_id = $remp_id;
+        $this->remp = $remp;
 
         return $this;
     }
 
-    public function getFinexId(): ?FinitionExterieur
+    public function getFinex(): ?FinitionExterieur
     {
-        return $this->finex_id;
+        return $this->finex;
     }
 
-    public function setFinexId(?FinitionExterieur $finex_id): self
+    public function setFinex(?FinitionExterieur $finex): self
     {
-        $this->finex_id = $finex_id;
+        $this->finex = $finex;
 
         return $this;
     }
 
-    public function getFininId(): ?FinitionInterieur
+    public function getFinin(): ?FinitionInterieur
     {
-        return $this->finin_id;
+        return $this->finin;
     }
 
-    public function setFininId(?FinitionInterieur $finin_id): self
+    public function setFinin(?FinitionInterieur $finin): self
     {
-        $this->finin_id = $finin_id;
+        $this->finin = $finin;
 
         return $this;
     }
 
-    public function getCouvId(): ?Couverture
+    public function getCouv(): ?Couverture
     {
-        return $this->couv_id;
+        return $this->couv;
     }
 
-    public function setCouvId(?Couverture $couv_id): self
+    public function setCouv(?Couverture $couv): self
     {
-        $this->couv_id = $couv_id;
+        $this->couv = $couv;
 
         return $this;
     }
@@ -221,7 +221,7 @@ class Module
     {
         if (!$this->composantModules->contains($composantModule)) {
             $this->composantModules[] = $composantModule;
-            $composantModule->addModuId($this);
+            $composantModule->addModu($this);
         }
 
         return $this;
@@ -231,10 +231,12 @@ class Module
     {
         if ($this->composantModules->contains($composantModule)) {
             $this->composantModules->removeElement($composantModule);
-            $composantModule->removeModuId($this);
+            $composantModule->removeModu($this);
         }
 
         return $this;
     }
+
+
 
 }

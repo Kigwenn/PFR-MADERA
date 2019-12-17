@@ -29,13 +29,13 @@ class Catalogue
     private $cata_description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Maison", mappedBy="mais_id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Maison", mappedBy="mais")
      */
-    private $mais_id;
+    private $mais;
 
     public function __construct()
     {
-        $this->mais_id = new ArrayCollection();
+        $this->mais = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,30 +70,30 @@ class Catalogue
     /**
      * @return Collection|Maison[]
      */
-    public function getMaisId(): Collection
+    public function getMais(): Collection
     {
-        return $this->mais_id;
+        return $this->mais;
     }
 
-    public function addMaisId(Maison $maisId): self
+    public function addMai(Maison $mai): self
     {
-        if (!$this->mais_id->contains($maisId)) {
-            $this->mais_id[] = $maisId;
-            $maisId->addMaisId($this);
+        if (!$this->mais->contains($mai)) {
+            $this->mais[] = $mai;
+            $mai->addMai($this);
         }
 
         return $this;
     }
 
-    public function removeMaisId(Maison $maisId): self
+    public function removeMai(Maison $mai): self
     {
-        if ($this->mais_id->contains($maisId)) {
-            $this->mais_id->removeElement($maisId);
-            $maisId->removeMaisId($this);
+        if ($this->mais->contains($mai)) {
+            $this->mais->removeElement($mai);
+            $mai->removeMai($this);
         }
 
         return $this;
     }
 
-   
+       
 }

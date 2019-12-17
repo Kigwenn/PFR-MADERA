@@ -51,7 +51,7 @@ class Composant
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FamilleComposant", inversedBy="composant")
      */
-    private $fami_id;
+    private $fami;
 
     /**
      * @ORM\Column(type="decimal", precision=6, scale=2)
@@ -64,15 +64,15 @@ class Composant
     private $modules;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="comp_id")
+     * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="comp")
      */
     private $composantModules;
 
     public function __construct()
     {
+        $this->fournisseurs = new ArrayCollection();
         $this->composantsStock = new ArrayCollection();
         $this->caracteristiquesComposant = new ArrayCollection();
-        $this->fournisseurs = new ArrayCollection();
         $this->composantModules = new ArrayCollection();
     }
 
@@ -129,14 +129,28 @@ class Composant
         return $this;
     }
 
-    public function getFournisseurComposant(): ?Fournisseur
+    /**
+     * @return Collection|Fournisseur[]
+     */
+    public function getFournisseurs(): Collection
     {
-        return $this->fournisseurComposant;
+        return $this->fournisseurs;
     }
 
-    public function setFournisseurComposant(?Fournisseur $fournisseurComposant): self
+    public function addFournisseur(Fournisseur $fournisseur): self
     {
-        $this->fournisseurComposant = $fournisseurComposant;
+        if (!$this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs[] = $fournisseur;
+        }
+
+        return $this;
+    }
+
+    public function removeFournisseur(Fournisseur $fournisseur): self
+    {
+        if ($this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs->removeElement($fournisseur);
+        }
 
         return $this;
     }
@@ -193,14 +207,14 @@ class Composant
         return $this;
     }
 
-    public function getFamiId(): ?FamilleComposant
+    public function getFami(): ?FamilleComposant
     {
-        return $this->fami_id;
+        return $this->fami;
     }
 
-    public function setFamiId(?FamilleComposant $fami_id): self
+    public function setFami(?FamilleComposant $fami): self
     {
-        $this->fami_id = $fami_id;
+        $this->fami = $fami;
 
         return $this;
     }
@@ -218,32 +232,6 @@ class Composant
     }
 
     /**
-     * @return Collection|Fournisseur[]
-     */
-    public function getFournisseurs(): Collection
-    {
-        return $this->fournisseurs;
-    }
-
-    public function addFournisseur(Fournisseur $fournisseur): self
-    {
-        if (!$this->fournisseurs->contains($fournisseur)) {
-            $this->fournisseurs[] = $fournisseur;
-        }
-
-        return $this;
-    }
-
-    public function removeFournisseur(Fournisseur $fournisseur): self
-    {
-        if ($this->fournisseurs->contains($fournisseur)) {
-            $this->fournisseurs->removeElement($fournisseur);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|ComposantModule[]
      */
     public function getComposantModules(): Collection
@@ -255,7 +243,7 @@ class Composant
     {
         if (!$this->composantModules->contains($composantModule)) {
             $this->composantModules[] = $composantModule;
-            $composantModule->addCompId($this);
+            $composantModule->addComp($this);
         }
 
         return $this;
@@ -265,7 +253,7 @@ class Composant
     {
         if ($this->composantModules->contains($composantModule)) {
             $this->composantModules->removeElement($composantModule);
-            $composantModule->removeCompId($this);
+            $composantModule->removeComp($this);
         }
 
         return $this;

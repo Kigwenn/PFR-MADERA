@@ -32,25 +32,25 @@ class Gamme
      * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $remp_id;
+    private $remp;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $finex_id;
+    private $finex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $couv_id;
+    private $couv;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Huisseries")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $huis_id;
+    private $huis;
 
     public function __construct()
     {
@@ -105,50 +105,50 @@ class Gamme
         return $this;
     }
 
-    public function getRempId(): ?Remplissage
+    public function getRemp(): ?Remplissage
     {
-        return $this->remp_id;
+        return $this->remp;
     }
 
-    public function setRempId(?Remplissage $remp_id): self
+    public function setRemp(?Remplissage $remp): self
     {
-        $this->remp_id = $remp_id;
+        $this->remp = $remp;
 
         return $this;
     }
 
-    public function getFinexId(): ?FinitionExterieur
+    public function getFinex(): ?FinitionExterieur
     {
-        return $this->finex_id;
+        return $this->finex;
     }
 
-    public function setFinexId(?FinitionExterieur $finex_id): self
+    public function setFinex(?FinitionExterieur $finex): self
     {
-        $this->finex_id = $finex_id;
+        $this->finex = $finex;
 
         return $this;
     }
 
-    public function getCouvId(): ?Couverture
+    public function getCouv(): ?Couverture
     {
-        return $this->couv_id;
+        return $this->couv;
     }
 
-    public function setCouvId(?Couverture $couv_id): self
+    public function setCouv(?Couverture $couv): self
     {
-        $this->couv_id = $couv_id;
+        $this->couv = $couv;
 
         return $this;
     }
 
-    public function getHuisId(): ?Huisseries
+    public function getHuis(): ?Huisseries
     {
-        return $this->huis_id;
+        return $this->huis;
     }
 
-    public function setHuisId(?Huisseries $huis_id): self
+    public function setHuis(?Huisseries $huis): self
     {
-        $this->huis_id = $huis_id;
+        $this->huis = $huis;
 
         return $this;
     }
