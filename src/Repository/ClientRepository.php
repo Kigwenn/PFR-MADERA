@@ -19,6 +19,20 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
+    // retourne l'id du client si il existe
+    public function clientExistant($nom, $prenom, $mail): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->where('c.pers_nom = :nom')
+            ->andWhere('c.pers_prenom = :prenom')
+            ->andWhere('c.pers_mail = :mail')
+            ->setParameter('nom', $nom)
+            ->setParameter('prenom', $prenom)
+            ->setParameter('mail', $mail);
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Client[] Returns an array of Client objects
     //  */
