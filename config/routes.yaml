@@ -27,20 +27,20 @@ client_liste:
 #     defaults: { _controller: 'App\Controller\UtilisateurController::devisUtilisateur' }
 #     methods:  GET
 
-# utilisateur_recherche:
-#     path:     /PFR-MADERA/utilisateur/recherche/
-#     defaults: { _controller: 'App\Controller\UtilisateurController::rechercheUtilisateurs' }
-#     methods:  GET
+client_recherche:
+    path:     /PFR-MADERA/client/recherche
+    defaults: { _controller: 'App\Controller\ClientController::rechercheClient' }
+    methods:  GET
 
 # utilisateur_modification:
 #     path:     /PFR-MADERA/utilisateur/
 #     defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }
 #     methods:  PUT
 
-# utilisateur_suppression:
-#     path:     /PFR-MADERA/utilisateur/
-#     defaults: { _controller: 'App\Controller\UtilisateurController::suppressionUtilisateur' }
-#     methods:  DELETE
+client_suppression:
+    path:     /PFR-MADERA/client
+    defaults: { _controller: 'App\Controller\ClientController::suppressionClient' }
+    methods:  DELETE
 
 # gamme_liste:
 #     path:     /PFR-MADERA/gamme/liste/
@@ -76,3 +76,8 @@ client_liste:
 #     path:     /PFR-MADERA/devis/liste/
 #     defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
 #     methods:  GET
+
+finitionExterieur_liste:
+    path:     /PFR-MADERA/finitionExterieur/liste
+    defaults: { _controller: 'App\Controller\FinitionExterieurController::listeFinitionExterieur' }
+    methods:  GET

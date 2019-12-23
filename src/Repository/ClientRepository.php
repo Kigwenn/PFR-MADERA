@@ -84,4 +84,16 @@ class ClientRepository extends ServiceEntityRepository
         }
         return $resultat;
     }
+
+    // retourne la liste des client correspondant à la recherche
+    public function rechercheClients($recherche): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id, c.pers_nom, c.pers_prenom, c.pers_mail')
+            ->where('c.pers_nom LIKE :recherche')
+            ->orWhere('c.pers_prenom LIKE :recherche')
+            ->orWhere('c.pers_mail LIKE :recherche')
+            ->setParameter('recherche', "%" . $recherche . "%");
+        return $qb->getQuery()->getResult();
+    }
 }
