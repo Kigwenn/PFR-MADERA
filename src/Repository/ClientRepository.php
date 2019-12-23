@@ -19,20 +19,6 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    // retourne l'id du client si il existe
-    public function clientExistant($nom, $prenom, $mail): array
-    {
-        $qb = $this->createQueryBuilder('c')
-            ->select('c.id')
-            ->where('c.pers_nom = :nom')
-            ->andWhere('c.pers_prenom = :prenom')
-            ->andWhere('c.pers_mail = :mail')
-            ->setParameter('nom', $nom)
-            ->setParameter('prenom', $prenom)
-            ->setParameter('mail', $mail);
-        return $qb->getQuery()->getResult();
-    }
-
     // /**
     //  * @return Client[] Returns an array of Client objects
     //  */
@@ -61,4 +47,41 @@ class ClientRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    // retourne l'id du client si il existe
+    public function clientExistant($nom, $prenom, $mail): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->where('c.pers_nom = :nom')
+            ->andWhere('c.pers_prenom = :prenom')
+            ->andWhere('c.pers_mail = :mail')
+            ->setParameter('nom', $nom)
+            ->setParameter('prenom', $prenom)
+            ->setParameter('mail', $mail);
+        return $qb->getQuery()->getResult();
+    }
+
+    //Vérification des parametres
+    public function verificationParametre(array $parametresObligatoire, array $parametersAsArray): string
+    {
+        $resultat = "OK";
+        if ($parametersAsArray == null){
+            $resultat = "Il n'y a pas de paramètre.";
+        } elseif (count($parametersAsArray) <> count($parametresObligatoire))
+        {
+            $resultat = "Il n'y a pas le bon nombre de paramètre (" . strval((count($parametersAsArray)) . 
+                 " sur " . strval(count($parametresObligatoire)) . "). ");
+        } else {
+            foreach ($parametersAsArray as $key => $value){
+                if (!in_array($key, $parametresObligatoire)) 
+                {
+                    $resultat = "Le paramètre " . strval($key) . " n'existe pas.";
+                    break;
+                }
+            }
+        }
+        return $resultat;
+    }
 }

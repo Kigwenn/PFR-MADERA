@@ -7,67 +7,72 @@ client_creation:
     defaults: { _controller: 'App\Controller\ClientController::creationClient' }
     methods:  POST
 
-utilisateur_detail:
-    path:     /PFR-MADERA/utilisateur/
-    defaults: { _controller: 'App\Controller\UtilisateurController::affichageUtilisateur' }
+client_affichage:
+    path:     /PFR-MADERA/client
+    defaults: { _controller: 'App\Controller\ClientController::affichageClient' }
     methods:  GET
 
-utilisateur_liste:
-    path:     /PFR-MADERA/utilisateur/liste/
-    defaults: { _controller: 'App\Controller\UtilisateurController::listeUtilisateur' }
+pays_liste:
+    path:     /PFR-MADERA/pays/liste
+    defaults: { _controller: 'App\Controller\PaysController::listePays' }
     methods:  GET
 
-utilisateur_devis:
-    path:     /PFR-MADERA/utilisateur/devis/
-    defaults: { _controller: 'App\Controller\UtilisateurController::devisUtilisateur' }
+client_liste:
+    path:     /PFR-MADERA/client/liste/
+    defaults: { _controller: 'App\Controller\ClientController::listeClient' }
     methods:  GET
 
-utilisateur_recherche:
-    path:     /PFR-MADERA/utilisateur/recherche/
-    defaults: { _controller: 'App\Controller\UtilisateurController::rechercheUtilisateurs' }
-    methods:  GET
+# utilisateur_devis:
+#     path:     /PFR-MADERA/utilisateur/devis/
+#     defaults: { _controller: 'App\Controller\UtilisateurController::devisUtilisateur' }
+#     methods:  GET
 
-utilisateur_modification:
-    path:     /PFR-MADERA/utilisateur/
-    defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }
-    methods:  PUT
+# utilisateur_recherche:
+#     path:     /PFR-MADERA/utilisateur/recherche/
+#     defaults: { _controller: 'App\Controller\UtilisateurController::rechercheUtilisateurs' }
+#     methods:  GET
 
-utilisateur_suppression:
-    path:     /PFR-MADERA/utilisateur/
-    defaults: { _controller: 'App\Controller\UtilisateurController::suppressionUtilisateur' }
-    methods:  DELETE
+# utilisateur_modification:
+#     path:     /PFR-MADERA/utilisateur/
+#     defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }
+#     methods:  PUT
 
-gamme_liste:
-    path:     /PFR-MADERA/gamme/liste/
-    defaults: { _controller: 'App\Controller\GammeController::listeGamme' }
-    methods:  GET
+# utilisateur_suppression:
+#     path:     /PFR-MADERA/utilisateur/
+#     defaults: { _controller: 'App\Controller\UtilisateurController::suppressionUtilisateur' }
+#     methods:  DELETE
 
-gamme_modules:
-    path:     /PFR-MADERA/gamme/modules/
-    defaults: { _controller: 'App\Controller\GammeController::listeModules' }
-    methods:  GET
+# gamme_liste:
+#     path:     /PFR-MADERA/gamme/liste/
+#     defaults: { _controller: 'App\Controller\GammeController::listeGamme' }
+#     methods:  GET
 
-devis_creation:
-    path:     /PFR-MADERA/devis/
-    defaults: { _controller: 'App\Controller\DevisController::creationDevis' }
-    methods:  POST
+# gamme_modules:
+#     path:     /PFR-MADERA/gamme/modules/
+#     defaults: { _controller: 'App\Controller\GammeController::listeModules' }
+#     methods:  GET
 
-devis_affichage:
-    path:     /PFR-MADERA/devis/
-    defaults: { _controller: 'App\Controller\DevisController::affichageDevis' }
-    methods:  GET
+# devis_creation:
+#     path:     /PFR-MADERA/devis/
+#     defaults: { _controller: 'App\Controller\DevisController::creationDevis' }
+#     methods:  POST
+
+# devis_affichage:
+#     path:     /PFR-MADERA/devis/
+#     defaults: { _controller: 'App\Controller\DevisController::affichageDevis' }
+#     methods:  GET
  
-devis_modification:
-    path:     /PFR-MADERA/devis/
-    defaults: { _controller: 'App\Controller\DevisController::modificationDevis' }
-    methods:  PUT
+# devis_modification:
+#     path:     /PFR-MADERA/devis/
+#     defaults: { _controller: 'App\Controller\DevisController::modificationDevis' }
+#     methods:  PUT
 
-devis_suppression:
-    path:     /PFR-MADERA/devis/
-    defaults: { _controller: 'App\Controller\DevisController::suppressionDevis' }
-    methods:  DELETE
+# devis_suppression:
+#     path:     /PFR-MADERA/devis/
+#     defaults: { _controller: 'App\Controller\DevisController::suppressionDevis' }
+#     methods:  DELETE
 
-devis_liste:
-    path:     /PFR-MADERA/devis/liste/
-    defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
-    methods:  GET
+# devis_liste:
+#     path:     /PFR-MADERA/devis/liste/
+#     defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
+#     methods:  GET
