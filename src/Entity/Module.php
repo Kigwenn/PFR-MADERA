@@ -48,7 +48,7 @@ class Module
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
      */
-    private $composants;
+    // private $composants;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
@@ -77,11 +77,11 @@ class Module
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="modu")
      */
-    private $composantModules;
+    // private $composantModules;
 
     public function __construct()
     {
-        $this->composantModules = new ArrayCollection();
+        // $this->composantModules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,17 +149,17 @@ class Module
         return $this;
     }
 
-    public function getComposants(): ?ComposantModule
-    {
-        return $this->composants;
-    }
+    // public function getComposants(): ?ComposantModule
+    // {
+    //     return $this->composants;
+    // }
 
-    public function setComposants(?ComposantModule $composants): self
-    {
-        $this->composants = $composants;
+    // public function setComposants(?ComposantModule $composants): self
+    // {
+    //     $this->composants = $composants;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getRemp(): ?Remplissage
     {
@@ -212,30 +212,30 @@ class Module
     /**
      * @return Collection|ComposantModule[]
      */
-    public function getComposantModules(): Collection
-    {
-        return $this->composantModules;
-    }
+    // public function getComposantModules(): Collection
+    // {
+    //     return $this->composantModules;
+    // }
 
-    public function addComposantModule(ComposantModule $composantModule): self
-    {
-        if (!$this->composantModules->contains($composantModule)) {
-            $this->composantModules[] = $composantModule;
-            $composantModule->addModu($this);
-        }
+    // public function addComposantModule(ComposantModule $composantModule): self
+    // {
+    //     if (!$this->composantModules->contains($composantModule)) {
+    //         $this->composantModules[] = $composantModule;
+    //         $composantModule->addModu($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeComposantModule(ComposantModule $composantModule): self
-    {
-        if ($this->composantModules->contains($composantModule)) {
-            $this->composantModules->removeElement($composantModule);
-            $composantModule->removeModu($this);
-        }
+    // public function removeComposantModule(ComposantModule $composantModule): self
+    // {
+    //     if ($this->composantModules->contains($composantModule)) {
+    //         $this->composantModules->removeElement($composantModule);
+    //         $composantModule->removeModu($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
 
