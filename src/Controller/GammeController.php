@@ -13,44 +13,40 @@ use Symfony\Component\HttpFoundation\Response;
 class GammeController extends AbstractController
 {
     /**
-    * Permet d'avoir la liste de tous les utilisateurs 
-    * @Route("/liste/", name="gamme_liste", methods={"GET"});
+    * Permet d'avoir la liste des gammes
+    * @Route("/liste", name="gamme_liste", methods={"GET"});
     */
     public function listeGamme(Request $requestjson) 
     {
-        $erreur = null;
         $repository_gamme = $this->getDoctrine()->getRepository(Gamme::class);
         //Recuperation de la liste de gamme
-        $listeGammes = $repository_gamme->findAll();
-        //Verification de la base
-        if ($listeGammes == null) {
-            $erreur = "Aucune gamme trouvée.";
-        }
-        $listeReponse = array();
-        foreach ($listeGammes as $gamme) 
-        {
-            $listeReponse[] = array(
-                'id' => $gamme->getId(),
-                'nom_gamme' => $gamme->getNomGamme(),
-            );  
-        }
-        //Envoi de la réponse 
-        if  ($erreur == null) { 
+        $listeGamme = $repository_gamme->findAll();
+        // on vérifie si il y a bien une liste de gamme
+        if ($listeGamme == null) {
             $reponse = new Response (json_encode(array(
-                'result' => "OK",
-                "listeGammes" => $listeReponse,
+                'resultat' => "Aucune gamme trouvée.",
                 )
             ));
-        }else{
+        } else {
+            $listeReponse = array();
+            foreach ($listeGamme as $gamme) 
+            {
+                $listeReponse[] = array(
+                    'id' => $gamme->getId(),
+                    'gamm_nom' => $gamme->getGammNom()
+                );  
+            }
+
             $reponse = new Response (json_encode(array(
-                'result' => $erreur,
+                'resultat' => "OK",
+                "listeGamme" => $listeReponse,
                 )
             ));
         }
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;
-    }
+    } 
 
     /**
     * Permet d'avoir la liste de tous les modules 
