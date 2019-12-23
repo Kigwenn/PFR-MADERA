@@ -26,6 +26,11 @@ class Remplissage
      */
     private $remp_description;
 
+    /**
+     * @ORM\Column(type="decimal", precision=6, scale=2)
+     */
+    private $remp_prix_unitaire;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +56,18 @@ class Remplissage
     public function setRempDescription(string $remp_description): self
     {
         $this->remp_description = $remp_description;
+
+        return $this;
+    }
+
+    public function getRempPrixUnitaire(): ?string
+    {
+        return $this->remp_prix_unitaire;
+    }
+
+    public function setRempPrixUnitaire(string $remp_prix_unitaire): self
+    {
+        $this->remp_prix_unitaire = $remp_prix_unitaire;
 
         return $this;
     }
