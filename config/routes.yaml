@@ -101,3 +101,8 @@ maison_liste:
     path:     /PFR-MADERA/maison/liste
     defaults: { _controller: 'App\Controller\MaisonController::listeMaison' }
     methods:  GET
+
+cctp_liste:
+    path:     /PFR-MADERA/cctp/liste
+    defaults: { _controller: 'App\Controller\CCTPController::listeCCTP' }
+    methods:  GET
