@@ -81,3 +81,8 @@ finitionExterieur_liste:
     path:     /PFR-MADERA/finitionExterieur/liste
     defaults: { _controller: 'App\Controller\FinitionExterieurController::listeFinitionExterieur' }
     methods:  GET
+
+finitionInterieur_liste:
+    path:     /PFR-MADERA/finitionInterieur/liste
+    defaults: { _controller: 'App\Controller\FinitionInterieurController::listeFinitionInterieur' }
+    methods:  GET

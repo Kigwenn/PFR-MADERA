@@ -31,7 +31,7 @@ class FinitionExterieurController extends AbstractController
         // on vérifie si il y a bien une liste de finitionExterieur
         if ($listeFinitionExterieur == null) {
             $reponse = new Response (json_encode(array(
-                'resultat' => "Aucune finitionExterieur trouvée.",
+                'resultat' => "Aucune finition trouvée.",
                 )
             ));
         } else {
