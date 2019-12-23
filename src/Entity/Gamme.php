@@ -24,11 +24,6 @@ class Gamme
     private $gamm_nom;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Module", mappedBy="gammeModule")
-     */
-    private $modules;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -38,7 +33,13 @@ class Gamme
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $finex;
+    private $fiex;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FinitionInterieur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $fiin;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
@@ -74,37 +75,6 @@ class Gamme
         return $this;
     }
 
-    /**
-     * @return Collection|Module[]
-     */
-    public function getModules(): Collection
-    {
-        return $this->modules;
-    }
-
-    public function addModule(Module $module): self
-    {
-        if (!$this->modules->contains($module)) {
-            $this->modules[] = $module;
-            $module->setGammeModule($this);
-        }
-
-        return $this;
-    }
-
-    public function removeModule(Module $module): self
-    {
-        if ($this->modules->contains($module)) {
-            $this->modules->removeElement($module);
-            // set the owning side to null (unless already changed)
-            if ($module->getGammeModule() === $this) {
-                $module->setGammeModule(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getRemp(): ?Remplissage
     {
         return $this->remp;
@@ -117,14 +87,26 @@ class Gamme
         return $this;
     }
 
-    public function getFinex(): ?FinitionExterieur
+    public function getFiex(): ?FinitionExterieur
     {
-        return $this->finex;
+        return $this->fiex;
     }
 
-    public function setFinex(?FinitionExterieur $finex): self
+    public function setFiex(?FinitionExterieur $fiex): self
     {
-        $this->finex = $finex;
+        $this->fiex = $fiex;
+
+        return $this;
+    }
+
+    public function getFiin(): ?FinitionInterieur
+    {
+        return $this->fiin;
+    }
+
+    public function setFiin(?FinitionInterieur $fiin): self
+    {
+        $this->fiin = $fiin;
 
         return $this;
     }
@@ -153,4 +135,6 @@ class Gamme
         return $this;
     }
 
+
+   
 }

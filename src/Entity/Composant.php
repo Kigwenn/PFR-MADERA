@@ -44,11 +44,6 @@ class Composant
     private $composantsStock;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Caracteristique", inversedBy="composants")
-     */
-    private $caracteristiquesComposant;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FamilleComposant", inversedBy="composant")
      */
     private $fami;

@@ -29,13 +29,8 @@ class Module
     private $modu_prix_unitaire;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Gamme", inversedBy="modules")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $gamm;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Devis")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $devi;
 
@@ -45,9 +40,9 @@ class Module
      */
     private $cctp;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
-     */
+    // /**
+    //  * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
+    //  */
     // private $composants;
 
     /**
@@ -60,13 +55,13 @@ class Module
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $finex;
+    private $fiex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionInterieur")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $finin;
+    private $fiin;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
@@ -75,13 +70,20 @@ class Module
     private $couv;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="modu")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Caracteristique", inversedBy="modules")
      */
-    // private $composantModules;
+     private $caracteristiquesModule;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Composant", inversedBy="modules")
+     */
+    private $composantsModule;
 
     public function __construct()
     {
-        // $this->composantModules = new ArrayCollection();
+        $this->composantModules = new ArrayCollection();
+        $this->caracteristiquesModule = new ArrayCollection();
+        $this->composantsModule = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,26 +115,14 @@ class Module
         return $this;
     }
 
-    public function getDevi(): ?int
+    public function getDevi(): ?Devis
     {
         return $this->devi;
     }
 
-    public function setDevi(?int $devi): self
+    public function setDevi(?Devis $devi): self
     {
         $this->devi = $devi;
-
-        return $this;
-    }
-
-    public function getGamm(): ?Gamme
-    {
-        return $this->gamm;
-    }
-
-    public function setGamm(?Gamme $gamm): self
-    {
-        $this->gamm = $gamm;
 
         return $this;
     }
@@ -149,18 +139,6 @@ class Module
         return $this;
     }
 
-    // public function getComposants(): ?ComposantModule
-    // {
-    //     return $this->composants;
-    // }
-
-    // public function setComposants(?ComposantModule $composants): self
-    // {
-    //     $this->composants = $composants;
-
-    //     return $this;
-    // }
-
     public function getRemp(): ?Remplissage
     {
         return $this->remp;
@@ -173,26 +151,26 @@ class Module
         return $this;
     }
 
-    public function getFinex(): ?FinitionExterieur
+    public function getFiex(): ?FinitionExterieur
     {
-        return $this->finex;
+        return $this->fiex;
     }
 
-    public function setFinex(?FinitionExterieur $finex): self
+    public function setFiex(?FinitionExterieur $fiex): self
     {
-        $this->finex = $finex;
+        $this->fiex = $fiex;
 
         return $this;
     }
 
-    public function getFinin(): ?FinitionInterieur
+    public function getFiin(): ?FinitionInterieur
     {
-        return $this->finin;
+        return $this->fiin;
     }
 
-    public function setFinin(?FinitionInterieur $finin): self
+    public function setFiin(?FinitionInterieur $fiin): self
     {
-        $this->finin = $finin;
+        $this->fiin = $fiin;
 
         return $this;
     }
@@ -210,33 +188,58 @@ class Module
     }
 
     /**
-     * @return Collection|ComposantModule[]
+     * @return Collection|Caracteristique[]
      */
-    // public function getComposantModules(): Collection
-    // {
-    //     return $this->composantModules;
-    // }
+    public function getCaracteristiquesModule(): Collection
+    {
+        return $this->caracteristiquesModule;
+    }
 
-    // public function addComposantModule(ComposantModule $composantModule): self
-    // {
-    //     if (!$this->composantModules->contains($composantModule)) {
-    //         $this->composantModules[] = $composantModule;
-    //         $composantModule->addModu($this);
-    //     }
+    public function addCaracteristiquesModule(Caracteristique $caracteristiquesModule): self
+    {
+        if (!$this->caracteristiquesModule->contains($caracteristiquesModule)) {
+            $this->caracteristiquesModule[] = $caracteristiquesModule;
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
-    // public function removeComposantModule(ComposantModule $composantModule): self
-    // {
-    //     if ($this->composantModules->contains($composantModule)) {
-    //         $this->composantModules->removeElement($composantModule);
-    //         $composantModule->removeModu($this);
-    //     }
+    public function removeCaracteristiquesModule(Caracteristique $caracteristiquesModule): self
+    {
+        if ($this->caracteristiquesModule->contains($caracteristiquesModule)) {
+            $this->caracteristiquesModule->removeElement($caracteristiquesModule);
+        }
 
-    //     return $this;
-    // }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Composant[]
+     */
+    public function getComposantsModule(): Collection
+    {
+        return $this->composantsModule;
+    }
+
+    public function addComposantsModule(Composant $composantsModule): self
+    {
+        if (!$this->composantsModule->contains($composantsModule)) {
+            $this->composantsModule[] = $composantsModule;
+        }
+
+        return $this;
+    }
+
+    public function removeComposantsModule(Composant $composantsModule): self
+    {
+        if ($this->composantsModule->contains($composantsModule)) {
+            $this->composantsModule->removeElement($composantsModule);
+        }
+
+        return $this;
+    }
 
 
 
+   
 }
