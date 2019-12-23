@@ -24,19 +24,31 @@ class ComposantModule
     private $como_quantite;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="composantModules")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Module")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $modu;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Composant", inversedBy="composantModules")
+     * @ORM\ManyToOne(targetEntity="App\Entity\composant")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $comp;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="composantModules")
+     */
+    // private $modu;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Composant", inversedBy="composantModules")
+     */
+    // private $comp;
+
     public function __construct()
     {
-        $this->modu = new ArrayCollection();
-        $this->comp = new ArrayCollection();
+        // $this->modu = new ArrayCollection();
+        // $this->comp = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,57 +68,81 @@ class ComposantModule
         return $this;
     }
 
-    /**
-     * @return Collection|Module[]
-     */
-    public function getModu(): Collection
+    public function getModu(): ?Module
     {
         return $this->modu;
     }
 
-    public function addModu(Module $modu): self
+    public function setModu(?Module $modu): self
     {
-        if (!$this->modu->contains($modu)) {
-            $this->modu[] = $modu;
-        }
+        $this->modu = $modu;
 
         return $this;
     }
 
-    public function removeModu(Module $modu): self
+    public function getComp(): ?composant
     {
-        if ($this->modu->contains($modu)) {
-            $this->modu->removeElement($modu);
-        }
+        return $this->comp;
+    }
+
+    public function setComp(?composant $comp): self
+    {
+        $this->comp = $comp;
 
         return $this;
     }
 
     /**
+     * @return Collection|Module[]
+     */
+    // public function getModu(): Collection
+    // {
+    //     return $this->modu;
+    // }
+
+    // public function addModu(Module $modu): self
+    // {
+    //     if (!$this->modu->contains($modu)) {
+    //         $this->modu[] = $modu;
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeModu(Module $modu): self
+    // {
+    //     if ($this->modu->contains($modu)) {
+    //         $this->modu->removeElement($modu);
+    //     }
+
+    //     return $this;
+    // }
+
+    /**
      * @return Collection|Composant[]
      */
-    public function getComp(): Collection
-    {
-        return $this->comp;
-    }
+    // public function getComp(): Collection
+    // {
+    //     return $this->comp;
+    // }
 
-    public function addComp(Composant $comp): self
-    {
-        if (!$this->comp->contains($comp)) {
-            $this->comp[] = $comp;
-        }
+    // public function addComp(Composant $comp): self
+    // {
+    //     if (!$this->comp->contains($comp)) {
+    //         $this->comp[] = $comp;
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeComp(Composant $comp): self
-    {
-        if ($this->comp->contains($comp)) {
-            $this->comp->removeElement($comp);
-        }
+    // public function removeComp(Composant $comp): self
+    // {
+    //     if ($this->comp->contains($comp)) {
+    //         $this->comp->removeElement($comp);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     
 }

@@ -36,7 +36,7 @@ class Composant
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Fournisseur", inversedBy="composants")
      */
-    private $fournisseurs;
+    // private $fournisseurs;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Stock", inversedBy="composants")
@@ -61,19 +61,19 @@ class Composant
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
      */
-    private $modules;
+    // private $modules;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\ComposantModule", mappedBy="comp")
      */
-    private $composantModules;
+    // private $composantModules;
 
     public function __construct()
     {
-        $this->fournisseurs = new ArrayCollection();
+        // $this->fournisseurs = new ArrayCollection();
         $this->composantsStock = new ArrayCollection();
         $this->caracteristiquesComposant = new ArrayCollection();
-        $this->composantModules = new ArrayCollection();
+        // $this->composantModules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,28 +132,28 @@ class Composant
     /**
      * @return Collection|Fournisseur[]
      */
-    public function getFournisseurs(): Collection
-    {
-        return $this->fournisseurs;
-    }
+    // public function getFournisseurs(): Collection
+    // {
+    //     return $this->fournisseurs;
+    // }
 
-    public function addFournisseur(Fournisseur $fournisseur): self
-    {
-        if (!$this->fournisseurs->contains($fournisseur)) {
-            $this->fournisseurs[] = $fournisseur;
-        }
+    // public function addFournisseur(Fournisseur $fournisseur): self
+    // {
+    //     if (!$this->fournisseurs->contains($fournisseur)) {
+    //         $this->fournisseurs[] = $fournisseur;
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeFournisseur(Fournisseur $fournisseur): self
-    {
-        if ($this->fournisseurs->contains($fournisseur)) {
-            $this->fournisseurs->removeElement($fournisseur);
-        }
+    // public function removeFournisseur(Fournisseur $fournisseur): self
+    // {
+    //     if ($this->fournisseurs->contains($fournisseur)) {
+    //         $this->fournisseurs->removeElement($fournisseur);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection|Stock[]
@@ -219,45 +219,45 @@ class Composant
         return $this;
     }
 
-    public function getModules(): ?ComposantModule
-    {
-        return $this->modules;
-    }
+    // public function getModules(): ?ComposantModule
+    // {
+    //     return $this->modules;
+    // }
 
-    public function setModules(?ComposantModule $modules): self
-    {
-        $this->modules = $modules;
+    // public function setModules(?ComposantModule $modules): self
+    // {
+    //     $this->modules = $modules;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection|ComposantModule[]
      */
-    public function getComposantModules(): Collection
-    {
-        return $this->composantModules;
-    }
+    // public function getComposantModules(): Collection
+    // {
+    //     return $this->composantModules;
+    // }
 
-    public function addComposantModule(ComposantModule $composantModule): self
-    {
-        if (!$this->composantModules->contains($composantModule)) {
-            $this->composantModules[] = $composantModule;
-            $composantModule->addComp($this);
-        }
+    // public function addComposantModule(ComposantModule $composantModule): self
+    // {
+    //     if (!$this->composantModules->contains($composantModule)) {
+    //         $this->composantModules[] = $composantModule;
+    //         $composantModule->addComp($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeComposantModule(ComposantModule $composantModule): self
-    {
-        if ($this->composantModules->contains($composantModule)) {
-            $this->composantModules->removeElement($composantModule);
-            $composantModule->removeComp($this);
-        }
+    // public function removeComposantModule(ComposantModule $composantModule): self
+    // {
+    //     if ($this->composantModules->contains($composantModule)) {
+    //         $this->composantModules->removeElement($composantModule);
+    //         $composantModule->removeComp($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     
 }
