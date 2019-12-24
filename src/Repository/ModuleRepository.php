@@ -47,4 +47,29 @@ class ModuleRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    // retourne la liste des modules de la gamme
+    public function rechercheModuleGamme($gamm_id): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id, c.pers_nom, c.pers_prenom, c.pers_mail')
+            ->where('c.pers_nom LIKE :recherche')
+            ->orWhere('c.pers_prenom LIKE :recherche')
+            ->orWhere('c.pers_mail LIKE :recherche')
+            ->setParameter('recherche', "%" . $recherche . "%");
+        return $qb->getQuery()->getResult();
+    }
+
+        // retourne la liste des modules de la gamme
+        public function rechercheModuleDevis($devi_id): array
+        {
+            $qb = $this->createQueryBuilder('c')
+                ->select('m.id, m.modu_nom, m.modu_prix_unitaire')
+                ->where('m.devi_id = :devi_id')
+                ->setParameter('devi_id', $devi_id);
+            return $qb->getQuery()->getResult();
+        }
+
+
 }

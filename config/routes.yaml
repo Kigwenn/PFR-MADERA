@@ -111,3 +111,8 @@ couverture_liste:
     path:     /PFR-MADERA/couverture/liste
     defaults: { _controller: 'App\Controller\CouvertureController::listeCouverture' }
     methods:  GET
+
+caracteristique_liste:
+    path:     /PFR-MADERA/caracteristique/liste
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristique' }
+    methods:  GET

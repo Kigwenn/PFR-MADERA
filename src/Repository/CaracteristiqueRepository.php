@@ -47,4 +47,16 @@ class CaracteristiqueRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // retourne la liste des modules de la gamme
+    public function rechercheCaracteristiqueModule($modu_id): array
+    {
+        $rawSql = "SELECT c.id, c.cara_section, c.cara_hauteur, c.cara_longueur, c.cara_type_angle, c.cara_degre_angle " . 
+            "FROM caracteristique AS c WHERE c.id IN" . 
+            "(SELECT mc.caracteristique_id FROM module_caracteristique AS mc WHERE mc.module_id = :modu_id)";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute(['modu_id' => $modu_id]);
+        return $stmt->fetchAll();
+    }
 }
