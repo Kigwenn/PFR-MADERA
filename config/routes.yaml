@@ -67,15 +67,20 @@ gamme_liste:
 #     defaults: { _controller: 'App\Controller\DevisController::modificationDevis' }
 #     methods:  PUT
 
-# devis_suppression:
-#     path:     /PFR-MADERA/devis/
-#     defaults: { _controller: 'App\Controller\DevisController::suppressionDevis' }
-#     methods:  DELETE
+devis_suppression:
+    path:     /PFR-MADERA/devis
+    defaults: { _controller: 'App\Controller\DevisController::suppressionDevis' }
+    methods:  DELETE
 
-# devis_liste:
-#     path:     /PFR-MADERA/devis/liste/
-#     defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
-#     methods:  GET
+devis_liste:
+    path:     /PFR-MADERA/devis/liste
+    defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
+    methods:  GET
+
+devis_listeDuClient:
+    path:     /PFR-MADERA/devis/listeDuClient
+    defaults: { _controller: 'App\Controller\DevisController::listeDuClient' }
+    methods:  GET
 
 finitionExterieur_liste:
     path:     /PFR-MADERA/finitionExterieur/liste

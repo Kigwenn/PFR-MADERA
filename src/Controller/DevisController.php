@@ -5,7 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Devis;
-use App\Entity\Utilisateur;
+use App\Entity\Client;
 use App\Entity\Maison;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DevisController extends AbstractController
 {
-
 
     /** 
     * Permet de créer un devis et son adresse 
@@ -86,7 +85,7 @@ class DevisController extends AbstractController
     }
     /**
     * Permet d'avoir le detail d'un deviss 
-    * @Route("/", name="devis_affichage", methods={"GET"});
+    * @Route("", name="devis_affichage", methods={"GET"});
     */
     public function affichageDevis(Request $requestjson) 
     {
@@ -189,22 +188,25 @@ class DevisController extends AbstractController
         
     /** 
     * Permet de supprimer un devis
-    * @Route("/", name="devis_suppression", methods={"DELETE"}),
+    * @Route("", name="devis_suppression", methods={"DELETE"}),
     */
     public function suppressionDevis(Request $requestjson){
+        $repository_client = $this->getDoctrine()->getRepository(Client::class); 
         $parametersAsArray = [];
-        $erreur = null;
+        $resultat = "OK";
         //Conversion dU JSON
         if ($content = $requestjson->getContent()) {
             $parametersAsArray = json_decode($content, true);
         }
+
         //Verification parametres
-        if ($parametersAsArray['id'] == null){
-            $erreur = "Il n'y a pas de paramètre.";
-        }else{
+        $parametresObligatoire[] = array('devi_id'); 
+        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
+        //Verification parametres
+        if ($resultat == "OK"){
             $entityManager = $this->getDoctrine()->getManager(); 
             $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
-            $devis = $repository_devis->find($parametersAsArray['id']);
+            $devis = $repository_devis->find($parametersAsArray['devi_id']);
             if ($devis == null) {
                 $erreur = "Le devis n'existe pas.";
             } else {
@@ -213,16 +215,16 @@ class DevisController extends AbstractController
             }
         }
         //Envoi de la réponse 
-        if  ($erreur == null) { 
+        if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
-                'result' => "OK",
-                'id' => $parametersAsArray['id'],
+                'resultat' => "OK",
+                'id' => $parametersAsArray['devi_id'],
                 )
             ));
         } else {
             $reponse = new Response (json_encode(array(
-                'result' => $erreur,
-                'id' => $parametersAsArray['id'],
+                'resultat' => $resultat,
+                'id' => $parametersAsArray['devi_id'],
                 )
             ));
         }
@@ -237,38 +239,82 @@ class DevisController extends AbstractController
     */
     public function listeDevis(Request $requestjson) 
     {
-        $erreur = null;
+        $resultat = "OK";
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
         //Recuperation de la liste de devis
         $listeDevis = $repository_devis->findAll();
         //Verification de la base
         if ($listeDevis == null) {
-            $erreur = "Aucun devis trouvée.";
+            $resultat = "Aucun devis trouvée.";
+        }else{
+            $listeReponse = array();
+            foreach ($listeDevis as $devis) 
+            {
+                $listeReponse[] = array(
+                    'id' => $devis->getId(),
+                    'devi_nom' => $devis->getDeviNom(),
+                    'devi_date' => $devis->getDeviDate(),
+                    'devi_prix' => $devis->getDeviPrix()  
+                );  
+            }
         }
-        $listeReponse = array();
-        foreach ($listeDevis as $devis) 
-        {
-            $utilisateur = $devis->getUtilisateurDevis();
-            $listeReponse[] = array(
-                'id' => $devis->getId(),
-                'nom_devis' => $devis->getNomDevis(),
-                'date_devis' => $devis->getDateDevis(),
-                'prix_total' => $devis->getPrixTotal(),
-                'id_utilisateur' => $utilisateur->getId(),
-                'nom_utilisateur' => $utilisateur->getNomUtilisateur(),
-                'prenom_utilisateur' => $utilisateur->getPrenomUtilisateur(),   
-            );  
-        }
+
         //Envoi de la réponse 
-        if  ($erreur == null) { 
+        if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
-                'result' => "OK",
+                'resultat' => "OK",
                 "listeDevis" => $listeReponse,
                 )
             ));
         }else{
             $reponse = new Response (json_encode(array(
-                'result' => $erreur,
+                'resultat' => $resultat,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
+
+    /**
+    * Permet d'avoir la liste de tous les devis du client
+    * @Route("/listeDuClient", name="devis_listeDuClient", methods={"GET"});
+    */
+    public function listeDuClient(Request $requestjson) 
+    {
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
+        $repository_client = $this->getDoctrine()->getRepository(Client::class);
+        $parametersAsArray = [];
+        $resultat = "OK";
+        //Conversion dU JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        $parametresObligatoire[] = array('clie_id'); 
+        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
+
+        if ($resultat == "OK"){
+            $listeReponse = $repository_devis->rechercheDevisClient($parametersAsArray['clie_id']);
+            
+            if ($listeReponse == null){
+                $resultat = "Aucuns résultats."; 
+            }
+        }
+
+        //Envoi de la réponse 
+        if  ($resultat == "OK") { 
+            $reponse = new Response (json_encode(array(
+                'resultat' => "OK",
+                "listeDevis" => $listeReponse,
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'resultat' => $resultat,
                 )
             ));
         }

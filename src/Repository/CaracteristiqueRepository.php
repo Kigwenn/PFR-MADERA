@@ -48,7 +48,7 @@ class CaracteristiqueRepository extends ServiceEntityRepository
     }
     */
 
-    // retourne la liste des modules de la gamme
+    // retourne la liste des caracteristiques du module
     public function rechercheCaracteristiqueModule($modu_id): array
     {
         $rawSql = "SELECT c.id, c.cara_section, c.cara_hauteur, c.cara_longueur, c.cara_type_angle, c.cara_degre_angle " . 

@@ -47,4 +47,14 @@ class DevisRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    // retourne la liste des modules de la gamme
+    public function rechercheDevisClient($clie_id): array
+    {
+        $rawSql = "SELECT d.id, d.devi_nom, d.devi_date, d.devi_prix FROM devis AS d WHERE d.clie_id = :clie_id";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute(['clie_id' => $clie_id]);
+        return $stmt->fetchAll();
+    }
 }
