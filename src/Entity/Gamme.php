@@ -24,10 +24,10 @@ class Gamme
     private $gamm_nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Isolant")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $remp;
+    private $isol;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
@@ -75,14 +75,14 @@ class Gamme
         return $this;
     }
 
-    public function getRemp(): ?Remplissage
+    public function getIsol(): ?Isolant
     {
-        return $this->remp;
+        return $this->isol;
     }
 
-    public function setRemp(?Remplissage $remp): self
+    public function setIsol(?Isolant $isol): self
     {
-        $this->remp = $remp;
+        $this->isol = $isol;
 
         return $this;
     }
@@ -134,7 +134,5 @@ class Gamme
 
         return $this;
     }
-
-
    
 }

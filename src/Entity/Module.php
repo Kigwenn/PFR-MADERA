@@ -46,12 +46,6 @@ class Module
     // private $composants;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Remplissage")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $remp;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -135,18 +129,6 @@ class Module
     public function setCctp(?CCTP $cctp): self
     {
         $this->cctp = $cctp;
-
-        return $this;
-    }
-
-    public function getRemp(): ?Remplissage
-    {
-        return $this->remp;
-    }
-
-    public function setRemp(?Remplissage $remp): self
-    {
-        $this->remp = $remp;
 
         return $this;
     }
@@ -237,9 +219,5 @@ class Module
         }
 
         return $this;
-    }
-
-
-
-   
+    } 
 }

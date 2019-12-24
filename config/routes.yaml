@@ -87,9 +87,9 @@ finitionInterieur_liste:
     defaults: { _controller: 'App\Controller\FinitionInterieurController::listeFinitionInterieur' }
     methods:  GET
 
-remplissage_liste:
-    path:     /PFR-MADERA/remplissage/liste
-    defaults: { _controller: 'App\Controller\RemplissageController::listeRemplissage' }
+isolant_liste:
+    path:     /PFR-MADERA/isolant/liste
+    defaults: { _controller: 'App\Controller\IsolantController::listeIsolant' }
     methods:  GET
 
 huisseries_liste:
