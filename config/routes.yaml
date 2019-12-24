@@ -106,3 +106,8 @@ cctp_liste:
     path:     /PFR-MADERA/cctp/liste
     defaults: { _controller: 'App\Controller\CCTPController::listeCCTP' }
     methods:  GET
+
+couverture_liste:
+    path:     /PFR-MADERA/couverture/liste
+    defaults: { _controller: 'App\Controller\CouvertureController::listeCouverture' }
+    methods:  GET
