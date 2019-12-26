@@ -2,6 +2,11 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
+pays_liste:
+    path:     /PFR-MADERA/pays/liste
+    defaults: { _controller: 'App\Controller\PaysController::listePays' }
+    methods:  GET
+
 client_creation:
     path:     /PFR-MADERA/client
     defaults: { _controller: 'App\Controller\ClientController::creationClient' }
@@ -12,35 +17,25 @@ client_affichage:
     defaults: { _controller: 'App\Controller\ClientController::affichageClient' }
     methods:  GET
 
-pays_liste:
-    path:     /PFR-MADERA/pays/liste
-    defaults: { _controller: 'App\Controller\PaysController::listePays' }
-    methods:  GET
+client_modification:
+    path:     /PFR-MADERA/client
+    defaults: { _controller: 'App\Controller\ClientController::modificationClient' }
+    methods:  PUT
+
+client_suppression:
+    path:     /PFR-MADERA/client
+    defaults: { _controller: 'App\Controller\ClientController::suppressionClient' }
+    methods:  DELETE
 
 client_liste:
     path:     /PFR-MADERA/client/liste/
     defaults: { _controller: 'App\Controller\ClientController::listeClient' }
     methods:  GET
 
-# utilisateur_devis:
-#     path:     /PFR-MADERA/utilisateur/devis/
-#     defaults: { _controller: 'App\Controller\UtilisateurController::devisUtilisateur' }
-#     methods:  GET
-
 client_recherche:
     path:     /PFR-MADERA/client/recherche
     defaults: { _controller: 'App\Controller\ClientController::rechercheClient' }
     methods:  GET
-
-# utilisateur_modification:
-#     path:     /PFR-MADERA/utilisateur/
-#     defaults: { _controller: 'App\Controller\UtilisateurController::modificationUtilisateur' }
-#     methods:  PUT
-
-client_suppression:
-    path:     /PFR-MADERA/client
-    defaults: { _controller: 'App\Controller\ClientController::suppressionClient' }
-    methods:  DELETE
 
 gamme_liste:
     path:     /PFR-MADERA/gamme/liste

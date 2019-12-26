@@ -14,32 +14,32 @@ abstract class Personne
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=5)
      */
-    private $pers_sexe;
+    protected $pers_sexe;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $pers_nom;
+    protected $pers_nom;
 
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $pers_prenom;
+    protected $pers_prenom;
 
     /**
      * @ORM\Column(type="string", length=200)
      */
-    private $pers_mail;
+    protected $pers_mail;
 
     /**
      * @ORM\Column(type="string", length=10)
      */
-    private $pers_tel;
+    protected $pers_tel;
 
     public function getId(): ?int
     {
@@ -106,4 +106,5 @@ abstract class Personne
         return $this;
     }
 
+  
 }

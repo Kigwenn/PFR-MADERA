@@ -11,12 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Client extends Personne
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
@@ -32,11 +27,6 @@ class Client extends Personne
     public function __construct()
     {
         $this->devi = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getAdre(): ?Adresse
@@ -82,6 +72,7 @@ class Client extends Personne
         return $this;
     }
 
+   
     
 
 }

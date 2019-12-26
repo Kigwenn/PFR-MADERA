@@ -12,13 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Commercial extends Personne
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="string", length=50)
      */
     private $comm_mdp;
@@ -41,11 +34,6 @@ class Commercial extends Personne
     public function __construct()
     {
         $this->listeDevis = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getCommMdp(): ?string

@@ -63,6 +63,16 @@ class ClientRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    // retourne le client 
+    public function findByRecuperationClient($id): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.id = :id')
+            ->setParameter('id', $id);
+        return $qb->getQuery()->getResult();
+    }
+    
+
     //Vérification des parametres
     public function verificationParametre(array $parametresObligatoire, array $parametersAsArray): string
     {

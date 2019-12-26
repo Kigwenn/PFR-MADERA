@@ -89,13 +89,9 @@ class ClientController extends AbstractController
 
         //Envoi de la réponse 
         if  ($resultat == "OK") { 
-            $id = $repository_client->clientExistant($parametersAsArray['pers_nom'],
-                $parametersAsArray['pers_prenom'], $parametersAsArray['pers_mail'])[0];
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'id' => $id['id'],///$id, //$client->getId() renvoie null
-                'nom_client' => $client->getPersNom(), 
-                'prenom_client' => $client->getPersPrenom()
+                'id' => $client->getId()
                 )
             ));
         } else {
@@ -117,6 +113,7 @@ class ClientController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
+        $repository_personne = $this->getDoctrine()->getRepository(Personne::class);
         $parametersAsArray = [];
         $resultat = "OK";
 
@@ -126,12 +123,19 @@ class ClientController extends AbstractController
         }
 
         //Verification parametres
-        $parametresObligatoire[] = array('id'); 
+        $parametresObligatoire[] = array('clie_id'); 
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
-
-        //On verifie si l'client existe bien
+        //On verifie si le client existe bien
         if ($resultat == "OK"){
-            $client = $repository_client->find($parametersAsArray['id']);//$parametersAsArray['id']);
+            $listeClient = $repository_client->findAll();
+            $client = null;
+            foreach ($listeClient as $c) 
+            {
+                if ($c->getId() == $parametersAsArray['clie_id']){
+                    $client = $c;
+                    break;
+                }  
+            }
             if ($client == null){
                 $resultat = "Le client n'existe pas.";
             }
@@ -140,27 +144,113 @@ class ClientController extends AbstractController
         //Envoi de la réponse 
         if  ($resultat == "OK") { 
             $repository_adresse = $this->getDoctrine()->getRepository(Adresse::class);  
-            //$adresse = $repository_adresse->find($client->getAdre()->getId());
+            $adresse = $repository_adresse->find($client->getAdre()->getId());
             $reponse = new Response(json_encode(array(
-                'result' => "OK",
-                //'id' => $client->getId(),
-                'pers_sexe' => $client->getPersSexe(),
-                'pers_nom' => $client->getPersNom(),
-                'pers_prenom' => $client->getPersPrenom(),
-                'pers_mail' => $client->getPersMail(),
-                'pers_tel' => $client->getPersTel(),
-                //'pays_id' => $adresse->getPays($pays)->getId(),
+                'resultat' => "OK",
+                'pays_id' => $adresse->getPays()->getId(),
                 'adre_region' => $adresse->getAdreRegion(),
                 'adre_ville' => $adresse->getAdreVille(),
                 'adre_cp' => $adresse->getAdreCp(),
                 'adre_rue' => $adresse->getAdreRue(),
                 'adre_complement' => $adresse->getAdreComplement(),
                 'adre_info' => $adresse->getAdreInfo(),
+                'clie_id' => $client->getId(),
+                'pers_sexe' => $client->getPersSexe(),
+                'pers_nom' => $client->getPersNom(),
+                'pers_prenom' => $client->getPersPrenom(),
+                'pers_mail' => $client->getPersMail(),
+                'pers_tel' => $client->getPersTel()
                 )
             ));
         } else {
             $reponse = new Response (json_encode(array(
                 'result' => $resultat,
+                )
+            ));
+        }
+        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
+    /** 
+    * Permet de modifier un client et son adresse 
+    * @Route("", name="client_modification", methods={"PUT"}) 
+    */
+    public function modificationClient(Request $requestjson)
+    {
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $repository_client = $this->getDoctrine()->getRepository(Client::class);
+        $parametersAsArray = [];
+        $resultat = "OK";
+
+        //Conversion du JSON
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+
+        //Vérification des parametres
+        $parametresObligatoire[] = array('clie_id', 'pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel',
+            'pays_id', 'adre_rue', 'adre_ville', 'adre_cp', 'adre_region', 'adre_complement', 'adre_info');
+        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
+        // Vérification du pays et du client
+        if ($resultat == "OK")
+        {
+            $listeClient = $repository_client->findAll();
+            $client = null;
+            foreach ($listeClient as $c) 
+            {
+                if ($c->getId() == $parametersAsArray['clie_id']){
+                    $client = $c;
+                    break;
+                }  
+            }
+            if ($client == null){
+                $resultat = "Le client n'existe pas.";
+            } else if (count($repository_client->clientExistant($parametersAsArray['pers_nom'],
+            $parametersAsArray['pers_prenom'], $parametersAsArray['pers_mail'])) > 0) 
+            {
+                $resultat =  "Client déjà existant.";
+            } else {
+                $repository_pays = $this->getDoctrine()->getRepository(Pays::class); 
+                $pays = $repository_pays->find($parametersAsArray['pays_id']); 
+                if ($pays == null) {
+                    $resultat =  "Pays introuvable.";
+                }           
+            }
+        }
+
+        //Modification du client
+        if  ($resultat == "OK") {
+            $adresse = $client->getAdre();
+            $adresse->setPays($pays);
+            $adresse->setAdreRegion($parametersAsArray['adre_region']);
+            $adresse->setAdreVille($parametersAsArray['adre_ville']);
+            $adresse->setAdreCp($parametersAsArray['adre_cp']);
+            $adresse->setAdreRue($parametersAsArray['adre_rue']);
+            $adresse->setAdreComplement($parametersAsArray['adre_complement']);
+            $adresse->setAdreInfo($parametersAsArray['adre_info']);
+            $entityManager->persist($adresse);
+            $client->setPersSexe($parametersAsArray['pers_sexe']);
+            $client->setPersNom($parametersAsArray['pers_nom']);
+            $client->setPersPrenom($parametersAsArray['pers_prenom']);
+            $client->setPersMail($parametersAsArray['pers_mail']);
+            $client->setPersTel($parametersAsArray['pers_tel']);
+            $client->setAdre($adresse); 
+            $entityManager->persist($client); 
+            $entityManager->flush();
+        }
+
+        //Envoi de la réponse 
+        if  ($resultat == "OK") { 
+            $reponse = new Response (json_encode(array(
+                'resultat' => "OK",
+                'id' => $client->getId()
+                )
+            ));
+        } else {
+            $reponse = new Response (json_encode(array(
+                'resultat' => $resultat
                 )
             ));
         }
@@ -185,24 +275,34 @@ class ClientController extends AbstractController
         }
 
         //Verification parametres
-        $parametresObligatoire[] = array('id'); 
+        $parametresObligatoire[] = array('clie_id'); 
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         if ($resultat == "OK"){
-            $client = $repository_client->find($parametersAsArray['id']);
-            if ($client == null) {
-                $resultat = "Le client n'existe pas.";
-            } else {
-                //Suppression
-                $entityManager->remove($client);
-                $entityManager->flush();  
+            $listeClient = $repository_client->findAll();
+            //On verifie si le client existe bien
+            if ($resultat == "OK"){
+                $client = null;
+                foreach ($listeClient as $c) 
+                {
+                    if ($c->getId() == $parametersAsArray['clie_id']){
+                        $client = $c;
+                        break;
+                    }  
+                }
+                if ($client == null){
+                    $resultat = "Le client n'existe pas.";
+                }
             }
         }
 
         //Envoi de la réponse 
-        if  ($resultat != "OK") { 
+        if  ($resultat == "OK") { 
+            //Suppression
+            $entityManager->remove($client);
+            $entityManager->flush();  
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'id' => $parametersAsArray['id'],
+                'clie_id' => $parametersAsArray['clie_id'],
                 )
             ));
         } else {
