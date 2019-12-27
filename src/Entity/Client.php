@@ -11,7 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Client extends Personne
 {
-
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
@@ -72,7 +77,11 @@ class Client extends Personne
         return $this;
     }
 
-   
-    
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+
 
 }

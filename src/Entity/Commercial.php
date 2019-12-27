@@ -12,6 +12,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Commercial extends Personne
 {
     /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    /**
      * @ORM\Column(type="string", length=50)
      */
     private $comm_mdp;
@@ -101,6 +108,11 @@ class Commercial extends Personne
         }
 
         return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     

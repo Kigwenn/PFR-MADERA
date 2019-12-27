@@ -2,10 +2,6 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-pays_liste:
-    path:     /PFR-MADERA/pays/liste
-    defaults: { _controller: 'App\Controller\PaysController::listePays' }
-    methods:  GET
 
 client_creation:
     path:     /PFR-MADERA/client
@@ -37,30 +33,45 @@ client_recherche:
     defaults: { _controller: 'App\Controller\ClientController::rechercheClient' }
     methods:  GET
 
-gamme_liste:
-    path:     /PFR-MADERA/gamme/liste
-    defaults: { _controller: 'App\Controller\GammeController::listeGamme' }
+commercial_creation:
+    path:     /PFR-MADERA/commercial
+    defaults: { _controller: 'App\Controller\CommercialController::creationCommercial' }
+    methods:  POST
+
+commercial_affichage:
+    path:     /PFR-MADERA/commercial
+    defaults: { _controller: 'App\Controller\CommercialController::affichageCommercial' }
     methods:  GET
 
-# gamme_modules:
-#     path:     /PFR-MADERA/gamme/modules/
-#     defaults: { _controller: 'App\Controller\GammeController::listeModules' }
-#     methods:  GET
+commercial_modification:
+    path:     /PFR-MADERA/commercial
+    defaults: { _controller: 'App\Controller\CommercialController::modificationCommercial' }
+    methods:  PUT
 
-# devis_creation:
-#     path:     /PFR-MADERA/devis/
-#     defaults: { _controller: 'App\Controller\DevisController::creationDevis' }
-#     methods:  POST
+commercial_suppression:
+    path:     /PFR-MADERA/commercial
+    defaults: { _controller: 'App\Controller\CommercialController::suppressionCommercial' }
+    methods:  DELETE
 
-# devis_affichage:
-#     path:     /PFR-MADERA/devis/
-#     defaults: { _controller: 'App\Controller\DevisController::affichageDevis' }
-#     methods:  GET
+commercial_liste:
+    path:     /PFR-MADERA/commercial/liste
+    defaults: { _controller: 'App\Controller\CommercialController::listeCommercial' }
+    methods:  GET
+
+devis_creation:
+    path:     /PFR-MADERA/devis
+    defaults: { _controller: 'App\Controller\DevisController::creationDevis' }
+    methods:  POST
+
+devis_affichage:
+    path:     /PFR-MADERA/devis
+    defaults: { _controller: 'App\Controller\DevisController::affichageDevis' }
+    methods:  GET
  
-# devis_modification:
-#     path:     /PFR-MADERA/devis/
-#     defaults: { _controller: 'App\Controller\DevisController::modificationDevis' }
-#     methods:  PUT
+devis_modification:
+    path:     /PFR-MADERA/devis
+    defaults: { _controller: 'App\Controller\DevisController::modificationDevis' }
+    methods:  PUT
 
 devis_suppression:
     path:     /PFR-MADERA/devis
@@ -75,6 +86,11 @@ devis_liste:
 devis_listeDuClient:
     path:     /PFR-MADERA/devis/listeDuClient
     defaults: { _controller: 'App\Controller\DevisController::listeDuClient' }
+    methods:  GET
+
+pays_liste:
+    path:     /PFR-MADERA/pays/liste
+    defaults: { _controller: 'App\Controller\PaysController::listePays' }
     methods:  GET
 
 finitionExterieur_liste:
@@ -116,3 +132,13 @@ caracteristique_liste:
     path:     /PFR-MADERA/caracteristique/liste
     defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristique' }
     methods:  GET
+
+gamme_liste:
+    path:     /PFR-MADERA/gamme/liste
+    defaults: { _controller: 'App\Controller\GammeController::listeGamme' }
+    methods:  GET
+
+# gamme_modules:
+#     path:     /PFR-MADERA/gamme/modules/
+#     defaults: { _controller: 'App\Controller\GammeController::listeModules' }
+#     methods:  GET

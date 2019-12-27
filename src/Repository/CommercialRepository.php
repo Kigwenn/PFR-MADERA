@@ -47,4 +47,18 @@ class CommercialRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // retourne l'id du client si il existe
+    public function commercialExistant($nom, $prenom, $mail): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->where('c.pers_nom = :nom')
+            ->andWhere('c.pers_prenom = :prenom')
+            ->andWhere('c.pers_mail = :mail')
+            ->setParameter('nom', $nom)
+            ->setParameter('prenom', $prenom)
+            ->setParameter('mail', $mail);
+        return $qb->getQuery()->getResult();
+    }
 }
