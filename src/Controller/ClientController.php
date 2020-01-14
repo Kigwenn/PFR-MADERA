@@ -16,16 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ClientController extends AbstractController
 {
-    /**
-     * @Route("/", name="client")
-     * 
-     */
-    public function index()
-    {
-        return $this->render('client/index.html.twig', [
-            'controller_name' => 'ClientController',
-        ]);
-    }
+//    /**
+//     * @Route("/", name="client")
+//     *
+//     */
+//    public function index()
+//    {
+//        return $this->render('client/index.html.twig', [
+//            'controller_name' => 'ClientController',
+//        ]);
+//    }
 
 
     /** 
@@ -107,9 +107,9 @@ class ClientController extends AbstractController
 
      /**
     * Permet d'avoir le detail d'un clients 
-    * @Route("", name="client_affichage", methods={"GET"});
+    * @Route("{id}", name="client_affichage", methods={"GET"});
     */
-    public function affichageClient(Request $requestjson) 
+    public function affichageClient($id)
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
@@ -117,21 +117,13 @@ class ClientController extends AbstractController
         $parametersAsArray = [];
         $resultat = "OK";
 
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
-
-        //Verification parametres
-        $parametresObligatoire[] = array('clie_id'); 
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         //On verifie si le client existe bien
         if ($resultat == "OK"){
             $listeClient = $repository_client->findAll();
             $client = null;
             foreach ($listeClient as $c) 
             {
-                if ($c->getId() == $parametersAsArray['clie_id']){
+                if ($c->getId() == $id){
                     $client = $c;
                     break;
                 }  
@@ -154,7 +146,7 @@ class ClientController extends AbstractController
                 'adre_rue' => $adresse->getAdreRue(),
                 'adre_complement' => $adresse->getAdreComplement(),
                 'adre_info' => $adresse->getAdreInfo(),
-                'clie_id' => $client->getId(),
+                'id' => $client->getId(),
                 'pers_sexe' => $client->getPersSexe(),
                 'pers_nom' => $client->getPersNom(),
                 'pers_prenom' => $client->getPersPrenom(),
@@ -190,7 +182,7 @@ class ClientController extends AbstractController
         }
 
         //Vérification des parametres
-        $parametresObligatoire[] = array('clie_id', 'pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel',
+        $parametresObligatoire[] = array('id', 'pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel',
             'pays_id', 'adre_rue', 'adre_ville', 'adre_cp', 'adre_region', 'adre_complement', 'adre_info');
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Vérification du pays et du client
@@ -200,7 +192,7 @@ class ClientController extends AbstractController
             $client = null;
             foreach ($listeClient as $c) 
             {
-                if ($c->getId() == $parametersAsArray['clie_id']){
+                if ($c->getId() == $parametersAsArray['id']){
                     $client = $c;
                     break;
                 }  
@@ -275,7 +267,7 @@ class ClientController extends AbstractController
         }
 
         //Verification parametres
-        $parametresObligatoire[] = array('clie_id'); 
+        $parametresObligatoire[] = array('id');
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         if ($resultat == "OK"){
             $listeClient = $repository_client->findAll();
@@ -284,7 +276,7 @@ class ClientController extends AbstractController
                 $client = null;
                 foreach ($listeClient as $c) 
                 {
-                    if ($c->getId() == $parametersAsArray['clie_id']){
+                    if ($c->getId() == $parametersAsArray['id']){
                         $client = $c;
                         break;
                     }  
@@ -302,7 +294,7 @@ class ClientController extends AbstractController
             $entityManager->flush();  
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'clie_id' => $parametersAsArray['clie_id'],
+                'id' => $parametersAsArray['id'],
                 )
             ));
         } else {

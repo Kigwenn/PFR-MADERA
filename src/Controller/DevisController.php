@@ -149,22 +149,16 @@ class DevisController extends AbstractController
     * Permet d'avoir le detail d'un deviss 
     * @Route("", name="devis_affichage", methods={"GET"});
     */
-    public function affichageDevis(Request $requestjson) 
+    public function affichageDevis($id)
     {
         $parametersAsArray = [];
         $resultat = "OK";
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
-        //Verification parametres
-        $parametresObligatoire[] = array('devi_id'); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
+
         //On verifie si l'devis existe bien
         if ($resultat == "OK"){
             $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
-            $devis = $repository_devis->find($parametersAsArray['devi_id']);
+            $devis = $repository_devis->find($id);
             if ($devis == null){
                 $resultat = "Le devis n'existe pas.";
             }
@@ -175,7 +169,7 @@ class DevisController extends AbstractController
             $client = $repository_devis->rechercheClient($devis->getId());
             $reponse = new Response(json_encode(array(
                 'result' => "OK",
-                'devi_id' => $devis->getId(),
+                'id' => $devis->getId(),
                 'etap_id' => $devis->getEtap()->getId(),
                 'etat_id' => $devis->getEtat()->getId(),
                 'gamm_id' => $devis->getGamm()->getId(),
@@ -385,7 +379,7 @@ class DevisController extends AbstractController
 
     /**
     * Permet d'avoir la liste de tous les devis 
-    * @Route("/liste/", name="devis_liste", methods={"GET"});
+    * @Route("", name="devis_liste", methods={"GET"});
     */
     public function listeDevis(Request $requestjson) 
     {
@@ -427,7 +421,6 @@ class DevisController extends AbstractController
         return $reponse;
     }
 
-
     /**
     * Permet d'avoir la liste de tous les devis du client
     * @Route("/listeDuClient", name="devis_listeDuClient", methods={"GET"});
@@ -444,14 +437,14 @@ class DevisController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('clie_id'); 
+        $parametresObligatoire[] = array('clie_id');
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
 
         if ($resultat == "OK"){
             $listeReponse = $repository_devis->rechercheDevisClient($parametersAsArray['clie_id']);
-            
+
             if ($listeReponse == null){
-                $resultat = "Aucuns résultats."; 
+                $resultat = "Aucuns résultats.";
             }
         }
 

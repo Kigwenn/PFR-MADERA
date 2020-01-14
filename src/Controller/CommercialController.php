@@ -15,17 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CommercialController extends AbstractController
 {
-    /**
-     * @Route("/", name="commercial")
-     * 
-     */
-    public function index()
-    {
-        return $this->render('commercial/index.html.twig', [
-            'controller_name' => 'CommercialController',
-        ]);
-    }
-
+//    /**
+//     * @Route("/", name="commercial")
+//     *
+//     */
+//    public function index()
+//    {
+//        return $this->render('commercial/index.html.twig', [
+//            'controller_name' => 'CommercialController',
+//        ]);
+//    }
 
     /** 
     * Permet de créer un commercial et son adresse 
@@ -45,7 +44,7 @@ class CommercialController extends AbstractController
         }
 
         //Vérification des parametres
-        $parametresObligatoire[] = array('pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel', 'comm_mdp');
+        $parametresObligatoire[] = array('pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel', 'comm_mdp', 'id');
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Vérification du pays et du commercial
         if ($resultat == "OK")
@@ -89,31 +88,22 @@ class CommercialController extends AbstractController
 
      /**
     * Permet d'avoir le detail d'un commercials 
-    * @Route("", name="commercial_affichage", methods={"GET"});
+    * @Route("{id}", name="commercial_affichage", methods={"GET"});
     */
-    public function affichageCommercial(Request $requestjson) 
+    public function affichageCommercial(int $id)
     {
-        $entityManager = $this->getDoctrine()->getManager(); 
+        $entityManager = $this->getDoctrine()->getManager();
         $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
-        $parametersAsArray = [];
         $resultat = "OK";
 
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
-
-        //Verification parametres
-        $parametresObligatoire[] = array('comm_id'); 
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         //On verifie si le commercial existe bien
         if ($resultat == "OK"){
             $listeCommercial = $repository_commercial->findAll();
             $commercial = null;
             foreach ($listeCommercial as $c) 
             {
-                if ($c->getId() == $parametersAsArray['comm_id']){
+                if ($c->getId() == $id){
                     $commercial = $c;
                     break;
                 }  
@@ -127,7 +117,7 @@ class CommercialController extends AbstractController
         if  ($resultat == "OK") { 
             $reponse = new Response(json_encode(array(
                 'resultat' => "OK",
-                'comm_id' => $commercial->getId(),
+                'id' => $commercial->getId(),
                 'pers_sexe' => $commercial->getPersSexe(),
                 'pers_nom' => $commercial->getPersNom(),
                 'pers_prenom' => $commercial->getPersPrenom(),
@@ -164,7 +154,7 @@ class CommercialController extends AbstractController
         }
 
         //Vérification des parametres
-        $parametresObligatoire[] = array('comm_id', 'pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel', 'comm_mdp');
+        $parametresObligatoire[] = array('id', 'pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel', 'comm_mdp');
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Vérification du pays et du commercial
@@ -174,7 +164,7 @@ class CommercialController extends AbstractController
             $commercial = null;
             foreach ($listeCommercial as $c) 
             {
-                if ($c->getId() == $parametersAsArray['comm_id']){
+                if ($c->getId() == $parametersAsArray['id']){
                     $commercial = $c;
                     break;
                 }  
@@ -204,7 +194,7 @@ class CommercialController extends AbstractController
         if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'comm_id' => $commercial->getId()
+                'id' => $commercial->getId()
                 )
             ));
         } else {
@@ -220,23 +210,16 @@ class CommercialController extends AbstractController
 
     /** 
     * Permet de supprimer un commercial et son adresse grâce à l'id de l'commercial
-    * @Route("", name="commercial_suppression", methods={"DELETE"}),
+    * @Route("{id}", name="commercial_suppression", methods={"DELETE"}),
     */
-    public function suppressionCommercial(Request $requestjson){
+    public function suppressionCommercial(int $id){
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class); 
         $parametersAsArray = [];
         $resultat = "OK";
 
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
-
         //Verification parametres
-        $parametresObligatoire[] = array('comm_id'); 
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         if ($resultat == "OK"){
             $listeCommercial = $repository_commercial->findAll();
             //On verifie si le commercial existe bien
@@ -244,7 +227,7 @@ class CommercialController extends AbstractController
                 $commercial = null;
                 foreach ($listeCommercial as $c) 
                 {
-                    if ($c->getId() == $parametersAsArray['comm_id']){
+                    if ($c->getId() == $id){
                         $commercial = $c;
                         break;
                     }  
@@ -262,7 +245,7 @@ class CommercialController extends AbstractController
             $entityManager->flush();  
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'comm_id' => $parametersAsArray['comm_id'],
+                'cid' => $id,
                 )
             ));
         } else {
@@ -276,11 +259,9 @@ class CommercialController extends AbstractController
         return $reponse;        
     }
 
-
-
     /**
     * Permet d'avoir la liste de tous les utilisateurs 
-    * @Route("/liste", name="commercial_liste", methods={"GET"});
+    * @Route("", name="commercial_liste", methods={"GET"});
     */
     public function listeCommercial(Request $requestjson) 
     {
@@ -298,7 +279,7 @@ class CommercialController extends AbstractController
             foreach ($listeCommercial as $commercial) 
             {
                 $listeReponse[] = array(
-                    'comm_id' => $commercial->getId(),
+                    'id' => $commercial->getId(),
                     'pers_nom' => $commercial->getPersNom(),
                     'pers_prenom' => $commercial->getPersPrenom(),
                     'pers_mail' => $commercial->getPersMail(),
@@ -311,9 +292,27 @@ class CommercialController extends AbstractController
                 )
             ));
         }
-        $reponse->headers->set("Content-Type", "application/json"); 
-        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
-    }   
+    }
+    /**
+     * Permet d'avoir la liste de tous les utilisateurs
+     * @Route("count", name="commercial_count", methods={"GET"});
+     */
+    public function countCommercial()
+    {
+        $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
+        //Recuperation de la liste de commercial
+        $listeCommercial = $repository_commercial->findAll();
+        $count = count($listeCommercial);
+        $reponse = new Response (json_encode(array(
+                'resultat' => "OK",
+                "count" => $count
+            )));
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
+        return $reponse;
+    }
 
 }
