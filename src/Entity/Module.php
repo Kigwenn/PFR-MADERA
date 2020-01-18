@@ -24,7 +24,7 @@ class Module
     private $modu_nom;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $modu_prix_unitaire;
 
@@ -47,21 +47,27 @@ class Module
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $fiex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionInterieur")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $fiin;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $couv;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Isolant")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $isol;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Caracteristique", inversedBy="modules")
@@ -217,6 +223,18 @@ class Module
         if ($this->composantsModule->contains($composantsModule)) {
             $this->composantsModule->removeElement($composantsModule);
         }
+
+        return $this;
+    }
+
+    public function getIsol(): ?Isolant
+    {
+        return $this->isol;
+    }
+
+    public function setIsol(?Isolant $isol): self
+    {
+        $this->isol = $isol;
 
         return $this;
     } 

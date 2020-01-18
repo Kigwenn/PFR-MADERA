@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Module;
+use App\Entity\Gamme;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -48,28 +49,33 @@ class ModuleRepository extends ServiceEntityRepository
     }
     */
 
-
-    // retourne la liste des modules de la gamme
-    public function rechercheModuleGamme($gamm_id): array
+    // retourne la liste des modules du devis
+    public function rechercheModuleDevis($devi_id): array
     {
-        $qb = $this->createQueryBuilder('c')
-            ->select('c.id, c.pers_nom, c.pers_prenom, c.pers_mail')
-            ->where('c.pers_nom LIKE :recherche')
-            ->orWhere('c.pers_prenom LIKE :recherche')
-            ->orWhere('c.pers_mail LIKE :recherche')
-            ->setParameter('recherche', "%" . $recherche . "%");
+        $qb = $this->createQueryBuilder('m')
+            ->select('m.id, m.modu_nom, m.modu_prix_unitaire')
+            ->where('m.devi_id = :devi_id')
+            ->setParameter('devi_id', $devi_id);
         return $qb->getQuery()->getResult();
     }
 
-        // retourne la liste des modules de la gamme
-        public function rechercheModuleDevis($devi_id): array
-        {
-            $qb = $this->createQueryBuilder('c')
-                ->select('m.id, m.modu_nom, m.modu_prix_unitaire')
-                ->where('m.devi_id = :devi_id')
-                ->setParameter('devi_id', $devi_id);
-            return $qb->getQuery()->getResult();
-        }
+    // retourne la liste des modules de la gamme
+    public function rechercheModuleGamme($fiex_id, $fiin_id, $couv_id, $isol_id): array
+    {
+        $entityManager = $this->getEntityManager();
 
+        $query = $entityManager->createQuery(
+            'SELECT m.id FROM App\Entity\Module m 
+            WHERE 
+                ((m.fiex IS null) OR (m.fiex = :fiex_id)) AND
+                ((m.fiin is null) OR (m.fiin = :fiin_id)) AND
+                ((m.couv is null) OR (m.couv = :couv_id)) AND
+                ((m.isol is null) OR (m.isol = :isol_id))
+             ORDER BY m.id ASC'
+        )->setParameters(array('fiex_id'=> $fiex_id, 'fiin_id' => $fiin_id, 'couv_id' => $couv_id, 'isol_id' => $isol_id));
+
+        // returns an array of Product objects
+        return $query->getResult();
+    }
 
 }

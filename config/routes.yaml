@@ -63,6 +63,11 @@ commercial_liste:
     defaults: { _controller: 'App\Controller\CommercialController::listeCommercial' }
     methods:  GET
 
+commercial_login:
+    path:     /PFR-MADERA/commercial/login
+    defaults: { _controller: 'App\Controller\CommercialController::loginCommercial' }
+    methods:  POST
+
 devis_creation:
     path:     /PFR-MADERA/devis
     defaults: { _controller: 'App\Controller\DevisController::creationDevis' }
@@ -152,6 +157,42 @@ security_logout:
     path:     /PFR-MADERA/logout
     defaults: { _controller: 'App\Controller\SecurityController::logout' }
     methods:  POST
+
+module_creation:
+     path:     /PFR-MADERA/module
+     defaults: { _controller: 'App\Controller\ModuleController::creationModule' }
+     methods:  POST
+
+module_affichage:
+    path:     /PFR-MADERA/module/{id}
+    defaults: { _controller: 'App\Controller\ModuleController::affichageModule' }
+    methods:  GET
+
+module_modification:
+    path:     /PFR-MADERA/module
+    defaults: { _controller: 'App\Controller\ModuleController::modificationModule' }
+    methods:  PUT
+
+module_suppression:
+    path:     /PFR-MADERA/module/{id}
+    defaults: { _controller: 'App\Controller\ModuleController::suppressionModule' }
+    methods:  DELETE
+
+module_liste:
+    path:     /PFR-MADERA/module
+    defaults: { _controller: 'App\Controller\ModuleController::listeModule' }
+    methods:  GET
+
+module_liste_gamme:
+    path:     /PFR-MADERA/module/liste/gamme
+    defaults: { _controller: 'App\Controller\ModuleController::listeModuleGamme' }
+    methods:  GET
+
+module_liste_devis:
+    path:     /PFR-MADERA/module/liste/devis
+    defaults: { _controller: 'App\Controller\ModuleController::listeModuleDevis' }
+    methods:  GET
+
 # gamme_modules:
 #     path:     /PFR-MADERA/gamme/modules/
 #     defaults: { _controller: 'App\Controller\GammeController::listeModules' }
