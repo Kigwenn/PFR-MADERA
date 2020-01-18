@@ -59,7 +59,7 @@ commercial_suppression:
     methods:  DELETE
 
 commercial_liste:
-    path:     /PFR-MADERA/commercial
+    path:     /PFR-MADERA/commercials
     defaults: { _controller: 'App\Controller\CommercialController::listeCommercial' }
     methods:  GET
 
@@ -179,12 +179,12 @@ module_suppression:
     methods:  DELETE
 
 module_liste:
-    path:     /PFR-MADERA/module
+    path:     /PFR-MADERA/modules
     defaults: { _controller: 'App\Controller\ModuleController::listeModule' }
     methods:  GET
 
 module_liste_gamme:
-    path:     /PFR-MADERA/module/liste/gamme
+    path:     /PFR-MADERA/module/liste/gamme/{id}
     defaults: { _controller: 'App\Controller\ModuleController::listeModuleGamme' }
     methods:  GET
 

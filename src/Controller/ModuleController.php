@@ -135,7 +135,7 @@ class ModuleController extends AbstractController
     * Permet d'avoir le detail d'un module 
     * @Route("{id}", name="module_affichage", methods={"GET"});
     */
-    public function affichageModule(int $id)
+    public function affichageModule($id)
     {
         $parametersAsArray = [];
         $resultat = "OK";
@@ -167,6 +167,7 @@ class ModuleController extends AbstractController
         } else {
             $reponse = new Response (json_encode(array(
                 'result' => $resultat,
+                'id' => $id,
                 )
             ));
         }
@@ -294,23 +295,16 @@ class ModuleController extends AbstractController
     * Permet de supprimer un module
     * @Route("{id}", name="module_suppression", methods={"DELETE"}),
     */
-    public function suppressionModule(int $id){
+    public function suppressionModule($id){
         $repository_client = $this->getDoctrine()->getRepository(Client::class); 
         $parametersAsArray = [];
         $resultat = "OK";
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
 
-        //Verification parametres
-        $parametresObligatoire[] = array('id'); 
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         //Verification parametres
         if ($resultat == "OK"){
             $entityManager = $this->getDoctrine()->getManager(); 
             $repository_module = $this->getDoctrine()->getRepository(Module::class); 
-            $module = $repository_module->find($parametersAsArray['id']);
+            $module = $repository_module->find($id);
             if ($module == null) {
                 $resultat = "Le module n'existe pas.";
             } else {
@@ -322,13 +316,13 @@ class ModuleController extends AbstractController
         if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'id' => $parametersAsArray['id'],
+                'id' => $id,
                 )
             ));
         } else {
             $reponse = new Response (json_encode(array(
                 'resultat' => $resultat,
-                'id' => $parametersAsArray['id'],
+                'id' => $id,
                 )
             ));
         }
@@ -381,9 +375,9 @@ class ModuleController extends AbstractController
 
     /**
     * Permet d'avoir la liste des modules d'une gamme 
-    * @Route("/liste/gamme", name="module_liste_gamme", methods={"GET"});
+    * @Route("/liste/gamme/{id}", name="module_liste_gamme", methods={"GET"});
     */
-    public function listeModuleGamme(Request $requestjson) 
+    public function listeModuleGamme($id) 
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
@@ -393,7 +387,7 @@ class ModuleController extends AbstractController
         // Verfication Gamme
         if ($resultat == "OK") {
             $repository_gamme = $this->getDoctrine()->getRepository(Gamme::class); 
-            $gamme = $repository_gamme->find(1); 
+            $gamme = $repository_gamme->find($id); 
             if ($gamme == null) {
                 $resultat =  "Le gamme n'existe pas.";
             }    
@@ -432,7 +426,7 @@ class ModuleController extends AbstractController
     * Permet d'avoir la liste des modules d'un devis
     * @Route("/liste/devis", name="module_liste_devis", methods={"GET"});
     */
-    public function listeModuleDevis(Request $requestjson) 
+    public function listeModuleDevis($id) 
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
@@ -440,7 +434,7 @@ class ModuleController extends AbstractController
         $resultat = "OK";
 
         if ($resultat == "OK"){
-            $listeReponse = $repository_module->rechercheModuleDevis(1);
+            $listeReponse = $repository_module->rechercheModuleDevis($id);
             
             if ($listeReponse == null){
                 $resultat = "Aucuns résultats."; 

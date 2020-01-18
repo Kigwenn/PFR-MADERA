@@ -255,54 +255,35 @@ class ClientController extends AbstractController
     * Permet de supprimer un client et son adresse grâce à l'id de l'client
     * @Route("", name="client_suppression", methods={"DELETE"}),
     */
-    public function suppressionClient(Request $requestjson){
+    public function suppressionClient($id){
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class); 
-        $parametersAsArray = [];
-        $resultat = "OK";
-
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
+        $listeClient = $repository_client->findAll();
+        $client = null;
+        foreach ($listeClient as $c) 
+        {
+            if ($c->getId() == $id){
+                $client = $c;
+                break;
+            }  
         }
 
-        //Verification parametres
-        $parametresObligatoire[] = array('id');
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
-        if ($resultat == "OK"){
-            $listeClient = $repository_client->findAll();
-            //On verifie si le client existe bien
-            if ($resultat == "OK"){
-                $client = null;
-                foreach ($listeClient as $c) 
-                {
-                    if ($c->getId() == $parametersAsArray['id']){
-                        $client = $c;
-                        break;
-                    }  
-                }
-                if ($client == null){
-                    $resultat = "Le client n'existe pas.";
-                }
-            }
-        }
-
-        //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        if ($client == null){
+            $reponse = new Response (json_encode(array(
+                'resultat' =>  "Le client " . $id . " n'existe pas.",
+                )
+            ));
+        } else {
             //Suppression
             $entityManager->remove($client);
             $entityManager->flush();  
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'id' => $parametersAsArray['id'],
-                )
-            ));
-        } else {
-            $reponse = new Response (json_encode(array(
-                'resultat' => $resultat,
+                'id' => $id,
                 )
             ));
         }
+
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;        
@@ -349,7 +330,7 @@ class ClientController extends AbstractController
     }   
 
 
-        /**
+    /**
     * Permet d'avoir la liste de tous les clients contenant le mot en parametre dans leur nom/prenom/mail 
     * @Route("/recherche", name="client_recherche", methods={"GET"});
     */

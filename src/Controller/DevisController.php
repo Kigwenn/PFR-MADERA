@@ -215,14 +215,14 @@ class DevisController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('devi_id', 'mais_id', 'gamm_id', 'comm_id', 'clie_id', 'devi_nom','devi_date', 'pays_id',
+        $parametresObligatoire[] = array('id', 'mais_id', 'gamm_id', 'comm_id', 'clie_id', 'devi_nom','devi_date', 'pays_id',
             'adre_region', 'adre_ville', 'adre_cp', 'adre_rue', 'adre_complement', 'adre_info'); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Verification du Devis
         if ($resultat == "OK") {
             $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
-            $devis = $repository_devis->find($parametersAsArray['devi_id']); 
+            $devis = $repository_devis->find($parametersAsArray['id']); 
             if ($devis == null) {
                 $resultat =  "Le devis n'existe pas.";
             }    
@@ -334,44 +334,30 @@ class DevisController extends AbstractController
     * Permet de supprimer un devis
     * @Route("", name="devis_suppression", methods={"DELETE"}),
     */
-    public function suppressionDevis(Request $requestjson){
+    public function suppressionDevis($id){
         $repository_client = $this->getDoctrine()->getRepository(Client::class); 
-        $parametersAsArray = [];
         $resultat = "OK";
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
-
-        //Verification parametres
-        $parametresObligatoire[] = array('devi_id'); 
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
-        //Verification parametres
-        if ($resultat == "OK"){
-            $entityManager = $this->getDoctrine()->getManager(); 
-            $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
-            $devis = $repository_devis->find($parametersAsArray['devi_id']);
-            if ($devis == null) {
-                $resultat = "Le devis n'existe pas.";
-            } else {
-                $entityManager->remove($devis);
-                $entityManager->flush();  
-            }
-        }
-        //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
+        $devis = $repository_devis->find($id);
+        if ($devis == null) {
+            $resultat = "Le devis n'existe pas.";
             $reponse = new Response (json_encode(array(
-                'resultat' => "OK",
-                'id' => $parametersAsArray['devi_id'],
+                'resultat' => "Le devis n'existe pas.",
+                'id' => $id,
                 )
             ));
         } else {
+            $entityManager->remove($devis);
+            $entityManager->flush();  
             $reponse = new Response (json_encode(array(
-                'resultat' => $resultat,
-                'id' => $parametersAsArray['devi_id'],
+                'resultat' => "OK",
+                'id' => $id,
                 )
             ));
         }
+
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;        
