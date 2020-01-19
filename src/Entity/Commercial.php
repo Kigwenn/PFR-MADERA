@@ -43,6 +43,11 @@ class Commercial extends Personne
         $this->listeDevis = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getCommMdp(): ?string
     {
         return $this->comm_mdp;
@@ -60,7 +65,7 @@ class Commercial extends Personne
         return $this->comm_token;
     }
 
-    public function setCommToken(string $comm_token): self
+    public function setCommToken(?string $comm_token): self
     {
         $this->comm_token = $comm_token;
 
@@ -72,7 +77,7 @@ class Commercial extends Personne
         return $this->comm_token_date;
     }
 
-    public function setCommTokenDate(\DateTimeInterface $comm_token_date): self
+    public function setCommTokenDate(?\DateTimeInterface $comm_token_date): self
     {
         $this->comm_token_date = $comm_token_date;
 
@@ -108,11 +113,6 @@ class Commercial extends Personne
         }
 
         return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     
