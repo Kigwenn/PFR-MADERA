@@ -53,5 +53,7 @@ class TypeModuleController extends AbstractController
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;
-    }   
+    }  
+    
+    
 }

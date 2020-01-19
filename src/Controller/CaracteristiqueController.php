@@ -23,9 +23,9 @@ class CaracteristiqueController extends AbstractController
 
             /**
     * Permet d'avoir la liste de tous les caracteristiques contenant le mot en parametre dans leur nom/prenom/mail 
-    * @Route("/liste", name="caracteristique_liste", methods={"GET"});
+    * @Route("/liste/module/{id}", name="caracteristique_liste_module", methods={"GET"});
     */
-    public function listeCaracteristique(Request $requestjson) 
+    public function listeCaracteristiqueModule($id) 
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_caracteristique = $this->getDoctrine()->getRepository(Caracteristique::class);

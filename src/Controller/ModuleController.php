@@ -15,6 +15,7 @@ use App\Entity\Couverture;
 use App\Entity\Isolant;
 use App\Entity\FinitionExterieur;
 use App\Entity\FinitionInterieur;
+use App\Entity\TypeModule;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,7 +41,7 @@ class ModuleController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id'); 
+        $parametresObligatoire[] = array('tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id'); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
      
@@ -50,6 +51,15 @@ class ModuleController extends AbstractController
             $devis = $repository_devis->find($parametersAsArray['devi_id']); 
             if ($devis == null) {
                 $resultat =  "Le devis n'existe pas.";
+            }    
+        }
+
+        // verification du type de module
+        if (($resultat == "OK") && ($parametersAsArray['tymo_id'] <> null)) {
+            $repository_typeModule = $this->getDoctrine()->getRepository(TypeModule::class); 
+            $typeModule = $repository_typeModule->find($parametersAsArray['devi_id']); 
+            if ($typeModule == null) {
+                $resultat =  "Le type module n'existe pas.";
             }    
         }
      
@@ -89,7 +99,7 @@ class ModuleController extends AbstractController
             }    
         }
 
-        // verification de la isolant
+        // verification de l'isolant
         if ($resultat == "OK") {
             $repository_isolant = $this->getDoctrine()->getRepository(Isolant::class); 
             $isolant = $repository_isolant->find($parametersAsArray['isol_id']); 
@@ -102,7 +112,8 @@ class ModuleController extends AbstractController
 		if ($resultat == "OK") {
             $module = new Module();
             $module->setModuNom($parametersAsArray['modu_nom']);
-            $module->setModuPrixUnitaire(0);
+            $module->setModuTymo($typeModule);
+            //$module->setModuPrixUnitaire();
             $module->setCCTP($cctp);
             $module->setFiex($finition_exterieur);
             $module->setFiin($finition_interieur);
@@ -154,6 +165,7 @@ class ModuleController extends AbstractController
             $reponse = new Response(json_encode(array(
                 'result' => "OK",
                 'id' => $module->getId(),
+                'tymo_id' => $module->getTymo()->getId(),
                 'devi_id' => $module->getDevi()->getId(),
                 'cctp_id' => $module->getCctp()->getId(),
                 'fiex_id' => $module->getFiex()->getId(),
@@ -192,7 +204,7 @@ class ModuleController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id'); 
+        $parametresObligatoire[] = array('id', 'tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id'); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
      
@@ -202,6 +214,15 @@ class ModuleController extends AbstractController
             $module = $repository_module->find($parametersAsArray['id']); 
             if ($module == null) {
                 $resultat =  "Le module n'existe pas.";
+            }    
+        }
+
+        // verification du type de module
+        if (($resultat == "OK") && ($parametersAsArray['tymo_id'] <> null)) {
+            $repository_typeModule = $this->getDoctrine()->getRepository(TypeModule::class); 
+            $typeModule = $repository_typeModule->find($parametersAsArray['devi_id']); 
+            if ($typeModule == null) {
+                $resultat =  "Le type module n'existe pas.";
             }    
         }
 
@@ -262,7 +283,8 @@ class ModuleController extends AbstractController
         //Creation du module
 		if ($resultat == "OK") {
             $module->setModuNom($parametersAsArray['modu_nom']);
-            $module->setModuPrixUnitaire(0);
+            $module->setTymo($typeModule);
+            //$module->setModuPrixUnitaire();
             $module->setCCTP($cctp);
             $module->setFiex($finition_exterieur);
             $module->setFiin($finition_interieur);
@@ -350,6 +372,7 @@ class ModuleController extends AbstractController
             {
                 $listeReponse[] = array(
                     'id' => $module->getId(),
+                    'tymo_id' => $module->getTymo(),
                     'modu_nom' => $module->getModuNom()
                 );  
             }
@@ -374,31 +397,40 @@ class ModuleController extends AbstractController
     }
 
     /**
-    * Permet d'avoir la liste des modules d'une gamme 
-    * @Route("/liste/gamme/{id}", name="module_liste_gamme", methods={"GET"});
+    * Permet d'avoir la liste des modules d'une typeModule 
+    * @Route("/liste/gamme/{gamm_id}/type/{tymo_id}", name="module_liste_famille", methods={"GET"});
     */
-    public function listeModuleGamme($id) 
+    public function listeModuleType($gamm_id, $tymo_id) 
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
-        $parametersAsArray = [];
         $resultat = "OK";
 
         // Verfication Gamme
         if ($resultat == "OK") {
             $repository_gamme = $this->getDoctrine()->getRepository(Gamme::class); 
-            $gamme = $repository_gamme->find($id); 
+            $gamme = $repository_gamme->find($gamm_id); 
             if ($gamme == null) {
                 $resultat =  "Le gamme n'existe pas.";
             }    
         }
 
+        // Verfication TypeModule
+        if ($resultat == "OK") {
+            $repository_typeModule = $this->getDoctrine()->getRepository(TypeModule::class); 
+            $typeModule = $repository_typeModule->find($tymo_id); 
+            if ($typeModule == null) {
+                $resultat =  "Le typeModule n'existe pas.";
+            }    
+        }
+
         if ($resultat == "OK"){
-            $fiex_id = $gamme->getFiex()->getId();
-            $fiin_id = $gamme->getFiin()->getId();     
-            $couv_id = $gamme->getCouv()->getId();
-            $isol_id = $gamme->getIsol()->getId();
-            $listeReponse = $repository_module->rechercheModuleGamme($fiex_id, $fiin_id, $couv_id, $isol_id);
+            $fiex_id = $typeModule->getFiex()->getId();
+            $fiin_id = $typeModule->getFiin()->getId();     
+            $couv_id = $typeModule->getCouv()->getId();
+            $isol_id = $typeModule->getIsol()->getId();
+
+            $listeReponse = $repository_module->rechercheModuleFamille($tymo_id, $fiex_id, $fiin_id, $couv_id, $isol_id);
             if ($listeReponse == null){
                 $resultat = "Aucuns résultats."; 
             }
@@ -417,14 +449,14 @@ class ModuleController extends AbstractController
                 )
             ));
         }
-        $reponse->headers->set("Content-Type", "application/json"); 
+        $reponse->headers->set("Content-Type", "application/json");
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;
     }
 
     /**
     * Permet d'avoir la liste des modules d'un devis
-    * @Route("/liste/devis", name="module_liste_devis", methods={"GET"});
+    * @Route("/liste/devis/{id}", name="module_liste_devis", methods={"GET"});
     */
     public function listeModuleDevis($id) 
     {

@@ -334,41 +334,24 @@ class ClientController extends AbstractController
     * Permet d'avoir la liste de tous les clients contenant le mot en parametre dans leur nom/prenom/mail 
     * @Route("/recherche", name="client_recherche", methods={"GET"});
     */
-    public function rechercheClient(Request $requestjson) 
+    public function rechercheClient($recherche) 
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
-        $parametersAsArray = [];
-        $resultat = "OK";
-        //Conversion dU JSON
-        if ($content = $requestjson->getContent()) {
-            $parametersAsArray = json_decode($content, true);
-        }
-        //Verification parametres
-        $parametresObligatoire[] = array('recherche'); 
-        $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
 
-        if ($resultat == "OK"){
-            $listeReponse = $repository_client->rechercheClients($parametersAsArray['recherche']);
-            
-            if ($listeReponse == null){
-                $resultat = "Aucuns résultats."; 
-            }
-        }
-
-        //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        $listeReponse = $repository_client->rechercheClients($recherche);
+        if ($listeReponse == null){
+            $reponse = new Response (json_encode(array(
+                'resultat' => "Aucuns résultats.",
+                )
+            ));
+        } else { 
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
                 "listeClient" => $listeReponse,
                 )
             ));
-        } else {
-            $reponse = new Response (json_encode(array(
-                'resultat' => $resultat,
-                )
-            ));
-        }
+        } 
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;

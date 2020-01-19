@@ -29,7 +29,7 @@ client_liste:
     methods:  GET
 
 client_recherche:
-    path:     /PFR-MADERA/client/recherche
+    path:     /PFR-MADERA/client/recherche/{recherche}
     defaults: { _controller: 'App\Controller\ClientController::rechercheClient' }
     methods:  GET
 
@@ -138,9 +138,9 @@ couverture_liste:
     defaults: { _controller: 'App\Controller\CouvertureController::listeCouverture' }
     methods:  GET
 
-caracteristique_liste:
-    path:     /PFR-MADERA/caracteristique/liste
-    defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristique' }
+caracteristique_liste_module:
+    path:     /PFR-MADERA/caracteristique/liste/module/{id}
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristiqueModule' }
     methods:  GET
 
 gamme_liste:
@@ -183,13 +183,13 @@ module_liste:
     defaults: { _controller: 'App\Controller\ModuleController::listeModule' }
     methods:  GET
 
-module_liste_gamme:
-    path:     /PFR-MADERA/module/liste/gamme/{id}
+module_liste_type:
+    path:     /PFR-MADERA/module/liste/gamme/{gamm_id}/type/{tymo_id}
     defaults: { _controller: 'App\Controller\ModuleController::listeModuleGamme' }
     methods:  GET
 
 module_liste_devis:
-    path:     /PFR-MADERA/module/liste/devis
+    path:     /PFR-MADERA/module/liste/devis/{id}
     defaults: { _controller: 'App\Controller\ModuleController::listeModuleDevis' }
     methods:  GET
 
