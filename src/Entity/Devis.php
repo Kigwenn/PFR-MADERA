@@ -84,10 +84,10 @@ class Devis
      */
     private $clie;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="devis")
-     */
-    private $modulesDevis;
+    // /**
+    //  * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="devis")
+    //  */
+    // private $modulesDevis;
 
     public function __construct()
     {

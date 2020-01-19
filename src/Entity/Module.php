@@ -79,6 +79,12 @@ class Module
      */
     private $composantsModule;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeModule")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $tymo;
+
     public function __construct()
     {
         $this->composantModules = new ArrayCollection();
@@ -235,6 +241,30 @@ class Module
     public function setIsol(?Isolant $isol): self
     {
         $this->isol = $isol;
+
+        return $this;
+    }
+
+    public function getPays(): ?Pays
+    {
+        return $this->pays;
+    }
+
+    public function setPays(?Pays $pays): self
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getTymo(): ?TypeModule
+    {
+        return $this->tymo;
+    }
+
+    public function setTymo(?TypeModule $tymo): self
+    {
+        $this->tymo = $tymo;
 
         return $this;
     } 
