@@ -138,6 +138,26 @@ couverture_liste:
     defaults: { _controller: 'App\Controller\CouvertureController::listeCouverture' }
     methods:  GET
 
+caracteristique_creation:
+    path:     /PFR-MADERA/caracteristique
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::creationCaracteristique' }
+    methods:  POST
+
+caracteristique_affichage:
+    path:     /PFR-MADERA/caracteristique/{id}
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::affichageCaracteristique' }
+    methods:  GET
+
+caracteristique_modification:
+    path:     /PFR-MADERA/caracteristique
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::modificationCaracteristique' }
+    methods:  PUT
+
+caracteristique_suppression:
+    path:     /PFR-MADERA/caracteristique
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::suppressionCaracteristique' }
+    methods:  DELETE
+
 caracteristique_liste_module:
     path:     /PFR-MADERA/caracteristique/liste/module/{id}
     defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristiqueModule' }
