@@ -41,6 +41,12 @@ class Caracteristique
      */
     private $cara_degre_angle;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Module")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $modu;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +108,18 @@ class Caracteristique
     public function setCaraDegreAngle(float $cara_degre_angle): self
     {
         $this->cara_degre_angle = $cara_degre_angle;
+
+        return $this;
+    }
+
+    public function getModu(): ?Module
+    {
+        return $this->modu;
+    }
+
+    public function setModu(?Module $modu): self
+    {
+        $this->modu = $modu;
 
         return $this;
     }

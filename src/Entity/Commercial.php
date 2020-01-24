@@ -29,18 +29,23 @@ class Commercial extends Personne
     private $listeDevis;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $comm_token;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $comm_token_date;
 
     public function __construct()
     {
         $this->listeDevis = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
     public function getCommMdp(): ?string
@@ -60,7 +65,7 @@ class Commercial extends Personne
         return $this->comm_token;
     }
 
-    public function setCommToken(string $comm_token): self
+    public function setCommToken(?string $comm_token): self
     {
         $this->comm_token = $comm_token;
 
@@ -72,7 +77,7 @@ class Commercial extends Personne
         return $this->comm_token_date;
     }
 
-    public function setCommTokenDate(\DateTimeInterface $comm_token_date): self
+    public function setCommTokenDate(?\DateTimeInterface $comm_token_date): self
     {
         $this->comm_token_date = $comm_token_date;
 
@@ -108,11 +113,6 @@ class Commercial extends Personne
         }
 
         return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     

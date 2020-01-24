@@ -84,6 +84,16 @@ class Devis
      */
     private $clie;
 
+    // /**
+    //  * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="devis")
+    //  */
+    // private $modulesDevis;
+
+    public function __construct()
+    {
+        $this->modulesDevis = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -229,6 +239,32 @@ class Devis
     public function setClie(?Client $clie): self
     {
         $this->clie = $clie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Module[]
+     */
+    public function getModulesDevis(): Collection
+    {
+        return $this->modulesDevis;
+    }
+
+    public function addModulesDevi(Module $modulesDevi): self
+    {
+        if (!$this->modulesDevis->contains($modulesDevi)) {
+            $this->modulesDevis[] = $modulesDevi;
+        }
+
+        return $this;
+    }
+
+    public function removeModulesDevi(Module $modulesDevi): self
+    {
+        if ($this->modulesDevis->contains($modulesDevi)) {
+            $this->modulesDevis->removeElement($modulesDevi);
+        }
 
         return $this;
     }

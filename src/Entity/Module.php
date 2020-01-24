@@ -24,7 +24,7 @@ class Module
     private $modu_nom;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $modu_prix_unitaire;
 
@@ -36,42 +36,39 @@ class Module
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CCTP")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $cctp;
 
-    // /**
-    //  * @ORM\ManyToOne(targetEntity="App\Entity\ComposantModule")
-    //  */
-    // private $composants;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionExterieur")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $fiex;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FinitionInterieur")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $fiin;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Couverture")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $couv;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Caracteristique", inversedBy="modules")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Isolant")
+     * @ORM\JoinColumn(nullable=true)
      */
-     private $caracteristiquesModule;
+    private $isol;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Composant", inversedBy="modules")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TypeModule")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $composantsModule;
+    private $tymo;
 
     public function __construct()
     {
@@ -102,7 +99,7 @@ class Module
         return $this->modu_prix_unitaire;
     }
 
-    public function setModuPrixUnitaire(float $modu_prix_unitaire): self
+    public function setModuPrixUnitaire(?float $modu_prix_unitaire): self
     {
         $this->modu_prix_unitaire = $modu_prix_unitaire;
 
@@ -169,55 +166,28 @@ class Module
         return $this;
     }
 
-    /**
-     * @return Collection|Caracteristique[]
-     */
-    public function getCaracteristiquesModule(): Collection
+    public function getIsol(): ?Isolant
     {
-        return $this->caracteristiquesModule;
+        return $this->isol;
     }
 
-    public function addCaracteristiquesModule(Caracteristique $caracteristiquesModule): self
+    public function setIsol(?Isolant $isol): self
     {
-        if (!$this->caracteristiquesModule->contains($caracteristiquesModule)) {
-            $this->caracteristiquesModule[] = $caracteristiquesModule;
-        }
+        $this->isol = $isol;
 
         return $this;
     }
 
-    public function removeCaracteristiquesModule(Caracteristique $caracteristiquesModule): self
+    public function getTymo(): ?TypeModule
     {
-        if ($this->caracteristiquesModule->contains($caracteristiquesModule)) {
-            $this->caracteristiquesModule->removeElement($caracteristiquesModule);
-        }
+        return $this->tymo;
+    }
+
+    public function setTymo(?TypeModule $tymo): self
+    {
+        $this->tymo = $tymo;
 
         return $this;
     }
-
-    /**
-     * @return Collection|Composant[]
-     */
-    public function getComposantsModule(): Collection
-    {
-        return $this->composantsModule;
-    }
-
-    public function addComposantsModule(Composant $composantsModule): self
-    {
-        if (!$this->composantsModule->contains($composantsModule)) {
-            $this->composantsModule[] = $composantsModule;
-        }
-
-        return $this;
-    }
-
-    public function removeComposantsModule(Composant $composantsModule): self
-    {
-        if ($this->composantsModule->contains($composantsModule)) {
-            $this->composantsModule->removeElement($composantsModule);
-        }
-
-        return $this;
-    } 
+  
 }

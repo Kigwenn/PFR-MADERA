@@ -9,13 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/security")
+ * @Route("")
  */
 class SecurityController extends AbstractController
 {
     /**
      * Permet de se connecter à l'application
-     * @Route("/login", name="login", methods={"POST"})
+     * @Route("/login", name="security_login", methods={"POST"})
      */
     public function login(Request $requestjson)
     {
@@ -41,7 +41,7 @@ class SecurityController extends AbstractController
                 {
                     //utilisateur autorisé, on créé son token
                     $time = new \datetime("now");
-                    $commercial->setCommToken(bin2hex(random_bytes(32)));
+                    $commercial->setCommToken("wcwxcwcxwc");
                     $commercial->setCommTokenDate($time);
                     $entityManager->persist($commercial);
                     $entityManager->flush();

@@ -63,7 +63,7 @@ class CommercialController extends AbstractController
             $commercial->setPersPrenom($parametersAsArray['pers_prenom']);
             $commercial->setPersMail($parametersAsArray['pers_mail']);
             $commercial->setPersTel($parametersAsArray['pers_tel']);
-            $commercial->setCommMdp($parametersAsArray['comm_mdp']); 
+            $commercial->setCommMdp($parametersAsArray['comm_mdp']);
             $entityManager->persist($commercial); 
             $entityManager->flush();
         }
@@ -314,5 +314,64 @@ class CommercialController extends AbstractController
         $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
     }
+
+    /**
+     * Permet de se connecter à l'application
+     * @Route("/login", name="login_commercial", methods={"POST"})
+     */
+    public function loginCommercial(Request $requestjson)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
+        $parametersAsArray = [];
+        $erreur = null;
+
+        if ($content = $requestjson->getContent()) {
+            $parametersAsArray = json_decode($content, true);
+        }
+        //Verification parametres
+        if ($parametersAsArray == null){
+            $erreur = "Il n'y a pas de paramètre.";
+        }
+        // On verifie si l'commercial existe
+        $listeCommercials = $repository_commercial->findAll();
+        if ($erreur == null) {
+            foreach ($listeCommercials as $commercial)
+            {
+                if (($commercial->getPersMail() == $parametersAsArray['util_mail']) &&
+                    ($commercial->getCommMdp() == $parametersAsArray['util_mdp']))
+                {
+                    //commercial autorisé, on créé son token
+                    $time = new \datetime("now");
+                    $commercial->setPersNom("test5");
+                    $commercial->setCommMdp("test"); 
+                    $commercial->setCommToken("1");//bin2hex(random_bytes(32)));
+                    $commercial->setCommTokenDate($time);
+                    $entityManager->persist($commercial);
+                    $entityManager->flush();
+                    $reponse = new Response (json_encode(array(
+                        'result' => "OK",
+                        'id' => $commercial->getId(),
+                        'util_token' => $commercial->getCommToken(),
+                        'util_token_date' => $commercial->getCommTokenDate()
+                        )));
+                }
+                else{
+                    $reponse = new Response (json_encode(array(
+                        'result' => "Il n'y a pas de commercial avec ces identifiants"                       
+                        )));
+                }
+            }
+        }
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
+        return $reponse;
+    }
+
+
+
+
+
+
 
 }

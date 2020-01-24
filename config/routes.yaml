@@ -29,7 +29,7 @@ client_liste:
     methods:  GET
 
 client_recherche:
-    path:     /PFR-MADERA/client/recherche
+    path:     /PFR-MADERA/client/recherche/{recherche}
     defaults: { _controller: 'App\Controller\ClientController::rechercheClient' }
     methods:  GET
 
@@ -59,9 +59,14 @@ commercial_suppression:
     methods:  DELETE
 
 commercial_liste:
-    path:     /PFR-MADERA/commercial
+    path:     /PFR-MADERA/commercials
     defaults: { _controller: 'App\Controller\CommercialController::listeCommercial' }
     methods:  GET
+
+commercial_login:
+    path:     /PFR-MADERA/commercial/login
+    defaults: { _controller: 'App\Controller\CommercialController::loginCommercial' }
+    methods:  POST
 
 devis_creation:
     path:     /PFR-MADERA/devis
@@ -133,9 +138,29 @@ couverture_liste:
     defaults: { _controller: 'App\Controller\CouvertureController::listeCouverture' }
     methods:  GET
 
-caracteristique_liste:
-    path:     /PFR-MADERA/caracteristique/liste
-    defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristique' }
+caracteristique_creation:
+    path:     /PFR-MADERA/caracteristique
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::creationCaracteristique' }
+    methods:  POST
+
+caracteristique_affichage:
+    path:     /PFR-MADERA/caracteristique/{id}
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::affichageCaracteristique' }
+    methods:  GET
+
+caracteristique_modification:
+    path:     /PFR-MADERA/caracteristique
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::modificationCaracteristique' }
+    methods:  PUT
+
+caracteristique_suppression:
+    path:     /PFR-MADERA/caracteristique
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::suppressionCaracteristique' }
+    methods:  DELETE
+
+caracteristique_liste_module:
+    path:     /PFR-MADERA/caracteristique/liste/module/{id}
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristiqueModule' }
     methods:  GET
 
 gamme_liste:
@@ -152,6 +177,42 @@ security_logout:
     path:     /PFR-MADERA/logout
     defaults: { _controller: 'App\Controller\SecurityController::logout' }
     methods:  POST
+
+module_creation:
+     path:     /PFR-MADERA/module
+     defaults: { _controller: 'App\Controller\ModuleController::creationModule' }
+     methods:  POST
+
+module_affichage:
+    path:     /PFR-MADERA/module/{id}
+    defaults: { _controller: 'App\Controller\ModuleController::affichageModule' }
+    methods:  GET
+
+module_modification:
+    path:     /PFR-MADERA/module
+    defaults: { _controller: 'App\Controller\ModuleController::modificationModule' }
+    methods:  PUT
+
+module_suppression:
+    path:     /PFR-MADERA/module/{id}
+    defaults: { _controller: 'App\Controller\ModuleController::suppressionModule' }
+    methods:  DELETE
+
+module_liste:
+    path:     /PFR-MADERA/modules
+    defaults: { _controller: 'App\Controller\ModuleController::listeModule' }
+    methods:  GET
+
+module_liste_type:
+    path:     /PFR-MADERA/module/liste/gamme/{gamm_id}/type/{tymo_id}
+    defaults: { _controller: 'App\Controller\ModuleController::listeModuleGamme' }
+    methods:  GET
+
+module_liste_devis:
+    path:     /PFR-MADERA/module/liste/devis/{id}
+    defaults: { _controller: 'App\Controller\ModuleController::listeModuleDevis' }
+    methods:  GET
+
 # gamme_modules:
 #     path:     /PFR-MADERA/gamme/modules/
 #     defaults: { _controller: 'App\Controller\GammeController::listeModules' }

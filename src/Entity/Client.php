@@ -34,6 +34,11 @@ class Client extends Personne
         $this->devi = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     public function getAdre(): ?Adresse
     {
         return $this->adre;
@@ -75,11 +80,6 @@ class Client extends Personne
         }
 
         return $this;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
 
