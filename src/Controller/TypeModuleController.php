@@ -25,9 +25,9 @@ class TypeModuleController extends AbstractController
     */
     public function listeTypeModule(Request $requestjson) 
     {
-        $repository_pays = $this->getDoctrine()->getRepository(TypeModule::class);
+        $repository_type_module = $this->getDoctrine()->getRepository(TypeModule::class);
         //Recuperation de la liste de type_module
-        $listeTypeModule = $repository_pays->findAll();
+        $listeTypeModule = $repository_type_module->findAll();
         // on vérifie si il y a bien une liste de type_module
         if ($listeTypeModule == null) {
             $reponse = new Response (json_encode(array(
@@ -40,7 +40,7 @@ class TypeModuleController extends AbstractController
             {
                 $listeReponse[] = array(
                     'id' => $type_module->getId(),
-                    'tymo_nom' => $type_module->getTymoNom(),
+                    'tymo_nom' => $type_module->getTymoNom()
                 );  
             }
 

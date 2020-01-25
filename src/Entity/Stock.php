@@ -78,5 +78,5 @@ class Stock
         return $this;
     }
 
-    
+   
 }

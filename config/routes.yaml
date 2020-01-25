@@ -203,14 +203,19 @@ module_liste:
     defaults: { _controller: 'App\Controller\ModuleController::listeModule' }
     methods:  GET
 
-module_liste_type:
+module_liste_gamme_type:
     path:     /PFR-MADERA/module/liste/gamme/{gamm_id}/type/{tymo_id}
-    defaults: { _controller: 'App\Controller\ModuleController::listeModuleGamme' }
+    defaults: { _controller: 'App\Controller\ModuleController::listeModuleGammeType' }
     methods:  GET
 
 module_liste_devis:
     path:     /PFR-MADERA/module/liste/devis/{id}
     defaults: { _controller: 'App\Controller\ModuleController::listeModuleDevis' }
+    methods:  GET
+
+type_module_liste:
+    path:     /PFR-MADERA/type_module/liste
+    defaults: { _controller: 'App\Controller\TypeModuleController::listeTypeModule' }
     methods:  GET
 
 # gamme_modules:
