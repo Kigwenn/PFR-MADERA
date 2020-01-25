@@ -2,7 +2,6 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-
 client_creation:
     path:     /PFR-MADERA/client
     defaults: { _controller: 'App\Controller\ClientController::creationClient' }
@@ -154,7 +153,7 @@ caracteristique_modification:
     methods:  PUT
 
 caracteristique_suppression:
-    path:     /PFR-MADERA/caracteristique
+    path:     /PFR-MADERA/caracteristique/{id}
     defaults: { _controller: 'App\Controller\CaracteristiqueController::suppressionCaracteristique' }
     methods:  DELETE
 
