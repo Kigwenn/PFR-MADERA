@@ -182,8 +182,7 @@ class ClientController extends AbstractController
         }
 
         //Vérification des parametres
-        $parametresObligatoire[] = array('id', 'pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel',
-            'pays_id', 'adre_rue', 'adre_ville', 'adre_cp', 'adre_region', 'adre_complement', 'adre_info');
+        $parametresObligatoire[] = array('id', 'pers_nom', 'pers_prenom', 'adre_rue', 'adre_complement', 'adre_info', 'adre_ville', 'adre_cp', 'adre_region', 'pers_mail', 'pers_tel', 'pers_sexe', 'pays_id' );
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Vérification du pays et du client
         if ($resultat == "OK")
@@ -199,11 +198,7 @@ class ClientController extends AbstractController
             }
             if ($client == null){
                 $resultat = "Le client n'existe pas.";
-            } else if (count($repository_client->clientExistant($parametersAsArray['pers_nom'],
-            $parametersAsArray['pers_prenom'], $parametersAsArray['pers_mail'])) > 0) 
-            {
-                $resultat =  "Client déjà existant.";
-            } else {
+            }else {
                 $repository_pays = $this->getDoctrine()->getRepository(Pays::class); 
                 $pays = $repository_pays->find($parametersAsArray['pays_id']); 
                 if ($pays == null) {
@@ -327,8 +322,27 @@ class ClientController extends AbstractController
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;
-    }   
+    }
 
+    /**
+     * Permet d'avoir le nombre de client
+     * @Route("count", name="client_count", methods={"GET"});
+     */
+    public function countClient(Request $request)
+    {
+        $request->query->get('q');
+        $repository_client = $this->getDoctrine()->getRepository(Client::class);
+        //Recuperation de la liste de commercial
+        $listeClient = $repository_client->findAll();
+        $count = count($listeClient);
+        $reponse = new Response (json_encode(array(
+            'resultat' => "OK",
+            "count" => $count
+        )));
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
+        return $reponse;
+    }
 
     /**
     * Permet d'avoir la liste de tous les clients contenant le mot en parametre dans leur nom/prenom/mail 

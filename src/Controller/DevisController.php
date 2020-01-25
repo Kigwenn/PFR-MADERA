@@ -174,9 +174,10 @@ class DevisController extends AbstractController
                 'etat_id' => $devis->getEtat()->getId(),
                 'gamm_id' => $devis->getGamm()->getId(),
                 'comm_id' => $devis->getComm()->getId(),
+                'mais_id' => $devis->getMais()->getId(),
                 'clie_id' => intval($client[0]['clie_id']), //getId() ne marche...
                 'devi_nom' => $devis->getDeviNom(),
-                'devi_date' => $devis->getDeviDate(),
+                'devi_date' => $devis->getDeviDate()->format("Y-m-d"),
                 'devi_prix' => $devis->getDeviPrix(),
                 'adre_id' => $adresse->getId(),
                 'pays_id' => $adresse->getPays()->getId(),
@@ -215,8 +216,7 @@ class DevisController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('id', 'mais_id', 'gamm_id', 'comm_id', 'clie_id', 'devi_nom','devi_date', 'pays_id',
-            'adre_region', 'adre_ville', 'adre_cp', 'adre_rue', 'adre_complement', 'adre_info'); 
+        $parametresObligatoire[] = array('id', 'mais_id', 'gamm_id', 'comm_id', 'clie_id', 'devi_nom','devi_date', 'pays_id', 'adre_region', 'adre_ville', 'adre_cp', 'adre_rue', 'adre_complement', 'adre_info');
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Verification du Devis
@@ -404,6 +404,25 @@ class DevisController extends AbstractController
         }
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+        return $reponse;
+    }
+
+    /**
+     * Permet d'avoir la liste de tous les devis
+     * @Route("count", name="devis_count", methods={"GET"});
+     */
+    public function countDevis()
+    {
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
+        //Recuperation de la liste de commercial
+        $listeDevis = $repository_devis->findAll();
+        $count = count($listeDevis);
+        $reponse = new Response (json_encode(array(
+            'resultat' => "OK",
+            "count" => $count
+        )));
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
     }
 

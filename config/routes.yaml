@@ -28,6 +28,11 @@ client_liste:
     defaults: { _controller: 'App\Controller\ClientController::listeClient' }
     methods:  GET
 
+client_count:
+    path:     /PFR-MADERA/clients/count
+    defaults: { _controller: 'App\Controller\ClientController::countClient' }
+    methods:  GET
+
 client_recherche:
     path:     /PFR-MADERA/client/recherche/{recherche}
     defaults: { _controller: 'App\Controller\ClientController::rechercheClient' }
@@ -44,7 +49,7 @@ commercial_affichage:
     methods:  GET
 
 commercial_count:
-    path:     /PFR-MADERA/commercial/count
+    path:     /PFR-MADERA/commercials/count
     defaults: { _controller: 'App\Controller\CommercialController::countCommercial' }
     methods:  GET
 
@@ -91,6 +96,11 @@ devis_suppression:
 devis_liste:
     path:     /PFR-MADERA/deviss
     defaults: { _controller: 'App\Controller\DevisController::listeDevis' }
+    methods:  GET
+
+deviss_count:
+    path:     /PFR-MADERA/deviss/count
+    defaults: { _controller: 'App\Controller\DevisController::countDevis' }
     methods:  GET
 
 devis_listeDuClient:
