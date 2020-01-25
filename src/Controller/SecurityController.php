@@ -9,13 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("")
+ * @Route("/security")
  */
 class SecurityController extends AbstractController
 {
     /**
      * Permet de se connecter à l'application
-     * @Route("/login", name="security_login", methods={"POST"})
+     * @Route("/login", name="login", methods={"POST"})
      */
     public function login(Request $requestjson)
     {
@@ -41,7 +41,7 @@ class SecurityController extends AbstractController
                 {
                     //utilisateur autorisé, on créé son token
                     $time = new \datetime("now");
-                    $commercial->setCommToken("wcwxcwcxwc");
+                    $commercial->setCommToken(bin2hex(random_bytes(32)));
                     $commercial->setCommTokenDate($time);
                     $entityManager->persist($commercial);
                     $entityManager->flush();
@@ -51,11 +51,11 @@ class SecurityController extends AbstractController
                         'mail_utilisateur' => $commercial->getPersMail(),
                         'token_utilisateur' => $commercial->getCommToken(),
                         'datetoken_utilisateur' => $commercial->getCommTokenDate()
-                        )));
+                    )));
                 }
                 else{
                     $reponse = new Response (json_encode(array(
-                        'result' => "Il n'y a pas d'utilisateurs avec ces identifiants",                        )
+                            'result' => "Il n'y a pas d'utilisateurs avec ces identifiants",                        )
                     ));
                 }
             }
