@@ -70,13 +70,6 @@ class Module
      */
     private $tymo;
 
-    public function __construct()
-    {
-        $this->composantModules = new ArrayCollection();
-        $this->caracteristiquesModule = new ArrayCollection();
-        $this->composantsModule = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -189,5 +182,6 @@ class Module
 
         return $this;
     }
-  
+
+    
 }

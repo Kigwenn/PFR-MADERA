@@ -52,20 +52,24 @@ class ModuleRepository extends ServiceEntityRepository
     // retourne la liste des modules du devis
     public function rechercheModuleDevis($devi_id): array
     {
-        $qb = $this->createQueryBuilder('m')
-            ->select('m.id, m.tymo, m.modu_nom, m.modu_prix_unitaire')
-            ->where('m.devi_id = :devi_id')
-            ->setParameter('devi_id', $devi_id);
-        return $qb->getQuery()->getResult();
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT m.id, m.modu_nom, m.modu_prix_unitaire
+             FROM App\Entity\Module m 
+             WHERE m.devi = :devi_id
+             ORDER BY m.id'
+        )->setParameters(array('devi_id'=> $devi_id));
+
+        // returns an array of Product objects
+        return $query->getResult();
     }
 
     // retourne la liste des modules de la gamme
-    public function rechercheModuleFamille($fiex_id, $fiin_id, $couv_id, $isol_id): array
+    public function rechercheModuleFamille($tymo_id, $fiex_id, $fiin_id, $couv_id, $isol_id): array
     {
         $entityManager = $this->getEntityManager();
-
         $query = $entityManager->createQuery(
-            'SELECT m.id FROM App\Entity\Module m 
+            'SELECT m.id, m.modu_nom, m.modu_prix_unitaire FROM App\Entity\Module m 
             WHERE 
                 (m.tymo = :tymo_id) AND
                 ((m.fiex IS null) OR (m.fiex = :fiex_id)) AND

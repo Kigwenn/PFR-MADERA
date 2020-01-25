@@ -398,9 +398,9 @@ class ModuleController extends AbstractController
 
     /**
     * Permet d'avoir la liste des modules d'une typeModule 
-    * @Route("/liste/gamme/{gamm_id}/type/{tymo_id}", name="module_liste_famille", methods={"GET"});
+    * @Route("/liste/gamme/{gamm_id}/type/{tymo_id}", name="module_liste_gamme_type", methods={"GET"});
     */
-    public function listeModuleType($gamm_id, $tymo_id) 
+    public function listeModuleGammeType($gamm_id, $tymo_id) 
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
@@ -425,10 +425,10 @@ class ModuleController extends AbstractController
         }
 
         if ($resultat == "OK"){
-            $fiex_id = $typeModule->getFiex()->getId();
-            $fiin_id = $typeModule->getFiin()->getId();     
-            $couv_id = $typeModule->getCouv()->getId();
-            $isol_id = $typeModule->getIsol()->getId();
+            $fiex_id = $gamme->getFiex()->getId();
+            $fiin_id = $gamme->getFiin()->getId();     
+            $couv_id = $gamme->getCouv()->getId();
+            $isol_id = $gamme->getIsol()->getId();
 
             $listeReponse = $repository_module->rechercheModuleFamille($tymo_id, $fiex_id, $fiin_id, $couv_id, $isol_id);
             if ($listeReponse == null){
@@ -465,9 +465,13 @@ class ModuleController extends AbstractController
         $parametersAsArray = [];
         $resultat = "OK";
 
-        if ($resultat == "OK"){
+        // verification du devis
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
+        $devis = $repository_devis->find($id); 
+        if ($devis == null) {
+            $resultat =  "Le devis n'existe pas.";
+        }else {
             $listeReponse = $repository_module->rechercheModuleDevis($id);
-            
             if ($listeReponse == null){
                 $resultat = "Aucuns résultats."; 
             }
