@@ -227,6 +227,16 @@ type_module_liste:
     defaults: { _controller: 'App\Controller\TypeModuleController::listeTypeModule' }
     methods:  GET
 
+devis_generation_dossier_estimatif:
+    path:     /PFR-MADERA/devis/dossier_estimatif/{id}
+    defaults: { _controller: 'App\Controller\DevisController::generationDossierEstimatif' }
+    methods:  GET
+
+devis_generation_dossier_technique:
+    path:     /PFR-MADERA/devis/dossier_technique/{id}
+    defaults: { _controller: 'App\Controller\DevisController::generationDossierTechnique' }
+    methods:  GET
+
 # gamme_modules:
 #     path:     /PFR-MADERA/gamme/modules/
 #     defaults: { _controller: 'App\Controller\GammeController::listeModules' }
