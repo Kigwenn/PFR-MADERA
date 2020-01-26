@@ -43,24 +43,26 @@ class SecurityController extends AbstractController
                 {
                     //utilisateur autorisé, on créé son token
                     $time = new datetime("now");
-                    $commercial->setCommToken(bin2hex(random_bytes(32)));
-                    $commercial->setCommTokenDate($time);
+                    $token = bin2hex(random_bytes(32));
                     $queryBuilder = $entityManager->createQueryBuilder();
                     $queryBuilder
                         ->update('App\Entity\Commercial', 'c')
                         ->set('c.comm_token', '?1')
                         ->set('c.comm_token_date', '?2')
                         ->where('c.id = ?3')
-                        ->setParameter('1', bin2hex(random_bytes(32)))
+                        ->setParameter('1', $token)
                         ->setParameter('2', $time->format('Y-m-d H:i:s'))
                         ->setParameter('3', $commercial->getId());
-                    $queryBuilder->getQuery();
+                    $query = $queryBuilder->getQuery();
+                    $query->getDQL();
+                    $query->execute();
+
                     $reponse = new Response (json_encode(array(
                         'result' => "OK",
                         'id' => $commercial->getId(),
                         'mail_utilisateur' => $commercial->getPersMail(),
-                        'token_utilisateur' => $commercial->getCommToken(),
-                        'datetoken_utilisateur' => $commercial->getCommTokenDate()
+                        'token_utilisateur' => $token,
+                        'datetoken_utilisateur' => $time->format('Y-m-d H:i:s')
                     )));
                     break;
                 }
