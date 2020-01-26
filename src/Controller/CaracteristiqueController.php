@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Entity\Module;
 use App\Entity\Caracteristique;
 use App\Entity\Client;
 
@@ -30,7 +31,6 @@ class CaracteristiqueController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_caracteristique = $this->getDoctrine()->getRepository(Caracteristique::class);
         $parametersAsArray = [];
-        $resultat = "OK";
 
         //Conversion dU JSON
         if ($content = $requestjson->getContent()) {
@@ -42,34 +42,31 @@ class CaracteristiqueController extends AbstractController
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Vérification du module
-        if ($resultat == "OK")
-        {
-            $repository_module = $this->getDoctrine()->getRepository(Module::class); 
-            $module = $repository_module->find($parametersAsArray['modu_id']); 
-            if ($module == null) {
-                $reponse = new Response (json_encode(array(
-                    'resultat' => "Le module n'existe pas."
-                    )
-                ));
-            } else {
-                //Creation
-                $caracteristique = new Caracteristique();
-                $caracteristique->setModu($module);
-                $caracteristique->setCaraSection($parametersAsArray['cara_section']);
-                $caracteristique->setCaraHauteur($parametersAsArray['cara_hauteur']);
-                $caracteristique->setCaraLongueur($parametersAsArray['cara_longueur']);
-                $caracteristique->setCaraTypeAngle($parametersAsArray['cara_type_angle']);
-                $caracteristique->setCaraAngle($parametersAsArray['cara_angle']);
-                $entityManager->persist($caracteristique); 
-                $entityManager->flush();
+        $repository_module = $this->getDoctrine()->getRepository(Module::class); 
+        $module = $repository_module->find($parametersAsArray['modu_id']); 
+        if ($module == null) {
+            $reponse = new Response (json_encode(array(
+                'resultat' => "Le module n'existe pas."
+                )
+            ));
+        } else {
+            //Creation
+            $caracteristique = new Caracteristique();
+            $caracteristique->setModu($module);
+            $caracteristique->setCaraSection($parametersAsArray['cara_section']);
+            $caracteristique->setCaraHauteur($parametersAsArray['cara_hauteur']);
+            $caracteristique->setCaraLongueur($parametersAsArray['cara_longueur']);
+            $caracteristique->setCaraTypeAngle($parametersAsArray['cara_type_angle']);
+            $caracteristique->setCaraDegreAngle($parametersAsArray['cara_angle']);
+            $entityManager->persist($caracteristique); 
+            $entityManager->flush();
 
-                $reponse = new Response (json_encode(array(
-                    'resultat' => "OK",
-                    'id' => $caracteristique->getId()
-                    )
-                ));
-            }    
-        }
+            $reponse = new Response (json_encode(array(
+                'resultat' => "OK",
+                'id' => $caracteristique->getId()
+                )
+            ));
+        }    
 
         $reponse->headers->set("Content-Type", "application/json"); 
         $reponse->headers->set("Access Control-Allow-Origin", "*"); 
@@ -78,7 +75,7 @@ class CaracteristiqueController extends AbstractController
 
      /**
     * Permet d'avoir le detail d'un caracteristiques 
-    * @Route("{id}", name="caracteristique_affichage", methods={"GET"});
+    * @Route("/{id}", name="caracteristique_affichage", methods={"GET"});
     */
     public function affichageCaracteristique($id)
     {
@@ -98,11 +95,11 @@ class CaracteristiqueController extends AbstractController
                 'resultat' => "OK",
                 'id' => $caracteristique->getId(),
                 'modu_id' => $caracteristique->getModu()->getId(),
-                'cara_section' => $caracteristique->getSection(),
-                'cara_hauteur' => $caracteristique->getHauteur(),
-                'cara_longueur' => $caracteristique->getLongueur(),
-                'cara_type_angle' => $caracteristique->getTypeAngle(),
-                'cara_angle' => $caracteristique->getAngle()
+                'cara_section' => $caracteristique->getCaraSection(),
+                'cara_hauteur' => $caracteristique->getCaraHauteur(),
+                'cara_longueur' => $caracteristique->getCaraLongueur(),
+                'cara_type_angle' => $caracteristique->getCaraTypeAngle(),
+                'cara_angle' => $caracteristique->getCaraDegreAngle()
                 )
             ));
         }
@@ -144,13 +141,13 @@ class CaracteristiqueController extends AbstractController
                 if ($module == null) {
                     $reponse = "Le module n'existe pas.";
                 } else {
-                    //CrModification
+                    //Modification
                     $caracteristique->setModu($module);
                     $caracteristique->setCaraSection($parametersAsArray['cara_section']);
                     $caracteristique->setCaraHauteur($parametersAsArray['cara_hauteur']);
                     $caracteristique->setCaraLongueur($parametersAsArray['cara_longueur']);
                     $caracteristique->setCaraTypeAngle($parametersAsArray['cara_type_angle']);
-                    $caracteristique->setCaraAngle($parametersAsArray['cara_angle']);
+                    $caracteristique->setCaraDegreAngle($parametersAsArray['cara_degre_angle']);
                     $entityManager->persist($caracteristique); 
                     $entityManager->flush();
 
@@ -176,7 +173,7 @@ class CaracteristiqueController extends AbstractController
 
     /** 
     * Permet de supprimer un caracteristique et son adresse grâce à l'id de l'caracteristique
-    * @Route("/{id}", name="caracteristique_suppression", methods={"DELETE"}),
+    * @Route("/liste/module/{id}", name="caracteristique_suppression", methods={"DELETE"}),
     */
     public function suppressionCaracteristique($id){
         $entityManager = $this->getDoctrine()->getManager(); 

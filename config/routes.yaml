@@ -2,7 +2,6 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-
 client_creation:
     path:     /PFR-MADERA/client
     defaults: { _controller: 'App\Controller\ClientController::creationClient' }
@@ -164,7 +163,7 @@ caracteristique_modification:
     methods:  PUT
 
 caracteristique_suppression:
-    path:     /PFR-MADERA/caracteristique
+    path:     /PFR-MADERA/caracteristique/{id}
     defaults: { _controller: 'App\Controller\CaracteristiqueController::suppressionCaracteristique' }
     methods:  DELETE
 
@@ -226,6 +225,16 @@ module_liste_devis:
 type_module_liste:
     path:     /PFR-MADERA/type_module/liste
     defaults: { _controller: 'App\Controller\TypeModuleController::listeTypeModule' }
+    methods:  GET
+
+devis_generation_dossier_estimatif:
+    path:     /PFR-MADERA/devis/dossier_estimatif/{id}
+    defaults: { _controller: 'App\Controller\DevisController::generationDossierEstimatif' }
+    methods:  GET
+
+devis_generation_dossier_technique:
+    path:     /PFR-MADERA/devis/dossier_technique/{id}
+    defaults: { _controller: 'App\Controller\DevisController::generationDossierTechnique' }
     methods:  GET
 
 # gamme_modules:

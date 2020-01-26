@@ -112,13 +112,15 @@ class ModuleController extends AbstractController
 		if ($resultat == "OK") {
             $module = new Module();
             $module->setModuNom($parametersAsArray['modu_nom']);
-            $module->setModuTymo($typeModule);
-            //$module->setModuPrixUnitaire();
+            $module->setTymo($typeModule);
             $module->setCCTP($cctp);
             $module->setFiex($finition_exterieur);
             $module->setFiin($finition_interieur);
             $module->setCouv($couverture);
             $module->setIsol($isolant);
+            if ($devis <> null) {
+                $module->setDevi($devis);
+            }  
             $entityManager->persist($module); 
             $entityManager->flush();
         }
@@ -127,8 +129,7 @@ class ModuleController extends AbstractController
         if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'id' => $module->getId(), 
-                'modu_nom' => $module->getModuNom(),
+                'id' => $module->getId()
                 )
             ));
         } else {
@@ -171,7 +172,7 @@ class ModuleController extends AbstractController
                 'fiex_id' => $module->getFiex()->getId(),
                 'fiin_id' => $module->getFiin()->getId(),
                 'couv_id' => $module->getCouv()->getId(),
-                'modu_nom' => $module->getNom(),
+                'modu_nom' => $module->getModuNom(),
                 'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
                 'isol_id' => $module->getIsol()->getId(),
                 ))
@@ -284,12 +285,14 @@ class ModuleController extends AbstractController
 		if ($resultat == "OK") {
             $module->setModuNom($parametersAsArray['modu_nom']);
             $module->setTymo($typeModule);
-            //$module->setModuPrixUnitaire();
             $module->setCCTP($cctp);
             $module->setFiex($finition_exterieur);
             $module->setFiin($finition_interieur);
             $module->setCouv($couverture);
             $module->setIsol($isolant);
+            if ($devis <> null) {
+                $module->setDevi($devis);
+            }
             $entityManager->persist($module); 
             $entityManager->flush();
         }

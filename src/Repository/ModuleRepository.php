@@ -71,8 +71,9 @@ class ModuleRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT m.id, m.modu_nom, m.modu_prix_unitaire FROM App\Entity\Module m 
             WHERE 
-                (m.tymo = :tymo_id) AND
-                ((m.fiex IS null) OR (m.fiex = :fiex_id)) AND
+                (m.tymo = :tymo_id) AND 
+                (m.devi is null) AND
+                ((m.fiex is null) OR (m.fiex = :fiex_id)) AND
                 ((m.fiin is null) OR (m.fiin = :fiin_id)) AND
                 ((m.couv is null) OR (m.couv = :couv_id)) AND
                 ((m.isol is null) OR (m.isol = :isol_id))
