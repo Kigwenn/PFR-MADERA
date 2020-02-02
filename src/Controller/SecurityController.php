@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Commercial;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,22 +37,34 @@ class SecurityController extends AbstractController
         if ($erreur == null) {
             foreach ($listeCommercials as $commercial)
             {
+
                 if (($commercial->getPersMail() == $parametersAsArray['mail_utilisateur']) &&
                     ($commercial->getCommMdp() == $parametersAsArray['mdp_utilisateur']))
                 {
                     //utilisateur autorisé, on créé son token
-                    $time = new \datetime("now");
-                    $commercial->setCommToken(bin2hex(random_bytes(32)));
-                    $commercial->setCommTokenDate($time);
-                    $entityManager->persist($commercial);
-                    $entityManager->flush();
+                    $time = new datetime("now");
+                    $token = bin2hex(random_bytes(32));
+                    $queryBuilder = $entityManager->createQueryBuilder();
+                    $queryBuilder
+                        ->update('App\Entity\Commercial', 'c')
+                        ->set('c.comm_token', '?1')
+                        ->set('c.comm_token_date', '?2')
+                        ->where('c.id = ?3')
+                        ->setParameter('1', $token)
+                        ->setParameter('2', $time->format('Y-m-d H:i:s'))
+                        ->setParameter('3', $commercial->getId());
+                    $query = $queryBuilder->getQuery();
+                    $query->getDQL();
+                    $query->execute();
+
                     $reponse = new Response (json_encode(array(
                         'result' => "OK",
                         'id' => $commercial->getId(),
                         'mail_utilisateur' => $commercial->getPersMail(),
-                        'token_utilisateur' => $commercial->getCommToken(),
-                        'datetoken_utilisateur' => $commercial->getCommTokenDate()
+                        'token_utilisateur' => $token,
+                        'datetoken_utilisateur' => $time->format('Y-m-d H:i:s')
                     )));
+                    break;
                 }
                 else{
                     $reponse = new Response (json_encode(array(
