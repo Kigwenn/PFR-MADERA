@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello DevisController!{% endblock %}
@@ -8,13 +9,85 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Hello ! ✅</h1>
+<div class="example-wrapper"> <h1>Dossier estimatif du devis : {{ infosDevis['devi_nom'] }}</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/PFR-MADERA/src/Controller/DevisController.php'|file_link(0) }}">src/Controller/DevisController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/PFR-MADERA/templates/devis/index.html.twig'|file_link(0) }}">templates/devis/index.html.twig</a></code></li>
-    </ul>
+<p>
+
+
+<table>
+    <tr>
+        <td>
+            <b> Informations du devis : </b> <br>
+            Id du devis : {{infosDevis['id']}}  <br>
+            Maison : {{infosDevis['mais_nom']}}<br> 
+            Gamme : {{infosDevis['gamm_nom']}}<br> 
+            Date : {{infosDevis['devi_date']}}<br>
+            Prix : {{infosDevis['devi_prix']}}
+        </td>
+
+        <td>
+            <b> Adresse du chantier : </b> <br>
+            Pays : {{infosDevis['pays_nom']}}<br> 
+            Region : {{infosDevis['adre_region']}}<br> 
+            Ville : {{infosDevis['adre_ville']}}<br> 
+            Code postale : {{infosDevis['adre_cp']}}<br>
+            Rue : {{infosDevis['adre_rue']}}<br>
+            Complement d'adresse : {{infosDevis['adre_complement']}}<br>
+            Infomartions complémentaire : {{infosDevis['adre_info']}}
+        </td>
+
+    </tr>
+    </table>    
+    <table>
+
+    <tr>
+        <td>
+            <b> Informations du Client : </b> <br>
+            Id du client : {{infosClient['id']}}  <br>
+            Nom : {{infosClient['pers_nom']}}<br> 
+            Prenom : {{infosClient['pers_prenom']}}<br> 
+            Mail : {{infosClient['pers_mail']}}<br>
+            Tel : {{infosClient['pers_tel']}}
+        </td>
+
+        <td>
+            <b> Adresse du Client : </b> <br>
+            Pays : {{infosClient['pays_nom']}}<br> 
+            Region : {{infosClient['adre_region']}}<br> 
+            Ville : {{infosClient['adre_ville']}}<br> 
+            Code postale : {{infosClient['adre_cp']}}<br>
+            Rue : {{infosClient['adre_rue']}}<br>
+            Complement d'adresse : {{infosClient['adre_complement']}}<br>
+            Infomartions complémentaire : {{infosClient['adre_info']}}
+        </td>
+    </tr>
+</table>
+
+<br><br>
+
+<table>
+  <tr>
+    <b> 
+    <td><b>id</b> </td>
+    <td><b>Nom</b> </td>
+    <td><b>Type</b> </td>
+    <td><b>Quantite</b> </td>
+    <td><b>Prix</b> </td>
+  </tr>	
+
+    {% for item in listeModules %}  
+  <tr>
+    <td>{{item.id}}</td>
+    <td>{{item.modu_nom}}</td>
+    <td>indefini</td>
+    <td>1</td>
+    <td>{{item.modu_prix_unitaire}}</td>
+  </tr>
+    {% endfor %}
+</table>	
+
+</p>
+
 </div>
 {% endblock %}
+

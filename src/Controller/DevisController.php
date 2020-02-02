@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Adresse;
 use App\Entity\Devis;
 use App\Entity\Client;
+use App\Entity\Module;
 use App\Entity\Commercial;
 use App\Entity\Maison;
 use App\Entity\Gamme;
@@ -482,6 +483,67 @@ class DevisController extends AbstractController
     */
     public function generationDossierEstimatif($id) 
     {
+        $entityManager = $this->getDoctrine()->getManager(); 
+
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
+        $devis = $repository_devis->find($id);
+
+        $repository_module = $this->getDoctrine()->getRepository(Module::class);
+        $listeModules = $repository_module->rechercheModuleDevis($id);
+
+        $client = $repository_module->rechercheModuleDevis($id); 
+
+        $adresse = $devis->getAdre();
+
+        $infosDevis = array(
+            'id' => $devis->getId(),
+            'gamm_nom' => $devis->getGamm()->getGammNom(),
+            'mais_nom' => $devis->getMais()->getMaisNom(),
+            'devi_nom' => $devis->getDeviNom(),
+            'devi_date' => $devis->getDeviDate()->format("Y-m-d"),
+            'devi_prix' => $devis->getDeviPrix(),
+            'pays_nom' => $adresse->getPays()->getPaysNom(),
+            'adre_region' => $adresse->getAdreRegion(),
+            'adre_ville' => $adresse->getAdreVille(),
+            'adre_cp' => $adresse->getAdreCp(),
+            'adre_rue' => $adresse->getAdreRue(),
+            'adre_complement' => $adresse->getAdreComplement(),
+            'adre_info' => $adresse->getAdreInfo()
+        );
+        
+        //$client = $repository_client->rechercheClient($devis->getClie()->getId());
+        //$client = $repository_client->find($devis->getClie()->getId());
+        //$client = $devis->getClie(); 
+
+        $repository_client = $this->getDoctrine()->getRepository(Client::class);
+        $listeClient = $repository_client->findAll();
+
+        $idClient = $devis->getClie()->getId();
+        foreach ($listeClient as $c) 
+        {
+            if ($c->getId() == $idClient){
+                $client = $c;
+                break;
+            }  
+        }
+
+        $adresse = $client->getAdre(); 
+        $infosClient = array(
+            'pays_nom' => $adresse->getPays()->getPaysNom(),
+            'adre_region' => $adresse->getAdreRegion(),
+            'adre_ville' => $adresse->getAdreVille(),
+            'adre_cp' => $adresse->getAdreCp(),
+            'adre_rue' => $adresse->getAdreRue(),
+            'adre_complement' => $adresse->getAdreComplement(),
+            'adre_info' => $adresse->getAdreInfo(),
+            'id' => $client->getId(),
+            'pers_sexe' => $client->getPersSexe(),
+            'pers_nom' => $client->getPersNom(),
+            'pers_prenom' => $client->getPersPrenom(),
+            'pers_mail' => $client->getPersMail(),
+            'pers_tel' => $client->getPersTel()
+        );
+
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -492,7 +554,10 @@ class DevisController extends AbstractController
         // Retrieve the HTML generated in our twig file
         // on inser les donné dans la deuxieme partie
         $html = $this->renderView('devis/DossierEstimatif.html.twig', [
-            'title' => "Welcome to our PDF Test"
+            'title' => "Test mon cul", 
+            'infosDevis' => $infosDevis,
+            'infosClient' => $infosClient,
+            'listeModules' => $listeModules 
         ]);
         
         // Load HTML to Dompdf
@@ -508,7 +573,6 @@ class DevisController extends AbstractController
         $dompdf->stream("mypdf.pdf", [
             "Attachment" => false
         ]);
-        
     }
 
     
