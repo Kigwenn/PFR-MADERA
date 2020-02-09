@@ -237,6 +237,16 @@ devis_generation_dossier_technique:
     defaults: { _controller: 'App\Controller\DevisController::generationDossierTechnique' }
     methods:  GET
 
+etape_liste:
+    path:     /PFR-MADERA/etapes
+    defaults: { _controller: 'App\Controller\EtapeController::listeEtape' }
+    methods:  GET
+
+etat_liste:
+    path:     /PFR-MADERA/etats
+    defaults: { _controller: 'App\Controller\EtatController::listeEtat' }
+    methods:  GET
+
 # gamme_modules:
 #     path:     /PFR-MADERA/gamme/modules/
 #     defaults: { _controller: 'App\Controller\GammeController::listeModules' }
