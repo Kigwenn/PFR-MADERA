@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Composant;
 use App\Entity\Adresse;
 use App\Entity\Devis;
 use App\Entity\Client;
 use App\Entity\Module;
 use App\Entity\Commercial;
+use App\Entity\Caracteristique;
+use App\Entity\ComposantModule;
 use App\Entity\Maison;
 use App\Entity\Gamme;
 use App\Entity\Pays;
@@ -475,8 +478,6 @@ class DevisController extends AbstractController
         return $reponse;
     }
 
-
-
     /**
     * 
     * @Route("/generationDossierEstimatif", name="devis_generation_dossier_estimatif", methods={"GET"});
@@ -494,7 +495,6 @@ class DevisController extends AbstractController
         $client = $repository_module->rechercheModuleDevis($id); 
 
         $adresse = $devis->getAdre();
-
         $infosDevis = array(
             'id' => $devis->getId(),
             'gamm_nom' => $devis->getGamm()->getGammNom(),
@@ -510,10 +510,6 @@ class DevisController extends AbstractController
             'adre_complement' => $adresse->getAdreComplement(),
             'adre_info' => $adresse->getAdreInfo()
         );
-        
-        //$client = $repository_client->rechercheClient($devis->getClie()->getId());
-        //$client = $repository_client->find($devis->getClie()->getId());
-        //$client = $devis->getClie(); 
 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $listeClient = $repository_client->findAll();
@@ -543,6 +539,7 @@ class DevisController extends AbstractController
             'pers_mail' => $client->getPersMail(),
             'pers_tel' => $client->getPersTel()
         );
+
 
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
@@ -582,6 +579,90 @@ class DevisController extends AbstractController
     */
     public function generationDossierTechnique($id) 
     {
+        $entityManager = $this->getDoctrine()->getManager(); 
+        $repository_composant = $this->getDoctrine()->getRepository(Composant::class);
+        $repository_client = $this->getDoctrine()->getRepository(Client::class);
+        $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
+        $repository_module = $this->getDoctrine()->getRepository(Module::class);
+        $repository_caracteristique = $this->getDoctrine()->getRepository(Caracteristique::class);
+        $repository_composantmodule = $this->getDoctrine()->getRepository(ComposantModule::class);
+
+        
+        
+        $devis = $repository_devis->find($id);
+        $client = $repository_module->rechercheModuleDevis($id); 
+        $adresse = $devis->getAdre();
+
+        $infosDevis = array(
+            'id' => $devis->getId(),
+            'gamm_nom' => $devis->getGamm()->getGammNom(),
+            'mais_nom' => $devis->getMais()->getMaisNom(),
+            'devi_nom' => $devis->getDeviNom(),
+            'devi_date' => $devis->getDeviDate()->format("Y-m-d"),
+            'devi_prix' => $devis->getDeviPrix(),
+            'pays_nom' => $adresse->getPays()->getPaysNom(),
+            'adre_region' => $adresse->getAdreRegion(),
+            'adre_ville' => $adresse->getAdreVille(),
+            'adre_cp' => $adresse->getAdreCp(),
+            'adre_rue' => $adresse->getAdreRue(),
+            'adre_complement' => $adresse->getAdreComplement(),
+            'adre_info' => $adresse->getAdreInfo()
+        );
+    
+        $listeClient = $repository_client->findAll();
+        $idClient = $devis->getClie()->getId();
+        foreach ($listeClient as $c) 
+        {
+            if ($c->getId() == $idClient){
+                $client = $c;
+                break;
+            }  
+        }
+        $adresse = $client->getAdre(); 
+        $infosClient = array(
+            'pays_nom' => $adresse->getPays()->getPaysNom(),
+            'adre_region' => $adresse->getAdreRegion(),
+            'adre_ville' => $adresse->getAdreVille(),
+            'adre_cp' => $adresse->getAdreCp(),
+            'adre_rue' => $adresse->getAdreRue(),
+            'adre_complement' => $adresse->getAdreComplement(),
+            'adre_info' => $adresse->getAdreInfo(),
+            'id' => $client->getId(),
+            'pers_sexe' => $client->getPersSexe(),
+            'pers_nom' => $client->getPersNom(),
+            'pers_prenom' => $client->getPersPrenom(),
+            'pers_mail' => $client->getPersMail(),
+            'pers_tel' => $client->getPersTel()
+        );
+
+        $lesModules = $repository_module->rechercheModuleDevis($id);
+        foreach ($lesModules as $m) 
+        {
+            $module = $repository_module->find($m['id']); 
+            $listeCaracteristiques = $repository_caracteristique->rechercheCaracteristiqueModule($module->getId());
+            $lesComposantModules = $repository_composantmodule->rechercheComposants($module->getId());
+            $listeComposants = [];
+            foreach ($lesComposantModules as $cm) 
+            {
+                $modulecomposant = $repository_composantmodule->find($cm['id']);
+                $composant = $modulecomposant->getComp(); 
+                $listeComposants[] = array(
+                    'id' => $composant->getId(),
+                    'comp_nom' => $composant->getCompNom(),
+                    'comp_prix_unitaire' => $composant->getCompPrixUnitaire(),
+                    'quantite' => $modulecomposant->getComoQuantite(),
+                ); 
+            }
+             
+            $listeModules[] = array(
+                'id' => $module->getId(),
+                'modu_nom' => $module->getModuNom(),
+                'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
+                'listeCaracteristiques' => $listeCaracteristiques,
+                'listeComposants' => $listeComposants,
+            );   
+        }
+
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
@@ -592,7 +673,10 @@ class DevisController extends AbstractController
         // Retrieve the HTML generated in our twig file
         // on inser les donné dans la deuxieme partie
         $html = $this->renderView('devis/DossierTechnique.html.twig', [
-            'title' => "Welcome to our PDF Test"
+            'title' => "Test mon cul", 
+            'infosDevis' => $infosDevis,
+            'infosClient' => $infosClient,
+            'listeModules' => $listeModules 
         ]);
         
         // Load HTML to Dompdf

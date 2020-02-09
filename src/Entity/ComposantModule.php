@@ -92,57 +92,7 @@ class ComposantModule
         return $this;
     }
 
-    /**
-     * @return Collection|Module[]
-     */
-    // public function getModu(): Collection
-    // {
-    //     return $this->modu;
-    // }
-
-    // public function addModu(Module $modu): self
-    // {
-    //     if (!$this->modu->contains($modu)) {
-    //         $this->modu[] = $modu;
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeModu(Module $modu): self
-    // {
-    //     if ($this->modu->contains($modu)) {
-    //         $this->modu->removeElement($modu);
-    //     }
-
-    //     return $this;
-    // }
-
-    /**
-     * @return Collection|Composant[]
-     */
-    // public function getComp(): Collection
-    // {
-    //     return $this->comp;
-    // }
-
-    // public function addComp(Composant $comp): self
-    // {
-    //     if (!$this->comp->contains($comp)) {
-    //         $this->comp[] = $comp;
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeComp(Composant $comp): self
-    // {
-    //     if ($this->comp->contains($comp)) {
-    //         $this->comp->removeElement($comp);
-    //     }
-
-    //     return $this;
-    // }
+    
 
     
 }

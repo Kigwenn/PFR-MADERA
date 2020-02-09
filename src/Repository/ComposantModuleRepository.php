@@ -47,4 +47,13 @@ class ComposantModuleRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // retourne le client correspondant au devis
+    public function rechercheComposants($module_id): array
+    {
+        $rawSql = "SELECT cm.id FROM composant_module AS cm WHERE cm.modu_id = :module_id";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute(['module_id' => $module_id]);
+        return $stmt->fetchAll();
+    }
 }
