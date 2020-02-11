@@ -9,10 +9,7 @@ class ClientControllerTest extends WebTestCase
 {
     private $client = null;
 
-    public function setUp()
-    {
-        $testid;
-    }
+
 
     public function testlisteClient()
     {
@@ -51,10 +48,13 @@ class ClientControllerTest extends WebTestCase
         $this->assertSame("OK", $responseData["resultat"]);
         $this->assertGreaterThan(0,$responseData["id"]);
         $testid = $responseData["id"];
-        print_r($testid);
+        return $testid;
     }
 
-    public function testmodificationClient()
+    /**
+     * @depends testcreationClient
+     */
+    public function testmodificationClient(int $testid)
     {
         $client = static::createClient();
         $crawler = $client->request(
@@ -85,7 +85,10 @@ class ClientControllerTest extends WebTestCase
         //print_r(testid);
     }
 
-        public function testaffichageClient()
+    /**
+     * @depends testcreationClient
+     */
+        public function testaffichageClient(int $testid)
         {
             $client = static::createClient();
             $crawler = $client->request(
@@ -103,7 +106,10 @@ class ClientControllerTest extends WebTestCase
             $this->assertSame($testid,$responseData["id"]);
         }
 
-        public function testsuppressionClient()
+    /**
+     * @depends testcreationClient
+     */
+        public function testsuppressionClient(int $testid)
         {
             $client = static::createClient();
             $crawler = $client->request(
