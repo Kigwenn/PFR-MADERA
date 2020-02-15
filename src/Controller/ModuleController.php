@@ -498,4 +498,40 @@ class ModuleController extends AbstractController
         return $reponse;
     }
 
+    /**
+     * Permet d'avoir la liste de tous les devis
+     * @Route("count", name="module_count", methods={"GET"});
+     */
+    public function countModules()
+    {
+        $repository_devis = $this->getDoctrine()->getRepository(Module::class);
+
+        $listeModules = $repository_devis->findAll();
+        $count = count($listeModules);
+        $reponse = new Response (json_encode(array(
+            'resultat' => "OK",
+            "count" => $count
+        )));
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
+        return $reponse;
+    }
+
+    /**
+     * Permet d'avoir la liste de tous les devis
+     * @Route("count_liste/devis/{id}", name="module_liste_devis_count", methods={"GET"});
+     */
+    public function countListeModuleDevis($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository_module = $this->getDoctrine()->getRepository(Module::class);
+        $count = $repository_module->findBy('devi_id',$id)->count();
+        $reponse = new Response (json_encode(array(
+            'resultat' => "OK",
+            "count" => $count
+        )));
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        return $reponse;
+    }
 }

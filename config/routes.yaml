@@ -222,6 +222,11 @@ module_liste_devis:
     defaults: { _controller: 'App\Controller\ModuleController::listeModuleDevis' }
     methods:  GET
 
+module_liste_devis_count:
+    path:     /PFR-MADERA/deviss/count
+    defaults: { _controller: 'App\Controller\ModuleController::countDevis' }
+    methods:  GET
+
 type_module_liste:
     path:     /PFR-MADERA/type_module/liste
     defaults: { _controller: 'App\Controller\TypeModuleController::listeTypeModule' }

@@ -374,12 +374,13 @@ class DevisController extends AbstractController
     * Permet d'avoir la liste de tous les devis 
     * @Route("", name="devis_liste", methods={"GET"});
     */
-    public function listeDevis(Request $requestjson) 
+    public function listeDevis($id = null)
     {
         $resultat = "OK";
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
         //Recuperation de la liste de devis
-        $listeDevis = $repository_devis->findAll();
+        if (empty($id)) $listeDevis = $repository_devis->findAll();
+        else $listeDevis = $repository_devis->findBy('id',$id);
         //Verification de la base
         if ($listeDevis == null) {
             $resultat = "Aucun devis trouvée.";
