@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200119121627 extends AbstractMigration
+final class Version20200221154913 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -53,7 +53,7 @@ final class Version20200119121627 extends AbstractMigration
         $this->addSql('CREATE TABLE type_module (id INT AUTO_INCREMENT NOT NULL, tymo_nom VARCHAR(50) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE adresse ADD CONSTRAINT FK_C35F0816A6E44244 FOREIGN KEY (pays_id) REFERENCES pays (id)');
         $this->addSql('ALTER TABLE caracteristique ADD CONSTRAINT FK_D14FBE8B27FCD2D5 FOREIGN KEY (modu_id) REFERENCES module (id)');
-        $this->addSql('ALTER TABLE client ADD CONSTRAINT FK_C744045535227DDF FOREIGN KEY (adre_id) REFERENCES adresse (id)');
+        $this->addSql('ALTER TABLE client ADD CONSTRAINT FK_C744045535227DDF FOREIGN KEY (adre_id) REFERENCES adresse (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE composant ADD CONSTRAINT FK_EC8486C982E6D09 FOREIGN KEY (fami_id) REFERENCES famille_composant (id)');
         $this->addSql('ALTER TABLE composant_stock ADD CONSTRAINT FK_B8CB81A7F3310E7 FOREIGN KEY (composant_id) REFERENCES composant (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE composant_stock ADD CONSTRAINT FK_B8CB81ADCD6110 FOREIGN KEY (stock_id) REFERENCES stock (id) ON DELETE CASCADE');
@@ -65,8 +65,8 @@ final class Version20200119121627 extends AbstractMigration
         $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52BD5E86FF FOREIGN KEY (etat_id) REFERENCES etat (id)');
         $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52B35227DDF FOREIGN KEY (adre_id) REFERENCES adresse (id)');
         $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52B213BF1EA FOREIGN KEY (gamm_id) REFERENCES gamme (id)');
-        $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52BEF7EB489 FOREIGN KEY (comm_id) REFERENCES commercial (id)');
-        $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52B59DE4808 FOREIGN KEY (clie_id) REFERENCES client (id)');
+        $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52BEF7EB489 FOREIGN KEY (comm_id) REFERENCES commercial (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE devis ADD CONSTRAINT FK_8B27C52B59DE4808 FOREIGN KEY (clie_id) REFERENCES client (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE fournisseur_composant ADD CONSTRAINT FK_114ECAAC670C757F FOREIGN KEY (fournisseur_id) REFERENCES fournisseur (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE fournisseur_composant ADD CONSTRAINT FK_114ECAAC7F3310E7 FOREIGN KEY (composant_id) REFERENCES composant (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE gamme ADD CONSTRAINT FK_C32E1468FD661D22 FOREIGN KEY (isol_id) REFERENCES isolant (id)');

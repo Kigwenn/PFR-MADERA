@@ -342,12 +342,16 @@ class DevisController extends AbstractController
     * @Route("", name="devis_suppression", methods={"DELETE"}),
     */
     public function suppressionDevis($id){
-        $repository_client = $this->getDoctrine()->getRepository(Client::class); 
         $resultat = "OK";
         
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
         $devis = $repository_devis->find($id);
+        $reponse = new Response (json_encode(array(
+            'resultat' => "OK",
+            'id' => $devis->getId(),
+            )
+        ));
         if ($devis == null) {
             $resultat = "Le devis n'existe pas.";
             $reponse = new Response (json_encode(array(
@@ -374,13 +378,12 @@ class DevisController extends AbstractController
     * Permet d'avoir la liste de tous les devis 
     * @Route("", name="devis_liste", methods={"GET"});
     */
-    public function listeDevis($id = null)
+    public function listeDevis(Request $requestjson) 
     {
         $resultat = "OK";
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
         //Recuperation de la liste de devis
-        if (empty($id)) $listeDevis = $repository_devis->findAll();
-        else $listeDevis = $repository_devis->findBy('id',$id);
+        $listeDevis = $repository_devis->findAll();
         //Verification de la base
         if ($listeDevis == null) {
             $resultat = "Aucun devis trouvée.";
@@ -552,7 +555,6 @@ class DevisController extends AbstractController
         // Retrieve the HTML generated in our twig file
         // on inser les donné dans la deuxieme partie
         $html = $this->renderView('devis/DossierEstimatif.html.twig', [
-            'title' => "Test mon cul", 
             'infosDevis' => $infosDevis,
             'infosClient' => $infosClient,
             'listeModules' => $listeModules 

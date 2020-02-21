@@ -74,13 +74,13 @@ class Devis
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Commercial", inversedBy="listeDevis")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $comm;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="devis")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $clie;
 
@@ -234,7 +234,7 @@ class Devis
     }
 
     // /**
-    //  * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="devis")
+    //  * @ORM\ManyToMany(targetEntity="App\Entity\Module", inversedBy="devis", )
     //  */
     // private $modulesDevis;
 

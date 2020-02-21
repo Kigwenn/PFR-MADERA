@@ -136,7 +136,7 @@ class ClientController extends AbstractController
         //Envoi de la réponse 
         if  ($resultat == "OK") { 
             $repository_adresse = $this->getDoctrine()->getRepository(Adresse::class);  
-            $adresse = $repository_adresse->find($client->getAdre()->getId());
+            $adresse = $client->getAdre();
             $reponse = new Response(json_encode(array(
                 'resultat' => "OK",
                 'pays_id' => $adresse->getPays()->getId(),

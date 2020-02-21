@@ -19,8 +19,8 @@ class Client extends Personne
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Adresse", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity="App\Entity\Adresse")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $adre;
 
@@ -81,7 +81,5 @@ class Client extends Personne
 
         return $this;
     }
-
-
 
 }

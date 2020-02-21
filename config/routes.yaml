@@ -88,7 +88,7 @@ devis_modification:
     methods:  PUT
 
 devis_suppression:
-    path:     /PFR-MADERA/devis
+    path:     /PFR-MADERA/devis/{id}
     defaults: { _controller: 'App\Controller\DevisController::suppressionDevis' }
     methods:  DELETE
 
