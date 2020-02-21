@@ -25,13 +25,13 @@ class ComposantModule
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Module")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $modu;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\composant")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $comp;
 

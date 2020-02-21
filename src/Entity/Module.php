@@ -30,7 +30,7 @@ class Module
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Devis")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $devi;
 

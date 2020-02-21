@@ -43,7 +43,7 @@ class Caracteristique
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Module")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $modu;
 
