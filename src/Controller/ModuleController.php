@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\ComposantModule;
 use App\Entity\Adresse;
 use App\Entity\Module;
 use App\Entity\Devis;
@@ -41,9 +42,18 @@ class ModuleController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id'); 
+        $parametresObligatoire[] = array('tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id', 'modu_id'); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
+
+        // verification du module
+        if ($resultat == "OK") {
+            $repository_module = $this->getDoctrine()->getRepository(Module::class); 
+            $moduleReference = $repository_module->find($parametersAsArray['modu_id']); 
+            if ($moduleReference == null) {
+                $resultat =  "Le module n'existe pas.";
+            }    
+        }
      
         // verification du devis
         if (($resultat == "OK") && ($parametersAsArray['devi_id'] <> null)) {
@@ -122,6 +132,27 @@ class ModuleController extends AbstractController
                 $module->setDevi($devis);
             }  
             $entityManager->persist($module); 
+
+            // recuperation des composants du module de reference
+            $repository_ComposantModule = $this->getDoctrine()->getRepository(ComposantModule::class);
+            $lesComposantModules = $repository_ComposantModule->rechercheComposants($parametersAsArray['modu_id']);
+            foreach ($lesComposantModules as $cm) 
+            {
+                // $reponse = new Response (json_encode($cm));
+                // $reponse->headers->set("Content-Type", "application/json"); 
+                // $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+                // return $reponse;
+                
+
+
+
+                $CompModuRef = $repository_ComposantModule->find($cm['id']);
+                $ComposantModule = new ComposantModule();
+                $ComposantModule->setModu($module);
+                $ComposantModule->setComp($CompModuRef->getComp());
+                $ComposantModule->setComoQuantite($CompModuRef->getComoQuantite());
+                $entityManager->persist($ComposantModule); 
+            }
             $entityManager->flush();
         }
 		

@@ -30,7 +30,7 @@ class ComposantModule
     private $modu;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\composant")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Composant")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $comp;
