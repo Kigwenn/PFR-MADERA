@@ -61,4 +61,28 @@ class CommercialRepository extends ServiceEntityRepository
             ->setParameter('mail', $mail);
         return $qb->getQuery()->getResult();
     }
+
+    // Verification connexion
+    public function verificationConnexion($mail, $mdp): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->where('c.pers_mail = :mail')
+            ->andWhere('c.comm_mdp = :mdp')
+            ->setParameter('mail', $mail)
+            ->setParameter('mdp', $mdp);
+        return $qb->getQuery()->getResult();
+    }
+
+    // Verification dU Token
+    public function verificationToken($id, $token): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->where('c.id = :id')
+            ->andWhere('c.comm_token = :token')
+            ->setParameter('id', $id)
+            ->setParameter('token', $token);
+        return $qb->getQuery()->getResult();
+    }
 }

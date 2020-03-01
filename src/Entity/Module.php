@@ -29,6 +29,11 @@ class Module
     private $modu_prix_unitaire;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $modu_prix_total;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Devis")
      * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
@@ -179,6 +184,18 @@ class Module
     public function setTymo(?TypeModule $tymo): self
     {
         $this->tymo = $tymo;
+
+        return $this;
+    }
+
+    public function getModuPrixTotal(): ?float
+    {
+        return $this->modu_prix_total;
+    }
+
+    public function setModuPrixTotal(?float $modu_prix_total): self
+    {
+        $this->modu_prix_total = $modu_prix_total;
 
         return $this;
     }

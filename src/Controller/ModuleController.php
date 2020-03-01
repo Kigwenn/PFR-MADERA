@@ -53,8 +53,7 @@ class ModuleController extends AbstractController
             if ($moduleReference == null) {
                 $resultat =  "Le module n'existe pas.";
             }    
-        }
-     
+        }   
         // verification du devis
         if (($resultat == "OK") && ($parametersAsArray['devi_id'] <> null)) {
             $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
@@ -63,7 +62,6 @@ class ModuleController extends AbstractController
                 $resultat =  "Le devis n'existe pas.";
             }    
         }
-
         // verification du type de module
         if (($resultat == "OK") && ($parametersAsArray['tymo_id'] <> null)) {
             $repository_typeModule = $this->getDoctrine()->getRepository(TypeModule::class); 
@@ -71,8 +69,7 @@ class ModuleController extends AbstractController
             if ($typeModule == null) {
                 $resultat =  "Le type module n'existe pas.";
             }    
-        }
-     
+        }  
         // verification du cctp
         if ($resultat == "OK") {
             $repository_cctp = $this->getDoctrine()->getRepository(CCTP::class); 
@@ -81,7 +78,6 @@ class ModuleController extends AbstractController
                 $resultat =  "Le cctp n'existe pas.";
             }    
         }
-
         // verification de la finition_exterieur
         if ($resultat == "OK") {
             $repository_finition_exterieur = $this->getDoctrine()->getRepository(FinitionExterieur::class); 
@@ -90,7 +86,6 @@ class ModuleController extends AbstractController
                 $resultat =  "La finition exterieur n'existe pas.";
             }    
         }
-
         // verification de la finition_interieur
         if ($resultat == "OK") {
             $repository_finition_interieur = $this->getDoctrine()->getRepository(FinitionInterieur::class); 
@@ -99,7 +94,6 @@ class ModuleController extends AbstractController
                 $resultat =  "La finition interieur n'existe pas.";
             }    
         }
-
         // verification de la couverture
         if ($resultat == "OK") {
             $repository_couverture = $this->getDoctrine()->getRepository(Couverture::class); 
@@ -108,7 +102,6 @@ class ModuleController extends AbstractController
                 $resultat =  "La couverture n'existe pas.";
             }    
         }
-
         // verification de l'isolant
         if ($resultat == "OK") {
             $repository_isolant = $this->getDoctrine()->getRepository(Isolant::class); 
@@ -143,9 +136,6 @@ class ModuleController extends AbstractController
                 // $reponse->headers->set("Access Control-Allow-Origin", "*"); 
                 // return $reponse;
                 
-
-
-
                 $CompModuRef = $repository_ComposantModule->find($cm['id']);
                 $ComposantModule = new ComposantModule();
                 $ComposantModule->setModu($module);

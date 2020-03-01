@@ -28,55 +28,53 @@ class SecurityController extends AbstractController
         if ($content = $requestjson->getContent()) {
             $parametersAsArray = json_decode($content, true);
         }
+
         //Verification parametres
         if ($parametersAsArray == null){
             $erreur = "Il n'y a pas de paramètre.";
-        }
-        // On verifie si l'utilisateur existe
-        $listeCommercials = $repository_commercial->findAll();
-        if ($erreur == null) {
-            foreach ($listeCommercials as $commercial)
-            {
+        } else {
+            $CommercialId = $repository_commercial->verificationConnexion($parametersAsArray['mail_utilisateur'], $parametersAsArray['mdp_utilisateur']);
+          
+            if ($CommercialId == null) {
+                $erreur = "Il n'y a pas d'utilisateurs avec ces identifiants";
+            }else{
+                //utilisateur autorisé, on créé son token
+                $time = new datetime("now");
+                $token = bin2hex(random_bytes(32));
+                $queryBuilder = $entityManager->createQueryBuilder();
+                $queryBuilder
+                    ->update('App\Entity\Commercial', 'c')
+                    ->set('c.comm_token', '?1')
+                    ->set('c.comm_token_date', '?2')
+                    ->where('c.id = ?3')
+                    ->setParameter('1', $token)
+                    ->setParameter('2', $time->format('Y-m-d H:i:s'))
+                    ->setParameter('3', $CommercialId[0]['id']);
+                $query = $queryBuilder->getQuery();
+                $query->getDQL();
+                $query->execute();
 
-                if (($commercial->getPersMail() == $parametersAsArray['mail_utilisateur']) &&
-                    ($commercial->getCommMdp() == $parametersAsArray['mdp_utilisateur']))
-                {
-                    //utilisateur autorisé, on créé son token
-                    $time = new datetime("now");
-                    $token = bin2hex(random_bytes(32));
-                    $queryBuilder = $entityManager->createQueryBuilder();
-                    $queryBuilder
-                        ->update('App\Entity\Commercial', 'c')
-                        ->set('c.comm_token', '?1')
-                        ->set('c.comm_token_date', '?2')
-                        ->where('c.id = ?3')
-                        ->setParameter('1', $token)
-                        ->setParameter('2', $time->format('Y-m-d H:i:s'))
-                        ->setParameter('3', $commercial->getId());
-                    $query = $queryBuilder->getQuery();
-                    $query->getDQL();
-                    $query->execute();
-
-                    $reponse = new Response (json_encode(array(
-                        'result' => "OK",
-                        'id' => $commercial->getId(),
-                        'mail_utilisateur' => $commercial->getPersMail(),
-                        'token_utilisateur' => $token,
-                        'datetoken_utilisateur' => $time->format('Y-m-d H:i:s')
-                    )));
-                    break;
-                }
-                else{
-                    $reponse = new Response (json_encode(array(
-                            'result' => "Il n'y a pas d'utilisateurs avec ces identifiants",                        )
-                    ));
-                }
+                $reponse = new Response (json_encode(array(
+                    'result' => "OK",
+                    'id' => $CommercialId[0]['id'],
+                    'mail_utilisateur' => $parametersAsArray['mail_utilisateur'],
+                    'token_utilisateur' => $token,
+                    'datetoken_utilisateur' => $time->format('Y-m-d H:i:s')
+                )));
             }
         }
+
+        if ($erreur <> null){
+            $reponse = new Response (json_encode(array(
+                'result' => $erreur,
+            )));
+        }
+
         $reponse->headers->set("Content-Type", "application/json");
         $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
     }
+
     /**
      * Permet de se déconnecter de l'application
      * @Route("/logout", name="logout", methods={"POST"})

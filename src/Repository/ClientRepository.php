@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Client;
+use App\Entity\Commercial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -77,15 +78,11 @@ class ClientRepository extends ServiceEntityRepository
     public function verificationParametre(array $parametresObligatoire, array $parametersAsArray): string
     {
         $resultat = "OK";
+        //return count($parametresObligatoire);
+        if (!in_array('util_id', $parametresObligatoire)) { array_push($parametresObligatoire, 'util_id');}
+        if (!in_array('util_token', $parametresObligatoire)) { array_push($parametresObligatoire, 'util_token');}
+        //return count($parametresObligatoire);
 
-        // Ajout des paramètres du token
-        // $paramToken = array("util_id" ,"util_token", "util_token_date");
-        // foreach ($paramToken as $key => $value){
-        //     if (!in_array($key, $parametresObligatoire)) 
-        //     {
-        //         array_push($parametresObligatoire, $key);
-        //     }
-        // }
 
         //Vérification des parametres 
         $cpt = 0;
@@ -93,56 +90,32 @@ class ClientRepository extends ServiceEntityRepository
             $resultat = "Il n'y a pas de paramètre.";
         } else {
             foreach ($parametersAsArray as $key => $value){
-                if (in_array($key, $parametresObligatoire)) 
-                {
-                    $cpt++;
-                }
+                if (in_array($key, $parametresObligatoire)) { $cpt++; }
             }
             if (count($parametresObligatoire) <> $cpt){
                 $resultat = "Il manque " . strval(count($parametresObligatoire) - $cpt) . " paramètres.";
             }
         }
 
-        // //Verification du token
-        // if ($resultat == "OK") {
-        //     // On verifie si le commercial existe
-        //     $commercial = $repository_commercial->find($parametersAsArray['util_id']);
-        //     if ($commercial == null){
-        //         $resultat = "Le commercial n'existe pas.";
-        //     } else {
-        //         if (($commercial->getTokenUtilisateur()) <> ($parametersAsArray['util_token'])){     
-        //             $resultat = "Token invalide.";
-        //         }
-        //     }
-        // }
+        //Verification du token
+        if ($resultat == "OK") {
+            // On verifie si le commercial existe
+            $commercial = $this->verificationToken($parametersAsArray['util_id'], $parametersAsArray['util_token']);
+            if ($commercial == null){
+                $resultat = "Le token n'existe pas.";
+            } 
+        }
         return $resultat;
     }
 
-
-    // //Vérification des parametres
-    // public function verificationParametre(array $parametresObligatoire, array $parametersAsArray): string
-    // {
-        
-
-
-    //     $resultat = "OK";
-    //     if ($parametersAsArray == null){
-    //         $resultat = "Il n'y a pas de paramètre.";
-    //     } elseif (count($parametersAsArray) <> count($parametresObligatoire))
-    //     {
-    //         $resultat = "Il n'y a pas le bon nombre de paramètre (" . strval((count($parametersAsArray)) . 
-    //                 " sur " . strval(count($parametresObligatoire)) . "). ");
-    //     } else {
-    //         foreach ($parametersAsArray as $key => $value){
-    //             if (!in_array($key, $parametresObligatoire)) 
-    //             {
-    //                 $resultat = "Le paramètre " . strval($key) . " n'existe pas.";
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return $resultat;
-    // }
+    // retourne la liste des modules de la gamme
+    public function verificationToken($id, $token): array
+    {
+        $rawSql = "SELECT c.id FROM commercial AS c WHERE c.id = :id AND c.comm_token = :token" ;
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute(['id' => $id, 'token' => $token]);
+        return $stmt->fetchAll();
+    }
 
     // retourne la liste des client correspondant à la recherche
     public function rechercheClients($recherche): array

@@ -44,7 +44,7 @@ class CommercialController extends AbstractController
         }
 
         //Vérification des parametres
-        $parametresObligatoire[] = array('pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel', 'comm_mdp', 'id');
+        $parametresObligatoire[] = array('pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel', 'comm_mdp');
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Vérification du pays et du commercial
         if ($resultat == "OK")

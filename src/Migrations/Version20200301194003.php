@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200221160338 extends AbstractMigration
+final class Version20200301194003 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -46,7 +46,7 @@ final class Version20200221160338 extends AbstractMigration
         $this->addSql('CREATE TABLE huisseries (id INT AUTO_INCREMENT NOT NULL, huis_nom VARCHAR(200) NOT NULL, huis_description VARCHAR(500) NOT NULL, huis_prix_unitaire NUMERIC(6, 2) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE isolant (id INT AUTO_INCREMENT NOT NULL, isol_nom VARCHAR(200) NOT NULL, isol_description VARCHAR(500) NOT NULL, isol_prix_unitaire NUMERIC(6, 2) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE maison (id INT AUTO_INCREMENT NOT NULL, mais_nom VARCHAR(100) NOT NULL, mais_prix DOUBLE PRECISION NOT NULL, mais_piece INT NOT NULL, mais_chambre INT NOT NULL, mais_description LONGTEXT NOT NULL, mais_catalogue LONGBLOB DEFAULT NULL, mais_cdp LONGBLOB DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE module (id INT AUTO_INCREMENT NOT NULL, devi_id INT DEFAULT NULL, cctp_id INT DEFAULT NULL, fiex_id INT DEFAULT NULL, fiin_id INT DEFAULT NULL, couv_id INT DEFAULT NULL, isol_id INT DEFAULT NULL, tymo_id INT NOT NULL, modu_nom VARCHAR(100) NOT NULL, modu_prix_unitaire DOUBLE PRECISION DEFAULT NULL, INDEX IDX_C242628131098A5 (devi_id), INDEX IDX_C242628573F0E43 (cctp_id), INDEX IDX_C2426283CA8945F (fiex_id), INDEX IDX_C2426288C2A711D (fiin_id), INDEX IDX_C24262838F6B854 (couv_id), INDEX IDX_C242628FD661D22 (isol_id), INDEX IDX_C24262832813FC4 (tymo_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE module (id INT AUTO_INCREMENT NOT NULL, devi_id INT DEFAULT NULL, cctp_id INT DEFAULT NULL, fiex_id INT DEFAULT NULL, fiin_id INT DEFAULT NULL, couv_id INT DEFAULT NULL, isol_id INT DEFAULT NULL, tymo_id INT NOT NULL, modu_nom VARCHAR(100) NOT NULL, modu_prix_unitaire DOUBLE PRECISION DEFAULT NULL, modu_prix_total DOUBLE PRECISION DEFAULT NULL, INDEX IDX_C242628131098A5 (devi_id), INDEX IDX_C242628573F0E43 (cctp_id), INDEX IDX_C2426283CA8945F (fiex_id), INDEX IDX_C2426288C2A711D (fiin_id), INDEX IDX_C24262838F6B854 (couv_id), INDEX IDX_C242628FD661D22 (isol_id), INDEX IDX_C24262832813FC4 (tymo_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE parametre (id INT AUTO_INCREMENT NOT NULL, param_pourcentage NUMERIC(4, 2) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pays (id INT AUTO_INCREMENT NOT NULL, pays_nom VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE stock (id INT AUTO_INCREMENT NOT NULL, stoc_quantite INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
