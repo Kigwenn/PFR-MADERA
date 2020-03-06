@@ -172,6 +172,11 @@ caracteristique_liste_module:
     defaults: { _controller: 'App\Controller\CaracteristiqueController::listeCaracteristiqueModule' }
     methods:  GET
 
+caracteristique_liste_modules_count:
+    path:     /PFR-MADERA/caracteristique/liste/module/{id}/count
+    defaults: { _controller: 'App\Controller\CaracteristiqueController::countListeCaracteristiqueModule' }
+    methods:  GET
+
 gamme_liste:
     path:     /PFR-MADERA/gamme/liste
     defaults: { _controller: 'App\Controller\GammeController::listeGamme' }
@@ -223,8 +228,8 @@ module_liste_devis:
     methods:  GET
 
 module_liste_devis_count:
-    path:     /PFR-MADERA/deviss/count
-    defaults: { _controller: 'App\Controller\ModuleController::countDevis' }
+    path:     /PFR-MADERA/module/liste/devis/{id}/count
+    defaults: { _controller: 'App\Controller\ModuleController::countListeModuleDevis' }
     methods:  GET
 
 type_module_liste:

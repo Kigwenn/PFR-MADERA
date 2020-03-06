@@ -121,6 +121,8 @@ class ModuleController extends AbstractController
             $module->setFiin($finition_interieur);
             $module->setCouv($couverture);
             $module->setIsol($isolant);
+            $module->setModuPrixUnitaire( $parametersAsArray['modu_prix_unitaire'] );
+
             if ($devis <> null) {
                 $module->setDevi($devis);
             }  
@@ -311,6 +313,7 @@ class ModuleController extends AbstractController
             $module->setFiin($finition_interieur);
             $module->setCouv($couverture);
             $module->setIsol($isolant);
+            $module->setModuPrixUnitaire($parametersAsArray['modu_prix_unitaire']);
             if ($devis <> null) {
                 $module->setDevi($devis);
             }
@@ -321,9 +324,24 @@ class ModuleController extends AbstractController
         //Envoi de la réponse 
         if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
-                'resultat' => "OK",
-                'id' => $module->getId(), 
+                'id' => $module->getId(),
+                'tymo_id' => $module->getTymo()->getId(),
+                'devi_id' => $module->getDevi()->getId(),
+                'cctp_id' => $module->getCctp()->getId(),
+                'fiex_id' => $module->getFiex()->getId(),
+                'fiin_id' => $module->getFiin()->getId(),
+                'couv_id' => $module->getCouv()->getId(),
                 'modu_nom' => $module->getModuNom(),
+                'listFamillesModules' => '',
+                'listModules' => '',
+                'modu_id' => '',
+                'listIsolants' => '',
+                'listFinitionsInterieures' => '',
+                'listFinitionsExterieures' => '',
+                'listCoupesPrincipe' => '',
+                'listCouvertures' => '',
+                'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
+                'isol_id' => $module->getIsol()->getId(),
                 )
             ));
         } else {
@@ -540,13 +558,21 @@ class ModuleController extends AbstractController
 
     /**
      * Permet d'avoir la liste de tous les devis
-     * @Route("count_liste/devis/{id}", name="module_liste_devis_count", methods={"GET"});
+     * @Route("/liste/devis/{id}/count", name="module_liste_devis_count", methods={"GET"});
      */
     public function countListeModuleDevis($id)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $repository_module = $this->getDoctrine()->getRepository(Module::class);
-        $count = $repository_module->findBy('devi_id',$id)->count();
+
+        $qb = $this->getDoctrine()->getManager();
+        $qb = $qb->createQueryBuilder();
+        $qb->select('m')
+            ->from('App\Entity\Module', 'm')
+            ->where('m.devi = :id')
+            ->setParameter('id', $id);
+        $query = $qb->getQuery();
+        $result = $query->execute();
+
+        $count = count($result);
         $reponse = new Response (json_encode(array(
             'resultat' => "OK",
             "count" => $count

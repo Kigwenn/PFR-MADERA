@@ -236,4 +236,29 @@ class CaracteristiqueController extends AbstractController
         $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
         return $reponse;
     }
+
+    /**
+     * Permet d'avoir le nombre de caracteristiques
+     * @Route("/liste/module/{id}/count", name="caracteristique_liste_modules_count", methods={"GET"});
+     */
+    public function countListeCaracteristiqueModule($id)
+    {
+        $qb = $this->getDoctrine()->getManager();
+        $qb = $qb->createQueryBuilder();
+        $qb->select('c')
+            ->from('App\Entity\Caracteristique', 'c')
+            ->where('c.modu = :id')
+            ->setParameter('id', $id);
+        $query = $qb->getQuery();
+        $result = $query->execute();
+
+        $count = count($result);
+        $reponse = new Response (json_encode(array(
+            'resultat' => "OK",
+            "count" => $count
+        )));
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        return $reponse;
+    }
 }
