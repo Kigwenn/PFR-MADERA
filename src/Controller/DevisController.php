@@ -496,8 +496,6 @@ class DevisController extends AbstractController
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
         $listeModules = $repository_module->rechercheModuleDevis($id);
 
-        $client = $repository_module->rechercheModuleDevis($id); 
-
         $adresse = $devis->getAdre();
         $infosDevis = array(
             'id' => $devis->getId(),
@@ -590,10 +588,7 @@ class DevisController extends AbstractController
         $repository_caracteristique = $this->getDoctrine()->getRepository(Caracteristique::class);
         $repository_composantmodule = $this->getDoctrine()->getRepository(ComposantModule::class);
 
-        
-        
         $devis = $repository_devis->find($id);
-        $client = $repository_module->rechercheModuleDevis($id); 
         $adresse = $devis->getAdre();
 
         $infosDevis = array(
@@ -661,6 +656,7 @@ class DevisController extends AbstractController
                 'id' => $module->getId(),
                 'modu_nom' => $module->getModuNom(),
                 'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
+                'modu_prix_total' => $module->getModuPrixTotal(),
                 'listeCaracteristiques' => $listeCaracteristiques,
                 'listeComposants' => $listeComposants,
             );   

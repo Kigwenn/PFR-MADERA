@@ -22,7 +22,6 @@
             Maison : {{infosDevis['mais_nom']}}<br> 
             Gamme : {{infosDevis['gamm_nom']}}<br> 
             Date : {{infosDevis['devi_date']}}<br>
-            Prix : {{infosDevis['devi_prix']}}
         </td>
 
         <td>
@@ -37,8 +36,9 @@
         </td>
 
     </tr>
-    </table>    
-    <table>
+</table> 
+<br>
+<table>
 
     <tr>
         <td>
@@ -51,7 +51,7 @@
         </td>
 
         <td>
-            <b> Adresse du Client : </b> <br>
+            <b> Adresse de facturation : </b> <br>
             Pays : {{infosClient['pays_nom']}}<br> 
             Region : {{infosClient['adre_region']}}<br> 
             Ville : {{infosClient['adre_ville']}}<br> 
@@ -65,29 +65,40 @@
 
 <br><br>
 
+<b>Liste des modules du devis :</b>
 <table>
   <tr>
-    <b> 
     <td><b>id</b> </td>
     <td><b>Nom</b> </td>
     <td><b>Type</b> </td>
-    <td><b>Quantite</b> </td>
+    <td><b>CCTP</b> </td>
     <td><b>Prix</b> </td>
   </tr>	
 
-    {% for item in listeModules %}  
+    {% for module in listeModules %}  
   <tr>
-    <td>{{item.id}}</td>
-    <td>{{item.modu_nom}}</td>
-    <td>indefini</td>
-    <td>1</td>
-    <td>{{item.modu_prix_unitaire}}</td>
+    <td>{{module.id}}</td>
+    <td>{{module.modu_nom}}</td>
+    <td>...</td>
+    <td>...</td>
+    <td>{{module.modu_prix_total}}€</td>
   </tr>
     {% endfor %}
 </table>	
 
-</p>
-
+</p> 
 </div>
+<div>
+Prix maison : ...€ <br>
+Prix huisserie : ...€ <br>
+<b> Prix total : {{infosDevis['devi_prix']}}€</b> <br>
+</div>
+
+<br><br><br>
+
+<div>
+<b>Coupe de principe : </b>
+</div>
+
 {% endblock %}
 

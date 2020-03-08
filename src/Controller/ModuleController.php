@@ -187,7 +187,7 @@ class ModuleController extends AbstractController
         //Envoi de la réponse 
         if  ($resultat == "OK") {
             $reponse = new Response(json_encode(array(
-                'result' => "OK",
+                'resultat' => "OK",
                 'id' => $module->getId(),
                 'tymo_id' => $module->getTymo()->getId(),
                 'devi_id' => $module->getDevi()->getId(),
@@ -197,12 +197,13 @@ class ModuleController extends AbstractController
                 'couv_id' => $module->getCouv()->getId(),
                 'modu_nom' => $module->getModuNom(),
                 'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
+                'modu_prix_total' => $module->getModuPrixTotal(),
                 'isol_id' => $module->getIsol()->getId(),
                 ))
             );
         } else {
             $reponse = new Response (json_encode(array(
-                'result' => $resultat,
+                'resultat' => $resultat,
                 'id' => $id,
                 )
             ));
@@ -324,6 +325,7 @@ class ModuleController extends AbstractController
         //Envoi de la réponse 
         if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
+                'resultat' => $resultat,
                 'id' => $module->getId(),
                 'tymo_id' => $module->getTymo()->getId(),
                 'devi_id' => $module->getDevi()->getId(),
@@ -341,6 +343,7 @@ class ModuleController extends AbstractController
                 'listCoupesPrincipe' => '',
                 'listCouvertures' => '',
                 'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
+                'modu_prix_total' => $module->getModuPrixTotal(),
                 'isol_id' => $module->getIsol()->getId(),
                 )
             ));

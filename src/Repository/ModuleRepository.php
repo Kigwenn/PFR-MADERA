@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Module;
 use App\Entity\Gamme;
+use App\Entity\TypeModule;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -54,8 +55,8 @@ class ModuleRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
-            'SELECT m.id, m.modu_nom, m.modu_prix_unitaire
-             FROM App\Entity\Module m 
+            'SELECT m.id, m.modu_nom, m.modu_prix_unitaire, m.modu_prix_total
+             FROM App\Entity\Module m
              WHERE m.devi = :devi_id
              ORDER BY m.id'
         )->setParameters(array('devi_id'=> $devi_id));
@@ -69,7 +70,7 @@ class ModuleRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
-            'SELECT m.id, m.modu_nom, m.modu_prix_unitaire FROM App\Entity\Module m 
+            'SELECT m.id, m.modu_nom, m.modu_prix_unitair, m.modu_prix_total FROM App\Entity\Module m 
             WHERE 
                 (m.tymo = :tymo_id) AND 
                 (m.devi is null) AND
