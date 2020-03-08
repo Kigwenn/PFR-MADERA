@@ -74,23 +74,22 @@
     <td><b>CCTP</b> </td>
     <td><b>Prix</b> </td>
   </tr>	
-
-    {% for module in listeModules %}  
+  {% for module in listeModules %}
   <tr>
     <td>{{module.id}}</td>
     <td>{{module.modu_nom}}</td>
-    <td>...</td>
-    <td>...</td>
+    <td>{{module.tymo_nom}}</td>
+    <td>{{module.cctp_nom}}</td>
     <td>{{module.modu_prix_total}}€</td>
   </tr>
-    {% endfor %}
+  {% endfor %}
 </table>	
 
 </p> 
 </div>
 <div>
-Prix maison : ...€ <br>
-Prix huisserie : ...€ <br>
+Prix maison : {{infosDevis['mais_prix']}}€ <br>
+Prix huisserie : {{infosDevis['huis_prix']}}€ <br>
 <b> Prix total : {{infosDevis['devi_prix']}}€</b> <br>
 </div>
 

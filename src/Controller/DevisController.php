@@ -489,18 +489,18 @@ class DevisController extends AbstractController
     public function generationDossierEstimatif($id) 
     {
         $entityManager = $this->getDoctrine()->getManager(); 
-
+        $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
-        $devis = $repository_devis->find($id);
-
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
-        $listeModules = $repository_module->rechercheModuleDevis($id);
-
+        
+        $devis = $repository_devis->find($id);
         $adresse = $devis->getAdre();
         $infosDevis = array(
             'id' => $devis->getId(),
             'gamm_nom' => $devis->getGamm()->getGammNom(),
+            'huis_prix' => $devis->getGamm()->getHuis()->getHuisPrixUnitaire(),
             'mais_nom' => $devis->getMais()->getMaisNom(),
+            'mais_prix' => $devis->getMais()->getMaisPrix(),
             'devi_nom' => $devis->getDeviNom(),
             'devi_date' => $devis->getDeviDate()->format("Y-m-d"),
             'devi_prix' => $devis->getDeviPrix(),
@@ -512,10 +512,8 @@ class DevisController extends AbstractController
             'adre_complement' => $adresse->getAdreComplement(),
             'adre_info' => $adresse->getAdreInfo()
         );
-
-        $repository_client = $this->getDoctrine()->getRepository(Client::class);
+    
         $listeClient = $repository_client->findAll();
-
         $idClient = $devis->getClie()->getId();
         foreach ($listeClient as $c) 
         {
@@ -524,7 +522,6 @@ class DevisController extends AbstractController
                 break;
             }  
         }
-
         $adresse = $client->getAdre(); 
         $infosClient = array(
             'pays_nom' => $adresse->getPays()->getPaysNom(),
@@ -542,6 +539,19 @@ class DevisController extends AbstractController
             'pers_tel' => $client->getPersTel()
         );
 
+        $lesModules = $repository_module->rechercheModuleDevis($id);
+        foreach ($lesModules as $m) 
+        {
+            $module = $repository_module->find($m['id']);    
+            $listeModules[] = array(
+                'id' => $module->getId(),
+                'modu_nom' => $module->getModuNom(),
+                'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
+                'modu_prix_total' => $module->getModuPrixTotal(),
+                'cctp_nom' => $module->getCctp()->getCctpNom(),
+                'tymo_nom' => $module->getTyMo()->getTymoNom()
+            );   
+        }
 
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
@@ -594,7 +604,9 @@ class DevisController extends AbstractController
         $infosDevis = array(
             'id' => $devis->getId(),
             'gamm_nom' => $devis->getGamm()->getGammNom(),
+            'huis_prix' => $devis->getGamm()->getHuis()->getHuisPrixUnitaire(),
             'mais_nom' => $devis->getMais()->getMaisNom(),
+            'mais_prix' => $devis->getMais()->getMaisPrix(),
             'devi_nom' => $devis->getDeviNom(),
             'devi_date' => $devis->getDeviDate()->format("Y-m-d"),
             'devi_prix' => $devis->getDeviPrix(),
@@ -647,6 +659,7 @@ class DevisController extends AbstractController
                 $listeComposants[] = array(
                     'id' => $composant->getId(),
                     'comp_nom' => $composant->getCompNom(),
+                    'comp_type' => $composant->getCompNom(),
                     'comp_prix_unitaire' => $composant->getCompPrixUnitaire(),
                     'quantite' => $modulecomposant->getComoQuantite(),
                 ); 
@@ -657,6 +670,8 @@ class DevisController extends AbstractController
                 'modu_nom' => $module->getModuNom(),
                 'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
                 'modu_prix_total' => $module->getModuPrixTotal(),
+                'cctp_nom' => $module->getCctp()->getCctpNom(),
+                'tymo_nom' => $module->getTyMo()->getTymoNom(),
                 'listeCaracteristiques' => $listeCaracteristiques,
                 'listeComposants' => $listeComposants,
             );   
@@ -672,7 +687,6 @@ class DevisController extends AbstractController
         // Retrieve the HTML generated in our twig file
         // on inser les donné dans la deuxieme partie
         $html = $this->renderView('devis/DossierTechnique.html.twig', [
-            'title' => "Test mon cul", 
             'infosDevis' => $infosDevis,
             'infosClient' => $infosClient,
             'listeModules' => $listeModules 
