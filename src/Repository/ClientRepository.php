@@ -94,7 +94,7 @@ class ClientRepository extends ServiceEntityRepository
         //Verification du token
         if ($resultat == "OK") {
             // On verifie si le commercial existe
-            if ((!in_array('connection', $parametersAsArray[connection])) or 
+            if ((!in_array('connection', $parametersAsArray)) or 
             (!in_array('loginId', $parametersAsArray[connection])) or 
             (!in_array('loginToken', $parametersAsArray[connection]))) {
               $resultat = "Parametre de connexion manquant";  
