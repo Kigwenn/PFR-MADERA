@@ -74,10 +74,10 @@ class ModuleRepository extends ServiceEntityRepository
             WHERE 
                 (m.tymo = :tymo_id) AND 
                 (m.devi is null) AND
-                ((m.fiex is null) OR (m.fiex = :fiex_id)) AND
-                ((m.fiin is null) OR (m.fiin = :fiin_id)) AND
-                ((m.couv is null) OR (m.couv = :couv_id)) AND
-                ((m.isol is null) OR (m.isol = :isol_id))
+                ((m.fiex is null) OR (m.fiex = 1) OR (m.fiex = :fiex_id)) AND
+                ((m.fiin is null) OR (m.fiin = 1) OR (m.fiin = :fiin_id)) AND
+                ((m.couv is null) OR (m.couv = 1) OR (m.couv = :couv_id)) AND
+                ((m.isol is null) OR (m.isol = 1) OR (m.isol = :isol_id))
              ORDER BY m.id ASC'
         )->setParameters(array('tymo_id'=> $tymo_id, 'fiex_id'=> $fiex_id, 'fiin_id' => $fiin_id,
          'couv_id' => $couv_id, 'isol_id' => $isol_id));

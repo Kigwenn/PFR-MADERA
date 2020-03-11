@@ -78,12 +78,6 @@ class ClientRepository extends ServiceEntityRepository
     public function verificationParametre(array $parametresObligatoire, array $parametersAsArray): string
     {
         $resultat = "OK";
-        //return count($parametresObligatoire);
-        if (!in_array('util_id', $parametresObligatoire)) { array_push($parametresObligatoire, 'util_id');}
-        if (!in_array('util_token', $parametresObligatoire)) { array_push($parametresObligatoire, 'util_token');}
-        //return count($parametresObligatoire);
-
-
         //Vérification des parametres 
         $cpt = 0;
         if ($parametersAsArray == null){
@@ -100,10 +94,16 @@ class ClientRepository extends ServiceEntityRepository
         //Verification du token
         if ($resultat == "OK") {
             // On verifie si le commercial existe
-            $commercial = $this->verificationToken($parametersAsArray['util_id'], $parametersAsArray['util_token']);
-            if ($commercial == null){
-                $resultat = "Le token n'existe pas.";
-            } 
+            if ((!in_array('connection', $parametersAsArray[connection])) or 
+            (!in_array('loginId', $parametersAsArray[connection])) or 
+            (!in_array('loginToken', $parametersAsArray[connection]))) {
+              $resultat = "Parametre de connexion manquant";  
+            } else {
+                $commercial = $this->verificationToken($parametersAsArray['util_id'], $parametersAsArray['util_token']);
+                if ($commercial == null){
+                    $resultat = "Le token n'existe pas.";
+                } 
+            }
         }
         return $resultat;
     }
