@@ -22,7 +22,7 @@ class CCTP
     private $cctp_nom;
 
     /**
-     * @ORM\Column(type="blob")
+     * @ORM\Column(type="string")
      */
     private $cctp_image;
 
@@ -43,12 +43,12 @@ class CCTP
         return $this;
     }
 
-    public function getCctpImage()
+    public function getCctpImage(): ?string
     {
         return $this->cctp_image;
     }
 
-    public function setCctpImage($cctp_image): self
+    public function setCctpImage(string $cctp_image): self
     {
         $this->cctp_image = $cctp_image;
 

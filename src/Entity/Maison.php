@@ -54,7 +54,7 @@ class Maison
     private $mais_catalogue;
 
     /**
-     * @ORM\Column(type="blob", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $mais_cdp;
 
@@ -140,17 +140,6 @@ class Maison
         return $this;
     }
 
-    public function getMaisCdp()
-    {
-        return $this->mais_cdp;
-    }
-
-    public function setMaisCdp($mais_cdp): self
-    {
-        $this->mais_cdp = $mais_cdp;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Devis[]
@@ -179,6 +168,18 @@ class Maison
                 $devi->setDevisMaison(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMaisCdp(): ?string
+    {
+        return $this->mais_cdp;
+    }
+
+    public function setMaisCdp(?string $mais_cdp): self
+    {
+        $this->mais_cdp = $mais_cdp;
 
         return $this;
     }
