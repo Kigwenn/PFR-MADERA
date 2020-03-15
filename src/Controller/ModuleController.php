@@ -42,18 +42,18 @@ class ModuleController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id', 'modu_id'); 
+        $parametresObligatoire[] = array('tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'isol_id');
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
 
         // verification du module
-        if ($resultat == "OK") {
-            $repository_module = $this->getDoctrine()->getRepository(Module::class); 
-            $moduleReference = $repository_module->find($parametersAsArray['modu_id']); 
-            if ($moduleReference == null) {
-                $resultat =  "Le module n'existe pas.";
-            }    
-        }   
+//        if ($resultat == "OK") {
+//            $repository_module = $this->getDoctrine()->getRepository(Module::class);
+//            $moduleReference = $repository_module->find($parametersAsArray['modu_id']);
+//            if ($moduleReference == null) {
+//                $resultat =  "Le module n'existe pas.";
+//            }
+//        }
         // verification du devis
         if (($resultat == "OK") && ($parametersAsArray['devi_id'] <> null)) {
             $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
@@ -121,7 +121,7 @@ class ModuleController extends AbstractController
             $module->setFiin($finition_interieur);
             $module->setCouv($couverture);
             $module->setIsol($isolant);
-            $module->setModuPrixUnitaire( $parametersAsArray['modu_prix_unitaire'] );
+            $module->setModuPrixUnitaire( isset($parametersAsArray['modu_prix_unitaire'])?  $parametersAsArray['modu_prix_unitaire'] : null);
 
             if ($devis <> null) {
                 $module->setDevi($devis);

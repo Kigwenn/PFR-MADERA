@@ -94,12 +94,14 @@ class ClientRepository extends ServiceEntityRepository
         //Verification du token
         if ($resultat == "OK") {
             // On verifie si le commercial existe
-            if ((!in_array('connection', $parametersAsArray)) or 
-            (!in_array('loginId', $parametersAsArray[connection])) or 
-            (!in_array('loginToken', $parametersAsArray[connection]))) {
+//            var_dump($parametersAsArray);
+            if ((!array_key_exists('connection', $parametersAsArray)) or
+            (!array_key_exists('loginId', $parametersAsArray['connection'])) or
+            (!array_key_exists('loginToken', $parametersAsArray['connection']))) {
               $resultat = "Parametre de connexion manquant";  
             } else {
-                $commercial = $this->verificationToken($parametersAsArray['util_id'], $parametersAsArray['util_token']);
+//                var_dump('toto');
+                $commercial = $this->verificationToken($parametersAsArray['connection']['loginId'], $parametersAsArray['connection']['loginToken']);
                 if ($commercial == null){
                     $resultat = "Le token n'existe pas.";
                 } 

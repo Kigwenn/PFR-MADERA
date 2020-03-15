@@ -319,11 +319,32 @@ class DevisController extends AbstractController
         }
 		
         //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        if  ($resultat == "OK") {
+            $adresse = ($devis->getAdre());
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
-                'id' => $devis->getId(), 
-                'nom_devis' => $devis->getDeviNom(),
+                'id' => $devis->getId(),
+                'etap_id' => $devis->getEtap()->getId(),
+                'etat_id' => $devis->getEtat()->getId(),
+                'gamm_id' => $devis->getGamm()->getId(),
+                'comm_id' => $devis->getComm()->getId(),
+                'mais_id' => $devis->getMais()->getId(),
+                'clie_id' => $devis->getClie()->getId(),
+                'devi_nom' => $devis->getDeviNom(),
+                'devi_date' => $devis->getDeviDate()->format("Y-m-d"),
+                'devi_prix' => $devis->getDeviPrix(),
+                'adre_region' => $adresse->getAdreRegion(),
+                'adre_ville' => $adresse->getAdreVille(),
+                'adre_cp' => $adresse->getAdreCp(),
+                'adre_rue' => $adresse->getAdreRue(),
+                'adre_complement' => $adresse->getAdreComplement(),
+                'adre_info' => $adresse->getAdreInfo(),
+                'listClients' => '',
+                'listMaisons' => '',
+                'listGammes' => '',
+                'listPays' => '',
+                'pays_id' => '',
+                'resultat' => '',
                 )
             ));
         } else {
@@ -378,7 +399,7 @@ class DevisController extends AbstractController
     * Permet d'avoir la liste de tous les devis 
     * @Route("", name="devis_liste", methods={"GET"});
     */
-    public function listeDevis(Request $requestjson) 
+    public function listeDevis(Request $requestjson)
     {
         $resultat = "OK";
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
@@ -400,7 +421,7 @@ class DevisController extends AbstractController
             }
         }
 
-        //Envoi de la réponse 
+        //Envoi de la réponse
         if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",

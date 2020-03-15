@@ -70,7 +70,7 @@ class ModuleRepository extends ServiceEntityRepository
     {
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery(
-            'SELECT m.id, m.modu_nom, m.modu_prix_unitair, m.modu_prix_total FROM App\Entity\Module m 
+            'SELECT m.id, m.modu_nom, m.modu_prix_unitaire, m.modu_prix_total FROM App\Entity\Module m 
             WHERE 
                 (m.tymo = :tymo_id) AND 
                 (m.devi is null) AND

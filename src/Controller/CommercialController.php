@@ -71,7 +71,7 @@ class CommercialController extends AbstractController
         //Envoi de la réponse 
         if  ($resultat == "OK") { 
             $reponse = new Response (json_encode(array(
-                'resultat' => "OK",
+                'resultat' => $resultat,
                 'id' => $commercial->getId()
                 )
             ));

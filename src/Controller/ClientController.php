@@ -46,7 +46,7 @@ class ClientController extends AbstractController
 
         //Vérification des parametres
         $parametresObligatoire[] = array('pers_sexe', 'pers_nom', 'pers_prenom', 'pers_mail','pers_tel',
-            'pays_id', 'adre_rue', 'adre_ville', 'adre_cp', 'adre_region', 'adre_complement', 'adre_info');
+            'pays_id', 'adre_rue', 'adre_ville', 'adre_cp', 'adre_region');
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Vérification du pays et du client
         if ($resultat == "OK")
@@ -72,8 +72,8 @@ class ClientController extends AbstractController
             $adresse->setAdreVille($parametersAsArray['adre_ville']);
             $adresse->setAdreCp($parametersAsArray['adre_cp']);
             $adresse->setAdreRue($parametersAsArray['adre_rue']);
-            $adresse->setAdreComplement($parametersAsArray['adre_complement']);
-            $adresse->setAdreInfo($parametersAsArray['adre_info']);
+            $adresse->setAdreComplement( isset($parametersAsArray['adre_complementaire']) ? $parametersAsArray['adre_complementaire'] : '');
+            $adresse->setAdreInfo( isset($parametersAsArray['adre_info']) ? $parametersAsArray['adre_info'] : '');
             $entityManager->persist($adresse);
             //Creation du client
             $client = new Client();
