@@ -512,9 +512,19 @@ class DevisController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
-        $repository_module = $this->getDoctrine()->getRepository(Module::class);
-        
+        $repository_module = $this->getDoctrine()->getRepository(Module::class); 
         $devis = $repository_devis->find($id);
+        //Envoi de la réponse 
+        if  ($devis == null) { 
+            $reponse = new Response (json_encode(array(
+                'resultat' => "Le devis n'existe pas.",
+                )
+            ));
+            $reponse->headers->set("Content-Type", "application/json"); 
+            $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+            return $reponse;
+        }
+        
         $adresse = $devis->getAdre();
         $infosDevis = array(
             'id' => $devis->getId(),
@@ -544,6 +554,7 @@ class DevisController extends AbstractController
                 break;
             }  
         }
+
         $adresse = $client->getAdre(); 
         $infosClient = array(
             'pays_nom' => $adresse->getPays()->getPaysNom(),
@@ -561,6 +572,7 @@ class DevisController extends AbstractController
             'pers_tel' => $client->getPersTel()
         );
 
+        $listeModules = [];
         $lesModules = $repository_module->rechercheModuleDevis($id);
         foreach ($lesModules as $m) 
         {
@@ -621,8 +633,18 @@ class DevisController extends AbstractController
         $repository_composantmodule = $this->getDoctrine()->getRepository(ComposantModule::class);
 
         $devis = $repository_devis->find($id);
-        $adresse = $devis->getAdre();
+        //Envoi de la réponse 
+        if  ($devis == null) { 
+            $reponse = new Response (json_encode(array(
+                'resultat' => "Le devis n'existe pas.",
+                )
+            ));
+            $reponse->headers->set("Content-Type", "application/json"); 
+            $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
+            return $reponse;
+        }
 
+        $adresse = $devis->getAdre();
         $infosDevis = array(
             'id' => $devis->getId(),
             'gamm_nom' => $devis->getGamm()->getGammNom(),
@@ -651,6 +673,7 @@ class DevisController extends AbstractController
                 break;
             }  
         }
+
         $adresse = $client->getAdre(); 
         $infosClient = array(
             'pays_nom' => $adresse->getPays()->getPaysNom(),
@@ -669,12 +692,15 @@ class DevisController extends AbstractController
         );
 
         $lesModules = $repository_module->rechercheModuleDevis($id);
+        $listeModules = [];
+
         foreach ($lesModules as $m) 
         {
             $module = $repository_module->find($m['id']); 
             $listeCaracteristiques = $repository_caracteristique->rechercheCaracteristiqueModule($module->getId());
             $lesComposantModules = $repository_composantmodule->rechercheComposants($module->getId());
             $listeComposants = [];
+            
             foreach ($lesComposantModules as $cm) 
             {
                 $modulecomposant = $repository_composantmodule->find($cm['id']);
