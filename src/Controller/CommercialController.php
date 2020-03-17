@@ -174,7 +174,17 @@ class CommercialController extends AbstractController
             } else if (count($repository_commercial->commercialExistant($parametersAsArray['pers_nom'],
             $parametersAsArray['pers_prenom'], $parametersAsArray['pers_mail'])) > 0) 
             {
-                $resultat =  "Commercial déjà existant.";          
+                $reponse = new Response (json_encode(array(
+                        'id' => $commercial->getId(),
+                        'pers_sexe' => $commercial->getPersSexe(),
+                        'pers_nom' => $commercial->getPersNom(),
+                        'pers_prenom' => $commercial->getPersPrenom(),
+                        'pers_mail' => $commercial->getPersMail(),
+                        'pers_tel' => $commercial->getPersTel(),
+                        'comm_mdp' => $commercial->getCommMdp(),
+                        'comm_confirm_mdp' => '',
+                    )
+                ));
             }
         }
 
@@ -191,10 +201,16 @@ class CommercialController extends AbstractController
         }
 
         //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        if  ($resultat == "OK") {
             $reponse = new Response (json_encode(array(
-                'resultat' => "OK",
-                'id' => $commercial->getId()
+                'id' => $commercial->getId(),
+                'pers_sexe' => $commercial->getPersSexe(),
+                'pers_nom' => $commercial->getPersNom(),
+                'pers_prenom' => $commercial->getPersPrenom(),
+                'pers_mail' => $commercial->getPersMail(),
+                'pers_tel' => $commercial->getPersTel(),
+                'comm_mdp' => $commercial->getCommMdp(),
+                'comm_confirm_mdp' => '',
                 )
             ));
         } else {

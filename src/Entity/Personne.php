@@ -41,6 +41,7 @@ abstract class Personne
      */
     protected $pers_tel;
 
+
     public function getId(): ?int
     {
         return $this->id;
