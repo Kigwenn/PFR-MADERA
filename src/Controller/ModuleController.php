@@ -190,7 +190,7 @@ class ModuleController extends AbstractController
                 'resultat' => "OK",
                 'id' => $module->getId(),
                 'tymo_id' => $module->getTymo()->getId(),
-                'devi_id' => $module->getDevi()->getId(),
+                'devi_id' => isset($parametersAsArray['adre_complementaire']) ? $parametersAsArray['adre_complementaire'] : '',
                 'cctp_id' => $module->getCctp()->getId(),
                 'fiex_id' => $module->getFiex()->getId(),
                 'fiin_id' => $module->getFiin()->getId(),
