@@ -26,15 +26,15 @@ class CommercialController extends AbstractController
 //        ]);
 //    }
 
-    /** 
-    * Permet de créer un commercial et son adresse 
-    * @Route("", name="commercial_creation", methods={"POST"}) 
+    /**
+    * Permet de créer un commercial et son adresse
+    * @Route("", name="commercial_creation", methods={"POST"})
     */
     public function creationCommercial(Request $requestjson)
     {
-        $entityManager = $this->getDoctrine()->getManager(); 
+        $entityManager = $this->getDoctrine()->getManager();
         $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
-        $repository_client =  $this->getDoctrine()->getRepository(Client::class); 
+        $repository_client =  $this->getDoctrine()->getRepository(Client::class);
         $parametersAsArray = [];
         $resultat = "OK";
 
@@ -64,12 +64,12 @@ class CommercialController extends AbstractController
             $commercial->setPersMail($parametersAsArray['pers_mail']);
             $commercial->setPersTel($parametersAsArray['pers_tel']);
             $commercial->setCommMdp($parametersAsArray['comm_mdp']);
-            $entityManager->persist($commercial); 
+            $entityManager->persist($commercial);
             $entityManager->flush();
         }
 
-        //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        //Envoi de la réponse
+        if  ($resultat == "OK") {
             $reponse = new Response (json_encode(array(
                 'resultat' => $resultat,
                 'id' => $commercial->getId()
@@ -81,13 +81,13 @@ class CommercialController extends AbstractController
                 )
             ));
         }
-        $reponse->headers->set("Content-Type", "application/json"); 
-        $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
     }
 
      /**
-    * Permet d'avoir le detail d'un commercials 
+    * Permet d'avoir le detail d'un commercials
     * @Route("{id}", name="commercial_affichage", methods={"GET"});
     */
     public function affichageCommercial(int $id)
@@ -101,20 +101,20 @@ class CommercialController extends AbstractController
         if ($resultat == "OK"){
             $listeCommercial = $repository_commercial->findAll();
             $commercial = null;
-            foreach ($listeCommercial as $c) 
+            foreach ($listeCommercial as $c)
             {
                 if ($c->getId() == $id){
                     $commercial = $c;
                     break;
-                }  
+                }
             }
             if ($commercial == null){
                 $resultat = "Le commercial n'existe pas.";
             }
         }
 
-        //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        //Envoi de la réponse
+        if  ($resultat == "OK") {
             $reponse = new Response(json_encode(array(
                 'resultat' => "OK",
                 'id' => $commercial->getId(),
@@ -132,18 +132,18 @@ class CommercialController extends AbstractController
                 )
             ));
         }
-        $reponse->headers->set("Content-Type", "application/json"); 
-        $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
     }
 
-    /** 
-    * Permet de modifier un commercial et son adresse 
-    * @Route("", name="commercial_modification", methods={"PUT"}) 
+    /**
+    * Permet de modifier un commercial et son adresse
+    * @Route("", name="commercial_modification", methods={"PUT"})
     */
     public function modificationCommercial(Request $requestjson)
     {
-        $entityManager = $this->getDoctrine()->getManager(); 
+        $entityManager = $this->getDoctrine()->getManager();
         $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
         $parametersAsArray = [];
         $resultat = "OK";
@@ -162,17 +162,17 @@ class CommercialController extends AbstractController
         {
             $listeCommercial = $repository_commercial->findAll();
             $commercial = null;
-            foreach ($listeCommercial as $c) 
+            foreach ($listeCommercial as $c)
             {
                 if ($c->getId() == $parametersAsArray['id']){
                     $commercial = $c;
                     break;
-                }  
+                }
             }
             if ($commercial == null){
                 $resultat = "Le commercial n'existe pas.";
             } else if (count($repository_commercial->commercialExistant($parametersAsArray['pers_nom'],
-            $parametersAsArray['pers_prenom'], $parametersAsArray['pers_mail'])) > 0) 
+            $parametersAsArray['pers_prenom'], $parametersAsArray['pers_mail'])) > 0)
             {
                 $reponse = new Response (json_encode(array(
                         'id' => $commercial->getId(),
@@ -195,12 +195,12 @@ class CommercialController extends AbstractController
             $commercial->setPersPrenom($parametersAsArray['pers_prenom']);
             $commercial->setPersMail($parametersAsArray['pers_mail']);
             $commercial->setPersTel($parametersAsArray['pers_tel']);
-            $commercial->setCommMdp($parametersAsArray['comm_mdp']); 
-            $entityManager->persist($commercial); 
+            $commercial->setCommMdp($parametersAsArray['comm_mdp']);
+            $entityManager->persist($commercial);
             $entityManager->flush();
         }
 
-        //Envoi de la réponse 
+        //Envoi de la réponse
         if  ($resultat == "OK") {
             $reponse = new Response (json_encode(array(
                 'id' => $commercial->getId(),
@@ -224,14 +224,14 @@ class CommercialController extends AbstractController
         return $reponse;
     }
 
-    /** 
+    /**
     * Permet de supprimer un commercial et son adresse grâce à l'id de l'commercial
     * @Route("{id}", name="commercial_suppression", methods={"DELETE"}),
     */
     public function suppressionCommercial(int $id){
-        $entityManager = $this->getDoctrine()->getManager(); 
-        $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class); 
-        $repository_client = $this->getDoctrine()->getRepository(Client::class); 
+        $entityManager = $this->getDoctrine()->getManager();
+        $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
+        $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $parametersAsArray = [];
         $resultat = "OK";
 
@@ -241,12 +241,12 @@ class CommercialController extends AbstractController
             //On verifie si le commercial existe bien
             if ($resultat == "OK"){
                 $commercial = null;
-                foreach ($listeCommercial as $c) 
+                foreach ($listeCommercial as $c)
                 {
                     if ($c->getId() == $id){
                         $commercial = $c;
                         break;
-                    }  
+                    }
                 }
                 if ($commercial == null){
                     $resultat = "Le commercial n'existe pas.";
@@ -254,11 +254,11 @@ class CommercialController extends AbstractController
             }
         }
 
-        //Envoi de la réponse 
-        if  ($resultat == "OK") { 
+        //Envoi de la réponse
+        if  ($resultat == "OK") {
             //Suppression
             $entityManager->remove($commercial);
-            $entityManager->flush();  
+            $entityManager->flush();
             $reponse = new Response (json_encode(array(
                 'resultat' => "OK",
                 'cid' => $id,
@@ -270,18 +270,23 @@ class CommercialController extends AbstractController
                 )
             ));
         }
-        $reponse->headers->set("Content-Type", "application/json"); 
-        $reponse->headers->set("Access-Control-Allow-Origin", "*"); 
-        return $reponse;        
+        $reponse->headers->set("Content-Type", "application/json");
+        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        return $reponse;
     }
 
     /**
-    * Permet d'avoir la liste de tous les utilisateurs 
+    * Permet d'avoir la liste de tous les utilisateurs
     * @Route("", name="commercial_liste", methods={"GET"});
     */
-    public function listeCommercial(Request $requestjson) 
+    public function listeCommercial(Request $request )
     {
         $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
+        $nb_pages = $request->query->get('page');
+        $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
+        $first  = $nb_pages - 10;
+        $last  = $first + 9;
+
         //Recuperation de la liste de commercial
         $listeCommercial = $repository_commercial->findAll();
         // on vérifie si il y a bien une liste de commercial
@@ -292,14 +297,17 @@ class CommercialController extends AbstractController
             ));
         } else {
             $listeReponse = array();
-            foreach ($listeCommercial as $commercial) 
+            foreach ($listeCommercial as $key => $commercial)
             {
-                $listeReponse[] = array(
-                    'id' => $commercial->getId(),
-                    'pers_nom' => $commercial->getPersNom(),
-                    'pers_prenom' => $commercial->getPersPrenom(),
-                    'pers_mail' => $commercial->getPersMail(),
-                );
+                if( ($key >= $first) && ($key <= $last)) {
+                    $listeReponse[] = array(
+                        'id' => $commercial->getId(),
+                        'pers_nom' => $commercial->getPersNom(),
+                        'pers_prenom' => $commercial->getPersPrenom(),
+                        'pers_mail' => $commercial->getPersMail(),
+                    );
+                }
+                else continue;
             }
 
             $reponse = new Response (json_encode(array(
@@ -312,6 +320,7 @@ class CommercialController extends AbstractController
         $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
     }
+
     /**
      * Permet d'avoir la liste de tous les utilisateurs
      * @Route("count", name="commercial_count", methods={"GET"});
@@ -360,7 +369,7 @@ class CommercialController extends AbstractController
                     //commercial autorisé, on créé son token
                     $time = new \datetime("now");
                     $commercial->setPersNom("test5");
-                    $commercial->setCommMdp("test"); 
+                    $commercial->setCommMdp("test");
                     $commercial->setCommToken("1");//bin2hex(random_bytes(32)));
                     $commercial->setCommTokenDate($time);
                     $entityManager->persist($commercial);
@@ -374,7 +383,7 @@ class CommercialController extends AbstractController
                 }
                 else{
                     $reponse = new Response (json_encode(array(
-                        'result' => "Il n'y a pas de commercial avec ces identifiants"                       
+                        'result' => "Il n'y a pas de commercial avec ces identifiants"
                         )));
                 }
             }
@@ -383,11 +392,4 @@ class CommercialController extends AbstractController
         $reponse->headers->set("Access Control-Allow-Origin", "*");
         return $reponse;
     }
-
-
-
-
-
-
-
 }

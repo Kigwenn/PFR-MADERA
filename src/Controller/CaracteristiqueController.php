@@ -206,16 +206,27 @@ class CaracteristiqueController extends AbstractController
     * Permet d'avoir la liste de tous les caracteristiques
     * @Route("/liste/module/{id}", name="caracteristique_liste_module", methods={"GET"});
     */
-    public function listeCaracteristiqueModule($id) 
+    public function listeCaracteristiqueModule($id, Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_caracteristique = $this->getDoctrine()->getRepository(Caracteristique::class);
         $resultat = "OK";
 
-        if ($resultat == "OK"){
-            $listeReponse = $repository_caracteristique->rechercheCaracteristiqueModule($id);
-            if ($listeReponse == null){
-                $resultat = "Aucuns résultats."; 
+        $nb_pages = $request->query->get('page');
+        $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
+        $first  = $nb_pages - 10;
+        $last  = $first + 9;
+
+        $listeCara = $repository_caracteristique->rechercheCaracteristiqueModule($id);
+        if ($listeCara == null){
+            $resultat = "Aucuns résultats.";
+        }
+        else {
+            $listeReponse = [];
+            foreach ($listeCara as $key => $carac) {
+                if (($key >= $first) && ($key <= $last)) {
+                    $listeReponse[] = $carac;
+                }
             }
         }
 

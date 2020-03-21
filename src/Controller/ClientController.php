@@ -290,9 +290,14 @@ class ClientController extends AbstractController
     * Permet d'avoir la liste de tous les utilisateurs 
     * @Route("/liste", name="client_liste", methods={"GET"});
     */
-    public function listeClient(Request $requestjson) 
+    public function listeClient(Request $request)
     {
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
+        $nb_pages = $request->query->get('page');
+        $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
+        $first  = $nb_pages - 10;
+        $last  = $first + 9;
+
         //Recuperation de la liste de client
         $listeClient = $repository_client->findAll();
         // on vérifie si il y a bien une liste de client
@@ -303,14 +308,16 @@ class ClientController extends AbstractController
             ));
         } else {
             $listeReponse = array();
-            foreach ($listeClient as $client) 
+            foreach ($listeClient as $key => $client)
             {
-                $listeReponse[] = array(
-                    'id' => $client->getId(),
-                    'pers_nom' => $client->getPersNom(),
-                    'pers_prenom' => $client->getPersPrenom(),
-                    'pers_mail' => $client->getPersMail(),
-                );
+                if( ($key >= $first) && ($key <= $last)) {
+                    $listeReponse[] = array(
+                        'id' => $client->getId(),
+                        'pers_nom' => $client->getPersNom(),
+                        'pers_prenom' => $client->getPersPrenom(),
+                        'pers_mail' => $client->getPersMail(),
+                    );
+                }
             }
 
             $reponse = new Response (json_encode(array(

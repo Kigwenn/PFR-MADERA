@@ -503,12 +503,17 @@ class ModuleController extends AbstractController
     * Permet d'avoir la liste des modules d'un devis
     * @Route("/liste/devis/{id}", name="module_liste_devis", methods={"GET"});
     */
-    public function listeModuleDevis($id) 
+    public function listeModuleDevis($id, Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
         $parametersAsArray = [];
         $resultat = "OK";
+
+        $nb_pages = $request->query->get('page');
+        $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
+        $first  = $nb_pages - 10;
+        $last  = $first + 9;
 
         // verification du devis
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
@@ -516,9 +521,18 @@ class ModuleController extends AbstractController
         if ($devis == null) {
             $resultat =  "Le devis n'existe pas.";
         }else {
-            $listeReponse = $repository_module->rechercheModuleDevis($id);
-            if ($listeReponse == null){
+            $lmds = $repository_module->rechercheModuleDevis($id);
+            if ($lmds == null){
                 $resultat = "Aucuns résultats."; 
+            }
+            else{
+                $listeReponse = array();
+                foreach ($lmds as $key => $lmd)
+                {
+                    if( ($key >= $first) && ($key <= $last)) {
+                        $listeReponse[] = $lmd;
+                    }
+                }
             }
         }
 

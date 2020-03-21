@@ -399,9 +399,15 @@ class DevisController extends AbstractController
     * Permet d'avoir la liste de tous les devis 
     * @Route("", name="devis_liste", methods={"GET"});
     */
-    public function listeDevis(Request $requestjson)
+    public function listeDevis(Request $request)
     {
         $resultat = "OK";
+
+        $nb_pages = $request->query->get('page');
+        $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
+        $first  = $nb_pages - 10;
+        $last  = $first + 9;
+
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
         //Recuperation de la liste de devis
         $listeDevis = $repository_devis->findAll();
@@ -410,14 +416,16 @@ class DevisController extends AbstractController
             $resultat = "Aucun devis trouvée.";
         }else{
             $listeReponse = array();
-            foreach ($listeDevis as $devis) 
+            foreach ($listeDevis as $key => $devis)
             {
-                $listeReponse[] = array(
-                    'id' => $devis->getId(),
-                    'devi_nom' => $devis->getDeviNom(),
-                    'devi_date' => $devis->getDeviDate(),
-                    'devi_prix' => $devis->getDeviPrix()  
-                );  
+                if( ($key >= $first) && ($key <= $last)) {
+                    $listeReponse[] = array(
+                        'id' => $devis->getId(),
+                        'devi_nom' => $devis->getDeviNom(),
+                        'devi_date' => $devis->getDeviDate(),
+                        'devi_prix' => $devis->getDeviPrix()
+                    );
+                }
             }
         }
 
