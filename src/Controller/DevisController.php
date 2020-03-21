@@ -404,27 +404,46 @@ class DevisController extends AbstractController
         $resultat = "OK";
 
         $nb_pages = $request->query->get('page');
+        $q = $request->query->get('q');
         $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
         $first  = $nb_pages - 10;
         $last  = $first + 9;
 
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class);
         //Recuperation de la liste de devis
-        $listeDevis = $repository_devis->findAll();
+        $listeDevis = (array) $repository_devis->findAll();
+        $newListe = [];
+
+        if ( !empty($q) ) {
+            foreach ($listeDevis as $devis) {
+                if ( strpos($devis->getId(), $q) !== false) {
+                    $newListe[] = $devis;
+                    continue;
+                }
+                if (strpos(strtolower ($devis->getDeviNom()),strtolower ($q)) !== false) {
+                    $newListe[] = $devis;
+                    continue;
+                }
+            }
+        }
+        else $newListe = $listeDevis;
+
         //Verification de la base
-        if ($listeDevis == null) {
+        if ($newListe == null) {
             $resultat = "Aucun devis trouvée.";
         }else{
-            $listeReponse = array();
-            foreach ($listeDevis as $key => $devis)
+            $listeReponse = [];
+            foreach ($newListe as $key => $devis)
             {
                 if( ($key >= $first) && ($key <= $last)) {
+
                     $listeReponse[] = array(
                         'id' => $devis->getId(),
                         'devi_nom' => $devis->getDeviNom(),
                         'devi_date' => $devis->getDeviDate(),
                         'devi_prix' => $devis->getDeviPrix()
                     );
+
                 }
             }
         }

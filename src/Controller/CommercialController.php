@@ -283,21 +283,48 @@ class CommercialController extends AbstractController
     {
         $repository_commercial = $this->getDoctrine()->getRepository(Commercial::class);
         $nb_pages = $request->query->get('page');
+        $q = $request->query->get('q');
         $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
         $first  = $nb_pages - 10;
         $last  = $first + 9;
 
         //Recuperation de la liste de commercial
         $listeCommercial = $repository_commercial->findAll();
+
+        $newListe = [];
+
+        if ( !empty($q) ) {
+            foreach ($listeCommercial as $commercial) {
+                if ( strpos($commercial->getId(), $q) !== false) {
+                    $newListe[] = $commercial;
+                    continue;
+                }
+                else if (strpos(strtolower ($commercial->getPersNom()),strtolower ($q)) !== false) {
+                    $newListe[] = $commercial;
+                    continue;
+                }
+                else if (strpos(strtolower ($commercial->getPersPrenom()),strtolower ($q)) !== false) {
+                    $newListe[] = $commercial;
+                    continue;
+                }
+
+                else if (strpos(strtolower ($commercial->getPersMail()),strtolower ($q)) !== false) {
+                    $newListe[] = $commercial;
+                    continue;
+                }
+            }
+        }
+        else $newListe = $listeCommercial;
+
         // on vérifie si il y a bien une liste de commercial
-        if ($listeCommercial == null) {
+        if ($newListe == null) {
             $reponse = new Response (json_encode(array(
                 'resultat' => "Aucun commercial trouvé.",
                 )
             ));
         } else {
             $listeReponse = array();
-            foreach ($listeCommercial as $key => $commercial)
+            foreach ($newListe as $key => $commercial)
             {
                 if( ($key >= $first) && ($key <= $last)) {
                     $listeReponse[] = array(

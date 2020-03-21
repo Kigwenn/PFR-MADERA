@@ -294,21 +294,50 @@ class ClientController extends AbstractController
     {
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $nb_pages = $request->query->get('page');
+        $q = $request->query->get('q');
         $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
         $first  = $nb_pages - 10;
         $last  = $first + 9;
 
         //Recuperation de la liste de client
         $listeClient = $repository_client->findAll();
+
+        $newListe = [];
+
+        if ( !empty($q) ) {
+            foreach ($listeClient as $client) {
+                if ( strpos($client->getId(), $q) !== false) {
+                    $newListe[] = $client;
+                    continue;
+                }
+                else if (strpos(strtolower ($client->getPersNom()),strtolower ($q)) !== false) {
+                    $newListe[] = $client;
+                    continue;
+                }
+                else if (strpos(strtolower ($client->getPersPrenom()),strtolower ($q)) !== false) {
+                    $newListe[] = $client;
+                    continue;
+                }
+
+                else if (strpos(strtolower ($client->getPersMail()),strtolower ($q)) !== false) {
+                    $newListe[] = $client;
+                    continue;
+                }
+            }
+        }
+        else $newListe = $listeClient;
+
+
+
         // on vérifie si il y a bien une liste de client
-        if ($listeClient == null) {
+        if ($newListe == null) {
             $reponse = new Response (json_encode(array(
                 'resultat' => "Aucun client trouvé.",
                 )
             ));
         } else {
             $listeReponse = array();
-            foreach ($listeClient as $key => $client)
+            foreach ($newListe as $key => $client)
             {
                 if( ($key >= $first) && ($key <= $last)) {
                     $listeReponse[] = array(

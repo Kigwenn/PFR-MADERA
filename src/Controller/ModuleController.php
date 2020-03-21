@@ -511,23 +511,40 @@ class ModuleController extends AbstractController
         $resultat = "OK";
 
         $nb_pages = $request->query->get('page');
+        $q = $request->query->get('q');
         $nb_pages = !empty($nb_pages) ? $nb_pages * 10 : $nb_pages = 10;
         $first  = $nb_pages - 10;
         $last  = $first + 9;
 
         // verification du devis
         $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
-        $devis = $repository_devis->find($id); 
+        $devis = $repository_devis->find($id);
+
+        $newListe = [];
+
         if ($devis == null) {
             $resultat =  "Le devis n'existe pas.";
         }else {
             $lmds = $repository_module->rechercheModuleDevis($id);
-            if ($lmds == null){
+
+            if ( !empty($q) ) {
+                foreach ($lmds as $module) {
+                    foreach ($module as $key => $value) {
+                        if ( strpos($value, $q) !== false ) {
+                            $newListe[] = $module;
+                            break;
+                        }
+                    }
+                }
+            }
+            else $newListe = $lmds;
+
+            if ($newListe == null){
                 $resultat = "Aucuns résultats."; 
             }
             else{
                 $listeReponse = array();
-                foreach ($lmds as $key => $lmd)
+                foreach ($newListe as $key => $lmd)
                 {
                     if( ($key >= $first) && ($key <= $last)) {
                         $listeReponse[] = $lmd;
