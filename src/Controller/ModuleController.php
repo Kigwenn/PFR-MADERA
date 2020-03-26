@@ -245,7 +245,7 @@ class ModuleController extends AbstractController
         // verification du type de module
         if (($resultat == "OK") && ($parametersAsArray['tymo_id'] <> null)) {
             $repository_typeModule = $this->getDoctrine()->getRepository(TypeModule::class); 
-            $typeModule = $repository_typeModule->find($parametersAsArray['devi_id']); 
+            $typeModule = $repository_typeModule->find($parametersAsArray['tymo_id']);
             if ($typeModule == null) {
                 $resultat =  "Le type module n'existe pas.";
             }    
@@ -596,7 +596,6 @@ class ModuleController extends AbstractController
      */
     public function countListeModuleDevis($id)
     {
-
         $qb = $this->getDoctrine()->getManager();
         $qb = $qb->createQueryBuilder();
         $qb->select('m')

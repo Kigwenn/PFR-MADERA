@@ -22,7 +22,7 @@ class CaracteristiqueController extends AbstractController
         ]);
     }
 
-        /** 
+    /**
     * Permet de créer un caracteristique et son adresse 
     * @Route("", name="caracteristique_creation", methods={"POST"}) 
     */
@@ -57,7 +57,7 @@ class CaracteristiqueController extends AbstractController
             $caracteristique->setCaraHauteur($parametersAsArray['cara_hauteur']);
             $caracteristique->setCaraLongueur($parametersAsArray['cara_longueur']);
             $caracteristique->setCaraTypeAngle($parametersAsArray['cara_type_angle']);
-            $caracteristique->setCaraDegreAngle($parametersAsArray['cara_angle']);
+            $caracteristique->setCaraDegreAngle($parametersAsArray['cara_degre_angle']);
             $entityManager->persist($caracteristique); 
             $entityManager->flush();
 
@@ -99,7 +99,7 @@ class CaracteristiqueController extends AbstractController
                 'cara_hauteur' => $caracteristique->getCaraHauteur(),
                 'cara_longueur' => $caracteristique->getCaraLongueur(),
                 'cara_type_angle' => $caracteristique->getCaraTypeAngle(),
-                'cara_angle' => $caracteristique->getCaraDegreAngle()
+                'cara_degre_angle' => $caracteristique->getCaraDegreAngle()
                 )
             ));
         }
@@ -152,8 +152,14 @@ class CaracteristiqueController extends AbstractController
                     $entityManager->flush();
 
                     $reponse = new Response (json_encode(array(
-                        'resultat' => "OK",
-                        'id' => $caracteristique->getId()
+                        'id' => $caracteristique->getId(),
+                        'modu_id' => $caracteristique->getModu()->getId(),
+                        'cara_section' => $caracteristique->getCaraSection(),
+                        'cara_hauteur' => $caracteristique->getCaraHauteur(),
+                        'cara_longueur' => $caracteristique->getCaraLongueur(),
+                        'cara_type_angle' => $caracteristique->getCaraTypeAngle(),
+                        'cara_degre_angle' => $caracteristique->getCaraDegreAngle(),
+                        'listTypesAngles' => ''
                         )
                     ));
                 }
