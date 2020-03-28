@@ -619,6 +619,7 @@ class DevisController extends AbstractController
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->setIsRemoteEnabled(true);
         
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
@@ -758,6 +759,7 @@ class DevisController extends AbstractController
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->setIsRemoteEnabled(true);
         
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);

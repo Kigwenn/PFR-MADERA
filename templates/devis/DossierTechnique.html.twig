@@ -1,143 +1,165 @@
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DevisController!{% endblock %}
-
+{% block title %}Dossier technique du devis{% endblock %}
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper"> <h1>Dossier estimatif du devis : {{ infosDevis['devi_nom'] }}</h1>
-
-<p>
-
-
-<table>
-    <tr>
-        <td>
-            <b> Informations du devis : </b> <br>
-            Id du devis : {{infosDevis['id']}}  <br>
-            Maison : {{infosDevis['mais_nom']}}<br> 
-            Gamme : {{infosDevis['gamm_nom']}}<br> 
-            Date : {{infosDevis['devi_date']}}<br>
-        </td>
-
-        <td>
-            <b> Adresse du chantier : </b> <br>
-            Pays : {{infosDevis['pays_nom']}}<br> 
-            Region : {{infosDevis['adre_region']}}<br> 
-            Ville : {{infosDevis['adre_ville']}}<br> 
-            Code postale : {{infosDevis['adre_cp']}}<br>
-            Rue : {{infosDevis['adre_rue']}}<br>
-            Complement d'adresse : {{infosDevis['adre_complement']}}<br>
-            Infomartions complémentaire : {{infosDevis['adre_info']}}
-        </td>
-
-    </tr>
-</table> 
-<br>
-<table>
-
-    <tr>
-        <td>
-            <b> Informations du Client : </b> <br>
-            Id du client : {{infosClient['id']}}  <br>
-            Nom : {{infosClient['pers_nom']}}<br> 
-            Prenom : {{infosClient['pers_prenom']}}<br> 
-            Mail : {{infosClient['pers_mail']}}<br>
-            Tel : {{infosClient['pers_tel']}}
-        </td>
-
-        <td>
-            <b> Adresse de facturation : </b> <br>
-            Pays : {{infosClient['pays_nom']}}<br> 
-            Region : {{infosClient['adre_region']}}<br> 
-            Ville : {{infosClient['adre_ville']}}<br> 
-            Code postale : {{infosClient['adre_cp']}}<br>
-            Rue : {{infosClient['adre_rue']}}<br>
-            Complement d'adresse : {{infosClient['adre_complement']}}<br>
-            Infomartions complémentaire : {{infosClient['adre_info']}}
-        </td>
-    </tr>
-</table>
-
-<br><br>
-
-<b>Liste des modules du devis :</b>
-{% for module in listeModules %} 
-<h3>Module : {{module.modu_nom}}</h3>
-<table> 
-  <tr>
-    <td><b>id</b> </td>
-    <td><b>Nom</b> </td>
-    <td><b>Type</b> </td>
-    <td><b>CCTP</b> </td>
-    <td><b>Prix</b> </td>
-  </tr>	 
-  <tr>
-    <td>{{module.id}}</td>
-    <td>{{module.modu_nom}}</td>
-    <td>{{module.tymo_nom}}</td>
-    <td>{{module.cctp_nom}}</td>
-    <td>{{module.modu_prix_total}}€</td>
-  </tr>
-</table>
-<h4>Caracteristiques :</h4>
-	{% for caracteristique in module.listeCaracteristiques %} 
-	<>
-	<table> 
-	  <tr>
-		<b> 
-		<td><b>id</b> </td>
-		<td><b>Section</b> </td>
-		<td><b>Hauteur</b> </td>
-		<td><b>Longueur</b> </td>
-		<td><b>Type d'angle</b> 
-		<td><b>Degre de l'angle</b> </td>
-	  </tr>	 
-	  <tr>
-		<td>{{caracteristique.id}}</td>
-		<td>{{caracteristique.cara_section}}</td>
-		<td>{{caracteristique.cara_hauteur}}</td>
-		<td>{{caracteristique.cara_longueur}}</td>
-		<td>{{caracteristique.cara_type_angle}}</td>
-		<td>{{caracteristique.cara_degre_angle}}</td>
-	  </tr>
-	</table>  
-	{% endfor %}
-	
-	<h4>Composant : </h4>
-	{% for composant in module.listeComposants %} 
-	<table> 
-	  <tr>
-		<b> 
-		<td><b>id</b> </td>
-		<td><b>Nom</b> </td>
-		<td><b>Type</b> </td>
-    <td><b>Prix unitaire</b> </td>
-		<td><b>Qte</b> </td>
-		<td><b>Prix total</b> </td>
-	  </tr>	 
-	  <tr>
-		<td>{{composant.id}}</td>
-		<td>{{composant.comp_nom}}</td>
-    <td>{{composant.comp_type}}</td>
-		<td>{{composant.comp_prix_unitaire}}€</td>
-		<td>{{composant.quantite}}</td>
-    <td>{{composant.quantite}}*{{composant.comp_prix_unitaire}}€</td>
-	  </tr>
-	</table>  
-	{% endfor %}	
-	
-{% endfor %}
-</p>
-</div>
-<div>
-Prix maison : {{infosDevis['mais_prix']}}€ <br>
-Prix huisserie : {{infosDevis['huis_prix']}}€ <br>
-<b> Prix total : {{infosDevis['devi_prix']}}€</b> <br>
-</div>
+    <style>
+        @page { margin-top: 40px; margin-left: 50px; margin-right: 50px; margin-bottom: 100px; }
+        header { position: fixed; top: -35px; left: 0px; right: 0px; border-bottom: 1px solid #249e00; height: 20px; text-align: center; color: #3d3d3d; }
+        footer { position: fixed; bottom: -5px; left: 0px; right: 0px; border-top: 1px solid #249e00; height: auto; text-align: center; color: #3d3d3d; }
+        footer .pagenum:before { content: counter(page); }
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+		h1 { margin-top: 0px; }
+        .section { width: 100%; }
+        .text-right { text-align: right; }
+        table { width: 100%; border-collapse: collapse; }
+        .info { width: 49%; border-top: 1px solid #249e00; }
+        .tableau, .tableau th, .tableau td { border: 1px solid gray; }
+        td { vertical-align: top; }
+        .img-cctp { width: 100%; }
+        .separateur { height: 1px; border-bottom: 1px solid #249e00; }
+        .fixed-bottom { position: fixed; bottom: 75px; }
+    </style>
+    <body class="example-wrapper">
+        <header>MADERA - Gestion commercial - Dossier technique du devis</header>
+        <footer>
+            <div class="section text-right">
+                Prix maison : {{infosDevis['mais_prix']}}€ <br>
+                Prix huisserie : {{infosDevis['huis_prix']}}€ <br>
+                <b> Prix total : {{infosDevis['devi_prix']}}€</b> <br>
+            </div>
+            <div class="separateur">&nbsp;</div>
+            <div class="pagenum-container">Page <span class="pagenum"></span></div>
+        </footer>
+        <main>
+            <div style="page-break-after: always;">
+                <h1>Dossier technique du devis : {{ infosDevis['devi_nom'] }}</h1>
+                <table>
+                    <tr>
+                        <td class="info">
+                            <b> Informations du devis : </b> <br>
+                            Id du devis : {{infosDevis['id']}}  <br>
+                            Maison : {{infosDevis['mais_nom']}}<br> 
+                            Gamme : {{infosDevis['gamm_nom']}}<br> 
+                            Date : {{infosDevis['devi_date']}}<br>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td class="info">
+                            <b> Adresse du chantier : </b> <br>
+                            Pays : {{infosDevis['pays_nom']}}<br> 
+                            Région : {{infosDevis['adre_region']}}<br> 
+                            Ville : {{infosDevis['adre_ville']}}<br> 
+                            Code postale : {{infosDevis['adre_cp']}}<br>
+                            Rue : {{infosDevis['adre_rue']}}<br>
+                            Complément d'adresse : {{infosDevis['adre_complement']}}<br>
+                            Informations complémentaires : {{infosDevis['adre_info']}}
+                        </td>
+                    </tr>
+                </table> 
+                <br>
+                <table>
+                    <tr>
+                        <td class="info">
+                            <b> Informations du Client : </b> <br>
+                            Id du client : {{infosClient['id']}}  <br>
+                            Nom : {{infosClient['pers_nom']}}<br> 
+                            Prénom : {{infosClient['pers_prenom']}}<br> 
+                            Mail : {{infosClient['pers_mail']}}<br>
+                            Téléphone : {{infosClient['pers_tel']}}
+                        </td>
+                        <td>&nbsp;</td>
+                        <td class="info">
+                            <b> Adresse de facturation : </b> <br>
+                            Pays : {{infosClient['pays_nom']}}<br> 
+                            Région : {{infosClient['adre_region']}}<br> 
+                            Ville : {{infosClient['adre_ville']}}<br> 
+                            Code postale : {{infosClient['adre_cp']}}<br>
+                            Rue : {{infosClient['adre_rue']}}<br>
+                            Complément d'adresse : {{infosClient['adre_complement']}}<br>
+                            Informations complémentaires : {{infosClient['adre_info']}}
+                        </td>
+                    </tr>
+                </table>
+                <br>
+				<div class="separateur">&nbsp;</div>
+                <h3>Liste des modules du devis :</h3>
+				{% for module in listeModules %}
+				<h4>Module : {{module.modu_nom}}</h4>
+                <table class="tableau">
+                    <tr>
+                        <td><b>id</b> </td>
+                        <td><b>Nom</b> </td>
+                        <td><b>Type</b> </td>
+                        <td><b>CCTP</b> </td>
+                        <td><b>Prix</b> </td>
+                    </tr>
+                    <tr>
+                        <td>{{module.id}}</td>
+                        <td>{{module.modu_nom}}</td>
+                        <td>{{module.tymo_nom}}</td>
+                        <td>{{module.cctp_nom}}</td>
+                        <td>{{module.modu_prix_total}}€</td>
+                    </tr>
+                </table>
+				{# <img src="{{ infosDevis['mais_cdp'] }}" class="img-cctp"> #}
+				<h4>Caractéristiques :</h4>
+				<table class="tableau">
+					<tr>
+						<b>
+						<td><b>id</b> </td>
+						<td><b>Section</b> </td>
+						<td><b>Hauteur</b> </td>
+						<td><b>Longueur</b> </td>
+						<td><b>Type d'angle</b> </td>
+						<td><b>Degré de l'angle</b> </td>
+					</tr>
+					{% for caracteristique in module.listeCaracteristiques %}
+					<tr>
+						<td>{{caracteristique.id}}</td>
+						<td>{{caracteristique.cara_section}}</td>
+						<td>{{caracteristique.cara_hauteur}}</td>
+						<td>{{caracteristique.cara_longueur}}</td>
+						<td>{{caracteristique.cara_type_angle}}</td>
+						<td>{{caracteristique.cara_degre_angle}}</td>
+					</tr>
+					{% endfor %}
+				</table>
+				<h4>Composant : </h4>
+				<table class="tableau">
+					<tr>
+						<b>
+						<td><b>id</b> </td>
+						<td><b>Nom</b> </td>
+						<td><b>Type</b> </td>
+						<td><b>Prix unitaire</b> </td>
+						<td><b>Qte</b> </td>
+						<td><b>Prix total</b> </td>
+					</tr>
+					{% for composant in module.listeComposants %}
+					<tr>
+						<td>{{composant.id}}</td>
+						<td>{{composant.comp_nom}}</td>
+						<td>{{composant.comp_type}}</td>
+						<td>{{composant.comp_prix_unitaire}}€</td>
+						<td>{{composant.quantite}}</td>
+						<td>{{composant.quantite}}*{{composant.comp_prix_unitaire}}€</td>
+					</tr>
+					{% endfor %}
+				</table>
+				{% endfor %}
+                <br>
+            </div>
+			<div class="information-madera section text-right" style="page-break-after: never;">
+                <b>Dossier technique du devis produit par MADERA</b><br>
+                SAS au Capital de 75 000,00 €<br>
+                SIREN 531 326 254<br>
+                SIRET (siege) 53132625400038<br>
+                Rue Enzo Ferrari<br>
+                85000 La Roche-sur-Yon<br>
+                Site internet : http://madera-construction.fr/<br>
+                Contact : contact@madera-construction.com<br>
+                Numéro : 02 51 98 18 32
+            </div>
+        </main>
+    </body>
 {% endblock %}
-
