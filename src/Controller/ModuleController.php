@@ -219,7 +219,7 @@ class ModuleController extends AbstractController
                 'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
                 'modu_prix_total' => $module->getModuPrixTotal(),
                 'isol_id' => $module->getIsol()->getId(),
-                'modu_reference_id' => $module->getModuReference(),
+                'modu_reference_id' => !empty($module->getModuReference()) ? $module->getModuReference()->getId() : null
                 ))
             );
         } else {
