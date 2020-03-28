@@ -46,7 +46,9 @@ class DevisController extends AbstractController
         }
         //Verification parametres
         $parametresObligatoire[] = array('mais_id', 'gamm_id', 'comm_id', 'clie_id', 'devi_nom','devi_date', 'pays_id',
-            'adre_region', 'adre_ville', 'adre_cp', 'adre_rue', 'adre_complement', 'adre_info'); 
+            'adre_region', 'adre_ville', 'adre_cp', 'adre_rue', 'adre_complement', 'adre_info');
+        print_r(sizeof($parametersAsArray));
+        print_r(sizeof($parametresObligatoire));
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
         // Verification du Client
