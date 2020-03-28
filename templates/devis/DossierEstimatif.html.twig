@@ -1,103 +1,93 @@
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello DevisController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper"> <h1>Dossier estimatif du devis : {{ infosDevis['devi_nom'] }}</h1>
-
-<p>
-
-
-<table>
-    <tr>
-        <td>
-            <b> Informations du devis : </b> <br>
-            Id du devis : {{infosDevis['id']}}  <br>
-            Maison : {{infosDevis['mais_nom']}}<br> 
-            Gamme : {{infosDevis['gamm_nom']}}<br> 
-            Date : {{infosDevis['devi_date']}}<br>
-        </td>
-
-        <td>
-            <b> Adresse du chantier : </b> <br>
-            Pays : {{infosDevis['pays_nom']}}<br> 
-            Region : {{infosDevis['adre_region']}}<br> 
-            Ville : {{infosDevis['adre_ville']}}<br> 
-            Code postale : {{infosDevis['adre_cp']}}<br>
-            Rue : {{infosDevis['adre_rue']}}<br>
-            Complement d'adresse : {{infosDevis['adre_complement']}}<br>
-            Infomartions complémentaire : {{infosDevis['adre_info']}}
-        </td>
-
-    </tr>
-</table> 
-<br>
-<table>
-
-    <tr>
-        <td>
-            <b> Informations du Client : </b> <br>
-            Id du client : {{infosClient['id']}}  <br>
-            Nom : {{infosClient['pers_nom']}}<br> 
-            Prenom : {{infosClient['pers_prenom']}}<br> 
-            Mail : {{infosClient['pers_mail']}}<br>
-            Tel : {{infosClient['pers_tel']}}
-        </td>
-
-        <td>
-            <b> Adresse de facturation : </b> <br>
-            Pays : {{infosClient['pays_nom']}}<br> 
-            Region : {{infosClient['adre_region']}}<br> 
-            Ville : {{infosClient['adre_ville']}}<br> 
-            Code postale : {{infosClient['adre_cp']}}<br>
-            Rue : {{infosClient['adre_rue']}}<br>
-            Complement d'adresse : {{infosClient['adre_complement']}}<br>
-            Infomartions complémentaire : {{infosClient['adre_info']}}
-        </td>
-    </tr>
-</table>
-
-<br><br>
-
-<b>Liste des modules du devis :</b>
-<table>
-  <tr>
-    <td><b>id</b> </td>
-    <td><b>Nom</b> </td>
-    <td><b>Type</b> </td>
-    <td><b>CCTP</b> </td>
-    <td><b>Prix</b> </td>
-  </tr>	
-  {% for module in listeModules %}
-  <tr>
-    <td>{{module.id}}</td>
-    <td>{{module.modu_nom}}</td>
-    <td>{{module.tymo_nom}}</td>
-    <td>{{module.cctp_nom}}</td>
-    <td>{{module.modu_prix_total}}€</td>
-  </tr>
-  {% endfor %}
-</table>	
-
-</p> 
-</div>
-<div>
-Prix maison : {{infosDevis['mais_prix']}}€ <br>
-Prix huisserie : {{infosDevis['huis_prix']}}€ <br>
-<b> Prix total : {{infosDevis['devi_prix']}}€</b> <br>
-</div>
-
-<br><br><br>
-
-<div>
-<b>Coupe de principe : </b>
-</div>
-
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .section { width: 100%; }
+        .text-right { text-align: right; }
+        table { width: 100%; border-collapse: collapse; }
+        .info { width: 50%; }
+        .tableau, .tableau th, .tableau td { border: 1px solid gray; }
+        td { vertical-align: top; }
+    </style>
+    <div class="example-wrapper">
+        <h1>Dossier estimatif du devis : {{ infosDevis['devi_nom'] }}</h1>
+        <table>
+            <tr>
+                <td class="info">
+                    <b> Informations du devis : </b> <br>
+                    Id du devis : {{infosDevis['id']}}  <br>
+                    Maison : {{infosDevis['mais_nom']}}<br> 
+                    Gamme : {{infosDevis['gamm_nom']}}<br> 
+                    Date : {{infosDevis['devi_date']}}<br>
+                </td>
+                <td class="info">
+                    <b> Adresse du chantier : </b> <br>
+                    Pays : {{infosDevis['pays_nom']}}<br> 
+                    Region : {{infosDevis['adre_region']}}<br> 
+                    Ville : {{infosDevis['adre_ville']}}<br> 
+                    Code postale : {{infosDevis['adre_cp']}}<br>
+                    Rue : {{infosDevis['adre_rue']}}<br>
+                    Complement d'adresse : {{infosDevis['adre_complement']}}<br>
+                    Infomartions complémentaire : {{infosDevis['adre_info']}}
+                </td>
+            </tr>
+        </table> 
+        <br>
+        <table>
+            <tr>
+                <td class="info">
+                    <b> Informations du Client : </b> <br>
+                    Id du client : {{infosClient['id']}}  <br>
+                    Nom : {{infosClient['pers_nom']}}<br> 
+                    Prenom : {{infosClient['pers_prenom']}}<br> 
+                    Mail : {{infosClient['pers_mail']}}<br>
+                    Tel : {{infosClient['pers_tel']}}
+                </td>
+                <td class="info">
+                    <b> Adresse de facturation : </b> <br>
+                    Pays : {{infosClient['pays_nom']}}<br> 
+                    Region : {{infosClient['adre_region']}}<br> 
+                    Ville : {{infosClient['adre_ville']}}<br> 
+                    Code postale : {{infosClient['adre_cp']}}<br>
+                    Rue : {{infosClient['adre_rue']}}<br>
+                    Complement d'adresse : {{infosClient['adre_complement']}}<br>
+                    Infomartions complémentaire : {{infosClient['adre_info']}}
+                </td>
+            </tr>
+        </table>
+        <br>
+        <b>Liste des modules du devis :</b>
+        <table class="tableau">
+            <tr>
+                <td><b>id</b> </td>
+                <td><b>Nom</b> </td>
+                <td><b>Type</b> </td>
+                <td><b>CCTP</b> </td>
+                <td><b>Prix</b> </td>
+            </tr>	
+            {% for module in listeModules %}
+            <tr>
+                <td>{{module.id}}</td>
+                <td>{{module.modu_nom}}</td>
+                <td>{{module.tymo_nom}}</td>
+                <td>{{module.cctp_nom}}</td>
+                <td>{{module.modu_prix_total}}€</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <div class="section text-right">
+            Prix maison : {{infosDevis['mais_prix']}}€ <br>
+            Prix huisserie : {{infosDevis['huis_prix']}}€ <br>
+            <b> Prix total : {{infosDevis['devi_prix']}}€</b> <br>
+        </div>
+        <br>
+        <div>
+            <b>Coupe de principe : </b>
+            {{infosDevis['mais_cdp']}}
+        </div>
+    </div>
 {% endblock %}
-
