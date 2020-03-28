@@ -34,26 +34,44 @@ class ModuleController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager(); 
         $repository_module = $this->getDoctrine()->getRepository(Module::class);
-        $parametersAsArray = [];
-        $resultat = null;
+        $parametersAsArray = null;
+        $resultat = [];
 
         //Conversion du JSON
         if ($content = $requestjson->getContent()) {
             $parametersAsArray = json_decode($content, true);
         }
+
+        // //Envoi de la réponse 
+        // $reponse = $parametersAsArray;
+        // $reponse = new Response (json_encode(array(
+        //     $reponse,
+        //     )
+        // ));
+        // $reponse->headers->set("Content-Type", "application/json"); 
+        // $reponse->headers->set("Access Control-Allow-Origin", "*"); 
+        // return $reponse;
+
+
         //Verification parametres
         $parametresObligatoire[] = array('tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'isol_id');
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
 
         // verification du module
-//        if ($resultat == "OK") {
-//            $repository_module = $this->getDoctrine()->getRepository(Module::class);
-//            $moduleReference = $repository_module->find($parametersAsArray['modu_id']);
-//            if ($moduleReference == null) {
-//                $resultat =  "Le module n'existe pas.";
-//            }
-//        }
+       if ($resultat == "OK") {
+           if (isset($parametersAsArray['modu_reference_id'])) {
+               $repository_module = $this->getDoctrine()->getRepository(Module::class);
+               $module_reference = $repository_module->find($parametersAsArray['modu_reference_id']);
+               if ($module_reference == null) {
+                   $resultat = "Le module de reference n'existe pas.";
+                }
+            } else {
+                $module_reference = null;
+            }     
+        }
+       
+
         // verification du devis
         if (($resultat == "OK") && ($parametersAsArray['devi_id'] <> null)) {
             $repository_devis = $this->getDoctrine()->getRepository(Devis::class); 
@@ -121,29 +139,31 @@ class ModuleController extends AbstractController
             $module->setFiin($finition_interieur);
             $module->setCouv($couverture);
             $module->setIsol($isolant);
-            $module->setModuPrixUnitaire( isset($parametersAsArray['modu_prix_unitaire'])?  $parametersAsArray['modu_prix_unitaire'] : null);
+            if ($module_reference <> null) {
+                $module->setModuReference($module_reference);
+            }
 
             if ($devis <> null) {
                 $module->setDevi($devis);
-            }  
+            }       
+
+            //$module->setModuPrixUnitaire( isset($parametersAsArray['modu_prix_unitaire'])?  $parametersAsArray['modu_prix_unitaire'] : null);
+
             $entityManager->persist($module); 
 
-            // recuperation des composants du module de reference
-            $repository_ComposantModule = $this->getDoctrine()->getRepository(ComposantModule::class);
-            $lesComposantModules = $repository_ComposantModule->rechercheComposants($parametersAsArray['modu_id']);
-            foreach ($lesComposantModules as $cm) 
-            {
-                // $reponse = new Response (json_encode($cm));
-                // $reponse->headers->set("Content-Type", "application/json"); 
-                // $reponse->headers->set("Access Control-Allow-Origin", "*"); 
-                // return $reponse;
-                
-                $CompModuRef = $repository_ComposantModule->find($cm['id']);
-                $ComposantModule = new ComposantModule();
-                $ComposantModule->setModu($module);
-                $ComposantModule->setComp($CompModuRef->getComp());
-                $ComposantModule->setComoQuantite($CompModuRef->getComoQuantite());
-                $entityManager->persist($ComposantModule); 
+            if ($module_reference <> null) {
+                // recuperation des composants du module de reference
+                $repository_ComposantModule = $this->getDoctrine()->getRepository(ComposantModule::class);
+                $lesComposantModules = $repository_ComposantModule->rechercheComposants($module_reference->getId());
+                foreach ($lesComposantModules as $cm) 
+                {
+                    $CompModuRef = $repository_ComposantModule->find($cm['id']);
+                    $ComposantModule = new ComposantModule();
+                    $ComposantModule->setModu($module);
+                    $ComposantModule->setComp($CompModuRef->getComp());
+                    $ComposantModule->setComoQuantite($CompModuRef->getComoQuantite());
+                    $entityManager->persist($ComposantModule); 
+                }
             }
             $entityManager->flush();
         }
@@ -199,6 +219,7 @@ class ModuleController extends AbstractController
                 'modu_prix_unitaire' => $module->getModuPrixUnitaire(),
                 'modu_prix_total' => $module->getModuPrixTotal(),
                 'isol_id' => $module->getIsol()->getId(),
+                'modu_reference_id' => $module->getModuReference(),
                 ))
             );
         } else {
@@ -229,7 +250,7 @@ class ModuleController extends AbstractController
             $parametersAsArray = json_decode($content, true);
         }
         //Verification parametres
-        $parametresObligatoire[] = array('id', 'tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'modu_prix_unitaire', 'isol_id'); 
+        $parametresObligatoire[] = array('id', 'tymo_id', 'devi_id', 'cctp_id', 'fiex_id', 'fiin_id', 'couv_id', 'modu_nom', 'isol_id'); 
         $repository_client = $this->getDoctrine()->getRepository(Client::class);
         $resultat = $repository_client->verificationParametre($parametresObligatoire[0], $parametersAsArray);
      
@@ -259,6 +280,19 @@ class ModuleController extends AbstractController
                 $resultat =  "Le devis n'existe pas.";
             }    
         }
+
+        // verification du module
+        if ($resultat == "OK") {
+            if (isset($parametersAsArray['modu_reference_id'])) {
+                $repository_module = $this->getDoctrine()->getRepository(Module::class);
+                $module_reference = $repository_module->find($parametersAsArray['modu_reference_id']);
+                if ($module_reference == null) {
+                    $resultat = "Le module de reference n'existe pas.";
+                 }
+             } else {
+                 $module_reference = null;
+             }     
+         }
      
         // verification du cctp
         if ($resultat == "OK") {
@@ -314,10 +348,19 @@ class ModuleController extends AbstractController
             $module->setFiin($finition_interieur);
             $module->setCouv($couverture);
             $module->setIsol($isolant);
-            $module->setModuPrixUnitaire($parametersAsArray['modu_prix_unitaire']);
+           //$module->setModuPrixUnitaire($parametersAsArray['modu_prix_unitaire']);
+            
+            if ($module_reference <> null) {
+                $modu_reference_id = $module_reference->getId();
+                $module->setModuReference($module_reference);
+            } else {
+                $modu_reference_id = '';
+            }
+
             if ($devis <> null) {
                 $module->setDevi($devis);
             }
+
             $entityManager->persist($module); 
             $entityManager->flush();
         }
@@ -336,7 +379,7 @@ class ModuleController extends AbstractController
                 'modu_nom' => $module->getModuNom(),
                 'listFamillesModules' => '',
                 'listModules' => '',
-                'modu_id' => '',
+                'modu_reference_id' => $modu_reference_id,
                 'listIsolants' => '',
                 'listFinitionsInterieures' => '',
                 'listFinitionsExterieures' => '',

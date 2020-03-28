@@ -40,6 +40,12 @@ class Module
     private $devi;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Module")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     */
+    private $modu_reference;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CCTP")
      * @ORM\JoinColumn(nullable=true)
      */
@@ -196,6 +202,18 @@ class Module
     public function setModuPrixTotal(?float $modu_prix_total): self
     {
         $this->modu_prix_total = $modu_prix_total;
+
+        return $this;
+    }
+
+    public function getModuReference(): ?self
+    {
+        return $this->modu_reference;
+    }
+
+    public function setModuReference(?self $modu_reference): self
+    {
+        $this->modu_reference = $modu_reference;
 
         return $this;
     }
