@@ -1,40 +1,34 @@
-<?php 
+<?php
 
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DevisControllerTest extends WebTestCase
+class ModuleControllerTest extends WebTestCase
 {
     private $client = null;
 
-    public function testDevisCRUD()
+    public function testModuleCRUD()
     {
+        //creation caracteristique
         $client = static::createClient();
         $crawler = $client->request(
             'POST',
-            '/PFR-MADERA/devis',
+            '/PFR-MADERA/module',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
             '{
-                "mais_id": 1,
-                "gamm_id": 1,
-                "comm_id": 1,
-                "clie_id": 1,
-                "devi_nom": "testdevis",
-                "devi_date": {
-                    "date": "2019-12-24 00:00:00.000000",
-                    "timezone_type": 3,
-                    "timezone": "Europe/Berlin"
-                },
-                "pays_id": 1,
-                "adre_region": "adretest",
-                "adre_ville": "villetest",
-                "adre_cp": "11111",
-                "adre_rue": "ruetest",
-                "adre_complement": "adrecomtest",
-                "adre_info": "adreinfotest"
+                "modu_id": 1,
+                "tymo_id": 1,
+                "devi_id": 1,
+                "cctp_id": 1,
+                "fiex_id": 1,
+                "fiin_id": 1,
+                "couv_id": 1,
+                "modu_nom": "testnom",
+                "modu_prix_unitaire": 2525,
+                "isol_id": 1
             }'
         );
         $response = $client->getResponse();
@@ -48,7 +42,7 @@ class DevisControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(
             'GET',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/module/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -57,38 +51,30 @@ class DevisControllerTest extends WebTestCase
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());//test route
         $responseData = json_decode($response->getContent(), true);
-        $this->assertSame("OK", $responseData["resultat"]);//réduir les test array ?
+        $this->assertSame("OK", $responseData["resultat"]);
         $this->assertSame($testid,$responseData["id"]);
-        $this->assertSame("testdevis",$responseData["devi_nom"]);
-        $this->assertSame("adretest",$responseData["adre_region"]);
-        $this->assertSame("adrecomtest",$responseData["adre_complement"]);
+        $this->assertSame("testnom",$responseData["modu_nom"]);
+        $this->assertSame(2525,$responseData["cara_modu_prix_unitairehauteur"]);
 
-        //Modification du commercial
+        //Modification de caracteristique
         $client = static::createClient();
         $crawler = $client->request(
             'PUT',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/module',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
             '{
-                "mais_id": 1,
-                "gamm_id": 1,
-                "comm_id": 1,
-                "clie_id": 1,
-                "devi_nom": "devis2",
-                "devi_date": {
-                    "date": "2019-12-24 00:00:00.000000",
-                    "timezone_type": 3,
-                    "timezone": "Europe/Berlin"
-                },
-                "pays_id": 1,
-                "adre_region": "adretest2",
-                "adre_ville": "villetest",
-                "adre_cp": "11111",
-                "adre_rue": "ruetest",
-                "adre_complement": "adrecomtest2",
-                "adre_info": "adreinfotest"
+                "id": 1,
+                "tymo_id": 1,
+                "devi_id": 1,
+                "cctp_id": 1,
+                "fiex_id": 1,
+                "fiin_id": 1,
+                "couv_id": 1,
+                "modu_nom": "testmodule2",
+                "modu_prix_unitaire": 2222,
+                "isol_id": 1
             }'
         );
         $response = $client->getResponse();
@@ -101,7 +87,7 @@ class DevisControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(
             'GET',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/module/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -110,17 +96,16 @@ class DevisControllerTest extends WebTestCase
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());//test route
         $responseData = json_decode($response->getContent(), true);
-        $this->assertSame("OK", $responseData["resultat"]);//réduir les test array ?
+        $this->assertSame("OK", $responseData["resultat"]);
         $this->assertSame($testid,$responseData["id"]);
-        $this->assertSame("devis2",$responseData["devi_nom"]);
-        $this->assertSame("adretest2",$responseData["adre_region"]);
-        $this->assertSame("adrecomtest2",$responseData["adre_complement"]);
+        $this->assertSame("testmodule2",$responseData["modu_nom"]);
+        $this->assertSame(2222,$responseData["cara_modu_prix_unitairehauteur"]);
 
         //Vérification de la suppression
         $client = static::createClient();
         $crawler = $client->request(
             'DELETE',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/module/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
