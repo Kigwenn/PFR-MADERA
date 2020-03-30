@@ -1,40 +1,31 @@
-<?php 
+<?php
 
+// tests/Controller/PostControllerTest.php
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DevisControllerTest extends WebTestCase
+class CaracteristiqueControllerTest extends WebTestCase
 {
     private $client = null;
 
-    public function testDevisCRUD()
+    public function testCaracteristiqueCRUD()
     {
+        //creation caracteristique
         $client = static::createClient();
         $crawler = $client->request(
             'POST',
-            '/PFR-MADERA/devis',
+            '/PFR-MADERA/caracteristique',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
             '{
-                "mais_id": 1,
-                "gamm_id": 1,
-                "comm_id": 1,
-                "clie_id": 1,
-                "devi_nom": "testdevis",
-                "devi_date": {
-                    "date": "2019-12-24 00:00:00.000000",
-                    "timezone_type": 3,
-                    "timezone": "Europe/Berlin"
-                },
-                "pays_id": 1,
-                "adre_region": "adretest",
-                "adre_ville": "villetest",
-                "adre_cp": "11111",
-                "adre_rue": "ruetest",
-                "adre_complement": "adrecomtest",
-                "adre_info": "adreinfotest"
+                "modu_id": 1,
+                "cara_section": 1,
+                "cara_hauteur": 1,
+                "cara_longueur": 1,
+                "cara_type_angle": "testcaraangle",
+                "cara_angle": 45
             }'
         );
         $response = $client->getResponse();
@@ -48,7 +39,7 @@ class DevisControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(
             'GET',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/caracteristique/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -57,38 +48,32 @@ class DevisControllerTest extends WebTestCase
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());//test route
         $responseData = json_decode($response->getContent(), true);
-        $this->assertSame("OK", $responseData["resultat"]);//réduir les test array ?
+        $this->assertSame("OK", $responseData["resultat"]);
         $this->assertSame($testid,$responseData["id"]);
-        $this->assertSame("testdevis",$responseData["devi_nom"]);
-        $this->assertSame("adretest",$responseData["adre_region"]);
-        $this->assertSame("adrecomtest",$responseData["adre_complement"]);
+        $this->assertSame(1,$responseData["modu_id"]);
+        $this->assertSame(1,$responseData["cara_section"]);
+        $this->assertSame(1,$responseData["cara_hauteur"]);
+        $this->assertSame(1,$responseData["cara_hauteur"]);
+        $this->assertSame(1,$responseData["cara_longueur"]);
+        $this->assertSame("testcaraangle",$responseData["cara_type_angle"]);
+        $this->assertSame(45,$responseData["cara_angle"]);
 
-        //Modification du commercial
+        //Modification de caracteristique
         $client = static::createClient();
         $crawler = $client->request(
             'PUT',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/caracteristique',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
             '{
-                "mais_id": 1,
-                "gamm_id": 1,
-                "comm_id": 1,
-                "clie_id": 1,
-                "devi_nom": "devis2",
-                "devi_date": {
-                    "date": "2019-12-24 00:00:00.000000",
-                    "timezone_type": 3,
-                    "timezone": "Europe/Berlin"
-                },
-                "pays_id": 1,
-                "adre_region": "adretest2",
-                "adre_ville": "villetest",
-                "adre_cp": "11111",
-                "adre_rue": "ruetest",
-                "adre_complement": "adrecomtest2",
-                "adre_info": "adreinfotest"
+                "id": '.$testid.',
+                "modu_id": 1,
+                "cara_section": 1,
+                "cara_hauteur": 1,
+                "cara_longueur": 1,
+                "cara_type_angle": "caraangle",
+                "cara_angle": 90
             }'
         );
         $response = $client->getResponse();
@@ -101,7 +86,7 @@ class DevisControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(
             'GET',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/caracteristique/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
@@ -112,15 +97,19 @@ class DevisControllerTest extends WebTestCase
         $responseData = json_decode($response->getContent(), true);
         $this->assertSame("OK", $responseData["resultat"]);//réduir les test array ?
         $this->assertSame($testid,$responseData["id"]);
-        $this->assertSame("devis2",$responseData["devi_nom"]);
-        $this->assertSame("adretest2",$responseData["adre_region"]);
-        $this->assertSame("adrecomtest2",$responseData["adre_complement"]);
+        $this->assertSame(1,$responseData["modu_id"]);
+        $this->assertSame(1,$responseData["cara_section"]);
+        $this->assertSame(1,$responseData["cara_hauteur"]);
+        $this->assertSame(1,$responseData["cara_hauteur"]);
+        $this->assertSame(1,$responseData["cara_longueur"]);
+        $this->assertSame("caraangle",$responseData["cara_type_angle"]);
+        $this->assertSame(90,$responseData["cara_angle"]);
 
         //Vérification de la suppression
         $client = static::createClient();
         $crawler = $client->request(
             'DELETE',
-            '/PFR-MADERA/devis/'.$testid.'',
+            '/PFR-MADERA/caracteristique/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),

@@ -37,11 +37,11 @@ class CommercialControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(
             'GET',
-            '/PFR-MADERA/commercial',
+            '/PFR-MADERA/commercial/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
-            '{"clie_id": '.$testid.'}'
+            ''
         );
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());//test route
@@ -85,11 +85,11 @@ class CommercialControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(
             'GET',
-            '/PFR-MADERA/commercial',
+            '/PFR-MADERA/commercial/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
-            '{"clie_id": '.$testid.'}'
+            ''
         );
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());//test route
@@ -108,11 +108,11 @@ class CommercialControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request(
             'DELETE',
-            '/PFR-MADERA/commercial',
+            '/PFR-MADERA/commercial/'.$testid.'',
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
-            '{"comm_id": '.$testid.'}'
+            ''
         );
         $response = $client->getResponse();
         $this->assertSame(200, $response->getStatusCode());//test route
